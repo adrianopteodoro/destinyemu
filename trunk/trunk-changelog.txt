@@ -1,0 +1,12 @@
+DESTINY EMULATOR SVN CHANGE-LOG
+	- TRUNK (DEVELOPMENT VERSION)
+
+01/04/2007
+    - Added: wyd_server.xml, new type of config file and put in configs folder. [Snaity]
+
+06/04/2007
+    - Fix: Character can walk in the world. [Snaity]
+
+10/04/2007
+    - Changed: Character and Items Loading from Database, item is now defined by slotnum (0 to 14 is equiped items and 15 to 77 is items on inventory)
+    - Added: AutoCreateAcc option on gameserver.xml, if "true" enable auto account creation in game if "false" disable this function.
