@@ -9,4 +9,3 @@ DESTINY EMULATOR SVN CHANGE-LOG
 
 10/04/2007
     - Changed: Character and Items Loading from Database, item is now defined by slotnum (0 to 14 is equiped items and 15 to 77 is items on inventory)
-    - Added: AutoCreateAcc option on gameserver.xml, if "true" enable auto account creation in game if "false" disable this function.

@@ -68,13 +68,6 @@ void CConnServer::LoadConfigs()
                     this->mydb = strvalue;
                 }
             }
-            if (xmlStrcmp(p->name, (const xmlChar*)"autocreateacc") == 0)
-            {
-                if(readXMLString(p, "value", strvalue))
-                {
-                    this->autocreateacc = strvalue;
-                }
-            }
             p = p->next;
         }
         xmlFreeDoc(doc);
@@ -123,7 +116,7 @@ bool CConnServer::OnReceivePacket( CClientSocket* thisclient, unsigned char* P )
 	{
         case 0x74: return CheckLogin    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
         case 0x24: return CharProcess   ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
-        case 0x26: return CharDelete    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
+        case 0x2C: return CharDelete    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
         case 0x34: return ObjectMove    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
     }
     switch( P[4] + P[5] )

@@ -22,12 +22,8 @@ public:
     // Inventory
     CItem items[77];
 
-    // Char List
-    CCharacter chars[3];
-
     // General Functions
     bool loaddata();
-    bool loadcharlist();
     bool savedata();
 };
 
