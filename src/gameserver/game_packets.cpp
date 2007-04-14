@@ -28,10 +28,116 @@ bool CConnServer::ObjectMove( CEncDec* encdec, CConnClient* thisclient, unsigned
 
 bool CConnServer::CharDelete( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
 {
+    MYSQL_RES *result;
+	MYSQL_ROW row;
+    char delcharname[15];
+    char delpassword[12];
+    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
+    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 36, (unsigned char*)this->CKeys );
+    memcpy( delcharname, &buff[16], 15 );
+    memcpy( delpassword, &buff[32], 12 );
+
+    if(!DoSQL( "SELECT * FROM accounts WHERE username='%s' AND password='%s'", thisclient->PlayerSession->username, delpassword ))
+        return false;
+    result = mysql_store_result( mysql );
+    if (mysql_num_rows( result ) == 1)
+    {
+        DoSQL("DELETE FROM characters WHERE name='%s'", delcharname);
+        DoSQL("DELETE FROM char_items WHERE owner='%s'", delcharname);
+        return ResendCharList( encdec, thisclient, P );
+    }
+    else
+    {
+        return SendServerMsg( encdec, thisclient, "Invalid password, try again." );
+    }
 }
 
 bool CConnServer::CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
 {
+    MYSQL_RES *result;
+	MYSQL_ROW row;
+    char newcharname[15];
+    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
+    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 36, (unsigned char*)this->CKeys );
+    memcpy( newcharname, &buff[16], 15 );
+    if(!DoSQL( "SELECT name FROM characters WHERE name='%s'", newcharname ))
+        return false;
+    result = mysql_store_result( mysql );
+    if (mysql_num_rows( result ) == 0)
+    {
+        switch (buff[32])
+        {
+            //transknight
+            case 0:
+            DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
+            VALUES ('%s', '%s', 1, 50, 10, 8, 4, 7, 6, 1000, %i, 0)", newcharname, thisclient->PlayerSession->username, buff[12]);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1101)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1113)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1125)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1137)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 4, 1149)", newcharname);
+            for (int i=0;i<4;i++)
+                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
+            for (int i=0;i<4;i++)
+                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 405)", newcharname, 19+i);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 23, 861)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 24, 917)", newcharname);
+            break;
+            //foema
+            case 1:
+            DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
+            VALUES ('%s', '%s', 11, 40, 30, 5, 8, 5, 5, 1000, %i, 1)", newcharname, thisclient->PlayerSession->username, buff[12]);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1254)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1266)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1278)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1290)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 4, 1302)", newcharname);
+            for (int i=0;i<4;i++)
+                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
+            for (int i=0;i<4;i++)
+                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 405)", newcharname, 19+i);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 23, 891)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 24, 918)", newcharname);
+            break;
+            // beastmaster
+            case 2:
+            DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
+            VALUES ('%s', '%s', 21, 40, 30, 6, 6, 9, 5, 1000, %i, 2)", newcharname, thisclient->PlayerSession->username, buff[12]);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1416)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1419)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1422)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1425)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 4, 1428)", newcharname);
+            for (int i=0;i<4;i++)
+                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
+            for (int i=0;i<4;i++)
+                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 405)", newcharname, 19+i);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 23, 861)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 24, 917)", newcharname);
+            break;
+            // hunter
+            case 3:
+            DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
+            VALUES ('%s', '%s', 31, 40, 30, 8, 9, 13, 6, 1000, %i, 3)", newcharname, thisclient->PlayerSession->username, buff[12]);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1566)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1569)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1572)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1575)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 4, 1578)", newcharname);
+            for (int i=0;i<4;i++)
+                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
+            for (int i=0;i<4;i++)
+                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 405)", newcharname, 19+i);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 23, 816)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 24, 923)", newcharname);
+            break;
+        }
+        return ResendCharList( encdec, thisclient, P );
+    }
+    else
+    {
+        return SendServerMsg( encdec, thisclient, "This character name already in use." );
+    }
 }
 
 bool CConnServer::CharProcess( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
@@ -101,13 +207,13 @@ bool CConnServer::SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigne
     packet->AddByte( 0, 106 ); // aprendiz
     packet->AddByte( thisclient->PlayerInfo->mobid, 108 ); // mobile id (if player class id)
     packet->AddByte( 43, 110 ); // Player Add1
-    packet->AddByte( 0, 111 );
+    packet->AddByte( 30, 111 );
     packet->AddByte( 86, 112 ); // Player Add2
-    packet->AddByte( 0, 113 );
+    packet->AddByte( 30, 113 );
     packet->AddByte( 28, 114 ); // Player Add3
-    packet->AddByte( 0, 115 );
-    // char move
-    packet->AddByte( 0x2b, 774 );
+    packet->AddByte( 30, 115 );
+    packet->AddByte( 97, 742 ); // Player Karma
+    packet->AddByte( 0x2b, 774 ); // Char Move
 
     for (int i=0;i<78;i++)
     {
@@ -122,6 +228,120 @@ bool CConnServer::SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigne
 
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1244, this->CKeys, this->Hash1, 0 );
     thisclient->SendPacket( this->encbuf, this->encsize );
+
+    packet->Free();
+    packet->AddWord( 172, 0 );
+    packet->AddWord( 868, 4 );
+    // end header
+
+    packet->AddWord( 2093, 12 ); // pos x
+    packet->AddWord( 2099, 14 ); // pos y
+    packet->AddWord( 61, 16 );
+    packet->AddByte( 150, 30 ); // player karma
+    packet->AddByte( 11, 34 ); // mob id
+    packet->AddWord( 1254, 36 ); //helm?
+    packet->AddWord( 5362, 38 ); // armor?
+    packet->AddByte( 34, 67 );
+    packet->AddByte( 05, 68 );
+    packet->AddByte( 0x09, 69 );
+    packet->AddWord( 28, 100 );
+    packet->AddWord( 95, 102 );
+    packet->AddStr( "Testando", 18 ); // char name
+
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, 0 );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+
+	return true;
+}
+
+bool CConnServer::ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
+{
+    MYSQL_RES *result;
+	MYSQL_ROW row;
+	MYSQL_RES *result2;
+	MYSQL_ROW row2;
+    bufwrite* packet = new bufwrite();
+    packet->Free();
+
+    // Packet Header
+    packet->AddWord( 1824, 0 ); // packet size
+    packet->AddWord( 272, 4 ); // packet id
+    packet->AddWord( thisclient->PlayerSession->userid, 6 ); //Player ID
+    packet->AddWord( thisclient->PlayerSession->userid, 124 );
+
+    // Char List
+    if(!DoSQL("SELECT name,cexp,clevel,gold, \
+	cstr,cint,cdex,ccon,mobid,posid FROM characters \
+	WHERE uid='%s'", thisclient->PlayerSession->username ))
+        return false;
+    result = mysql_store_result( mysql );
+    CCharacter chars[6];
+    unsigned posid = 0;
+    while (row = mysql_fetch_row( result ))
+    {
+        strcpy( chars[posid].char_name, row[0] );
+        chars[posid].Exp = atoi(row[1]);
+        chars[posid].Level = atoi(row[2]);
+        chars[posid].gold = atoi(row[3]);
+        chars[posid].Str = atoi(row[4]);
+        chars[posid].Int = atoi(row[5]);
+        chars[posid].Dex = atoi(row[6]);
+        chars[posid].Con = atoi(row[7]);
+        chars[posid].Mobid = atoi(row[8]);
+        for(int j=0; j<15; j++)
+            ClearItem( chars[posid].eqitems[j] );
+        if(!DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s' AND slotnum<15", row[0]))
+            return true;
+        result2 = mysql_store_result( mysql );
+        while(row2 = mysql_fetch_row(result2))
+        {
+            unsigned itemnum = atoi(row2[0]);
+            chars[posid].eqitems[itemnum].itemid = atoi(row2[1]);
+            chars[posid].eqitems[itemnum].add1 = atoi(row2[2]);
+            chars[posid].eqitems[itemnum].add2 = atoi(row2[3]);
+            chars[posid].eqitems[itemnum].add3 = atoi(row2[4]);
+            chars[posid].eqitems[itemnum].val1 = atoi(row2[5]);
+            chars[posid].eqitems[itemnum].val2 = atoi(row2[6]);
+            chars[posid].eqitems[itemnum].val3 = atoi(row2[7]);
+        }
+        posid++;
+    }
+    mysql_free_result( result );
+
+    unsigned charnum = 0;
+    for (int k=0;k<posid;k++)
+    {
+        packet->AddByte( 0x41, (2*k)+12 );
+        packet->AddByte( 0x08, (2*k)+13 );
+        packet->AddByte( 0x30, (2*k)+20 );
+        packet->AddByte( 0x08, (2*k)+21 );
+        packet->AddByte( chars[k].Level, (28*k)+92 ); // char level
+        packet->AddStr( chars[k].char_name, (16*k)+28 ); // char name
+        packet->AddByte( chars[k].Mobid, (128*k)+204 ); // mobid
+        packet->AddWord( chars[k].Str, (28*k)+108 ); // char str
+        packet->AddWord( chars[k].Int, (28*k)+110 ); // char int
+        packet->AddWord( chars[k].Dex, (28*k)+112 ); // char dex
+        packet->AddWord( chars[k].Con, (28*k)+114 ); // char con
+        packet->AddDWord( chars[k].gold, (4*k)+724 ); // char gold
+        packet->AddDWord( chars[k].Exp, (4*k)+740 ); // char exp
+
+        unsigned slotnum = 0;
+        for (int i=0;i<14;i++)
+        {
+            packet->AddWord( chars[charnum].eqitems[slotnum].itemid, (8*slotnum)+(128*charnum)+212 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add1, (8*slotnum)+(128*charnum)+214 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val1, (8*slotnum)+(128*charnum)+215 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add2, (8*slotnum)+(128*charnum)+216 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val2, (8*slotnum)+(128*charnum)+217 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add3, (8*slotnum)+(128*charnum)+218 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val3, (8*slotnum)+(128*charnum)+219 );
+            slotnum++;
+        }
+        charnum++;
+    }
+
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 756, this->CKeys, this->Hash1, 0 );
+    thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
 
@@ -129,9 +349,8 @@ bool CConnServer::SendCharList( CEncDec* encdec, CConnClient* thisclient, unsign
 {
     MYSQL_RES *result;
 	MYSQL_ROW row;
-	if(!DoSQL( "SELECT name FROM characters WHERE uid='%s'", thisclient->PlayerSession->username ))
-        return false;
-    result = mysql_store_result( mysql );
+	MYSQL_RES *result2;
+	MYSQL_ROW row2;
     bufwrite* packet = new bufwrite();
     packet->Free();
 
@@ -139,45 +358,75 @@ bool CConnServer::SendCharList( CEncDec* encdec, CConnClient* thisclient, unsign
     packet->AddWord( 1824, 0 ); // packet size
     packet->AddWord( 270, 4 ); // packet id
     packet->AddWord( thisclient->PlayerSession->userid, 6 ); //Player ID
-
-    // Load Char List
-    thisclient->loadcharlist();
+    packet->AddWord( thisclient->PlayerSession->userid, 124 );
 
     // Char List
-    int charid = 0;
+    if(!DoSQL("SELECT name,cexp,clevel,gold, \
+	cstr,cint,cdex,ccon,mobid,posid FROM characters \
+	WHERE uid='%s'", thisclient->PlayerSession->username ))
+        return false;
+    result = mysql_store_result( mysql );
+    CCharacter chars[6];
+    unsigned posid = 0;
     while (row = mysql_fetch_row( result ))
     {
-            packet->AddWord( thisclient->PlayerSession->userid, 124 );
-            packet->AddByte( 0x41, (2*charid)+12 );
-            packet->AddByte( 0x08, (2*charid)+13 );
-            packet->AddByte( 0x30, (2*charid)+20 );
-            packet->AddByte( 0x08, (2*charid)+21 );
-            packet->AddByte( thisclient->chars[charid].Level, (28*charid)+92 );
-            packet->AddStr( thisclient->chars[charid].char_name, (16*charid)+28 ); // char name
-            packet->AddByte( thisclient->chars[charid].Mobid, (128*charid)+204 );
-            packet->AddWord( thisclient->chars[charid].Str, (28*charid)+108 ); // char str
-            packet->AddWord( thisclient->chars[charid].Int, (28*charid)+110 ); // char int
-            packet->AddWord( thisclient->chars[charid].Dex, (28*charid)+112 ); // char dex
-            packet->AddWord( thisclient->chars[charid].Con, (28*charid)+114 ); // char con
-            packet->AddDWord( thisclient->chars[charid].gold, (4*charid)+724 ); // char gold
-            packet->AddDWord( thisclient->chars[charid].Exp, (4*charid)+740 ); // char exp
-
-            // Increment CharId
-            charid++;
-    }
-
-    int charnum = 0;
-    for (int k=0;k<charid;k++)
-    {
-        for (int i=0;i<15;i++)
+        strcpy( chars[posid].char_name, row[0] );
+        chars[posid].Exp = atoi(row[1]);
+        chars[posid].Level = atoi(row[2]);
+        chars[posid].gold = atoi(row[3]);
+        chars[posid].Str = atoi(row[4]);
+        chars[posid].Int = atoi(row[5]);
+        chars[posid].Dex = atoi(row[6]);
+        chars[posid].Con = atoi(row[7]);
+        chars[posid].Mobid = atoi(row[8]);
+        for(int j=0; j<15; j++)
+            ClearItem( chars[posid].eqitems[j] );
+        if(!DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", row[0]))
+            return true;
+        result2 = mysql_store_result( mysql );
+        while(row2 = mysql_fetch_row(result2))
         {
-            packet->AddWord( thisclient->chars[charnum].eqitems[i].itemid, (8*i)+(128*k)+212 );
-            packet->AddByte( thisclient->chars[charnum].eqitems[i].add1, (8*i)+(128*k)+214 );
-            packet->AddByte( thisclient->chars[charnum].eqitems[i].val1, (8*i)+(128*k)+215 );
-            packet->AddByte( thisclient->chars[charnum].eqitems[i].add2, (8*i)+(128*k)+216 );
-            packet->AddByte( thisclient->chars[charnum].eqitems[i].val2, (8*i)+(128*k)+217 );
-            packet->AddByte( thisclient->chars[charnum].eqitems[i].add3, (8*i)+(128*k)+218 );
-            packet->AddByte( thisclient->chars[charnum].eqitems[i].val3, (8*i)+(128*k)+219 );
+            unsigned itemnum = atoi(row2[0]);
+            chars[posid].eqitems[itemnum].itemid = atoi(row2[1]);
+            chars[posid].eqitems[itemnum].add1 = atoi(row2[2]);
+            chars[posid].eqitems[itemnum].add2 = atoi(row2[3]);
+            chars[posid].eqitems[itemnum].add3 = atoi(row2[4]);
+            chars[posid].eqitems[itemnum].val1 = atoi(row2[5]);
+            chars[posid].eqitems[itemnum].val2 = atoi(row2[6]);
+            chars[posid].eqitems[itemnum].val3 = atoi(row2[7]);
+        }
+        posid++;
+    }
+    mysql_free_result( result );
+
+    unsigned charnum = 0;
+    for (int k=0;k<posid;k++)
+    {
+        packet->AddByte( 0x41, (2*k)+12 );
+        packet->AddByte( 0x08, (2*k)+13 );
+        packet->AddByte( 0x30, (2*k)+20 );
+        packet->AddByte( 0x08, (2*k)+21 );
+        packet->AddByte( chars[k].Level, (28*k)+92 ); // char level
+        packet->AddStr( chars[k].char_name, (16*k)+28 ); // char name
+        packet->AddByte( chars[k].Mobid, (128*k)+204 ); // mobid
+        packet->AddWord( chars[k].Str, (28*k)+108 ); // char str
+        packet->AddWord( chars[k].Int, (28*k)+110 ); // char int
+        packet->AddWord( chars[k].Dex, (28*k)+112 ); // char dex
+        packet->AddWord( chars[k].Con, (28*k)+114 ); // char con
+        packet->AddDWord( chars[k].gold, (4*k)+724 ); // char gold
+        packet->AddDWord( chars[k].Exp, (4*k)+740 ); // char exp
+
+        unsigned slotnum = 0;
+        for (int i=0;i<14;i++)
+        {
+            packet->AddWord( chars[charnum].eqitems[slotnum].itemid, (8*slotnum)+(128*charnum)+212 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add1, (8*slotnum)+(128*charnum)+214 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val1, (8*slotnum)+(128*charnum)+215 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add2, (8*slotnum)+(128*charnum)+216 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val2, (8*slotnum)+(128*charnum)+217 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add3, (8*slotnum)+(128*charnum)+218 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val3, (8*slotnum)+(128*charnum)+219 );
+            slotnum++;
         }
         charnum++;
     }
@@ -219,24 +468,7 @@ bool CConnServer::CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned
         return false;
     result = mysql_store_result( mysql );
     if (mysql_num_rows( result ) == 0) {
-        if ( this->autocreateacc.c_str() == "true" )
-        {
-            if(!DoSQL( "insert into `accounts` (`username`, `password`, `active`) values ('%s', '%s', '1')", thisclient->PlayerSession->username, thisclient->PlayerSession->password )
-                return false;
-            if(!DoSQL( "SELECT * FROM accounts WHERE username='%s'", thisclient->PlayerSession->username ))
-                return false;
-            result = mysql_store_result( mysql );
-            while ( row = mysql_fetch_row( result ) )
-            {
-                thisclient->PlayerSession->userid = 40000 + atoi(row[0]);
-                thisclient->PlayerSession->accesslevel = atoi(row[6]);
-            }
-            return SendCharList( (CEncDec*)encdec, (CConnClient*)thisclient, P );
-        }
-        else
-        {
-            return SendServerMsg( encdec, thisclient, "Invalid ID, check your ID." );
-        }
+        return SendServerMsg( encdec, thisclient, "Invalid ID, check your ID." );
     }
     else
     {

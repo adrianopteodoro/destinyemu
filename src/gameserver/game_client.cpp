@@ -107,57 +107,6 @@ bool CConnClient::loaddata()
 	return true;
 }
 
-bool CConnClient::loadcharlist()
-{
-    MYSQL_RES *result;
-	MYSQL_ROW row;
-	if(!GServer->DoSQL("SELECT name,cexp,clevel,gold, \
-	cstr,cint,cdex,ccon,mobid FROM characters \
-	WHERE uid='%s'", PlayerSession->username))
-        return false;
-	result = mysql_store_result( GServer->mysql );
-	for (int k=0;k<3;k++)
-	{
-	    memset( chars[k].char_name, '\0', 17 );
-    }
-	unsigned int charnum=0;
-    while (row = mysql_fetch_row(result))
-    {
-        strcpy( chars[charnum].char_name , row[0] );
-        chars[charnum].Exp = atoi(row[1]);
-        chars[charnum].Level = atoi(row[2]);
-        chars[charnum].gold = atoi(row[3]);
-        chars[charnum].Str = atoi(row[4]);
-        chars[charnum].Int = atoi(row[5]);
-        chars[charnum].Dex = atoi(row[6]);
-        chars[charnum].Con = atoi(row[7]);
-        chars[charnum].Mobid = atoi(row[8]);
-        charnum++;
-    }
-    mysql_free_result( result );
-    for (unsigned k=0;k<charnum;k++)
-    {
-        for(unsigned j=0; j<14; j++)
-            ClearItem( chars[k].eqitems[j] );
-        if(!GServer->DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", chars[k].char_name))
-            return true;
-        result = mysql_store_result(GServer->mysql);
-        while(row = mysql_fetch_row(result))
-        {
-            unsigned itemnum = atoi(row[0]);
-            chars[k].eqitems[itemnum].itemid = atoi(row[1]);
-            chars[k].eqitems[itemnum].add1 = atoi(row[2]);
-            chars[k].eqitems[itemnum].add2 = atoi(row[3]);
-            chars[k].eqitems[itemnum].add3 = atoi(row[4]);
-            chars[k].eqitems[itemnum].val1 = atoi(row[5]);
-            chars[k].eqitems[itemnum].val2 = atoi(row[6]);
-            chars[k].eqitems[itemnum].val3 = atoi(row[7]);
-        }
-        mysql_free_result(result);
-    }
-    return true;
-}
-
 bool CConnClient::savedata()
 {
     MYSQL_RES *result;
