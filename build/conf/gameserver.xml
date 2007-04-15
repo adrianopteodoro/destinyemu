@@ -4,8 +4,8 @@
 
 	<mysql_host value="127.0.0.1" />
 	<mysql_user value="root" />
-	<mysql_pass value="123456" />
-	<mysql_db value="openwyd" />
+	<mysql_pass value="" />
+	<mysql_db value="destiny" />
 	<mysql_port value="3306" />
 
 	<autocreateacc value="false" />
