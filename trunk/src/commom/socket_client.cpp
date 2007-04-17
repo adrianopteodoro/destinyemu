@@ -34,7 +34,7 @@ bool CClientSocket::ReceiveData( )
 
 	if ( ReceivedBytes != 52 )
 	{
-        FILE *fh = NULL;
+        /*FILE *fh = NULL;
         fh = fopen( ".\\logs\\recv_packets.log", "a+" );
         if ( fh != NULL )
         {
@@ -43,7 +43,13 @@ bool CClientSocket::ReceiveData( )
                fprintf( fh, "%02x ", (unsigned char)Buffer[i] );
            fprintf( fh, "\n" );
 	       fclose( fh );
-	    }
+	    }*/
+	    textcolor(12);
+	    printf("[PACKET]: ", ReceivedBytes );
+	    textcolor(11);
+		for ( int i=0; i<ReceivedBytes; ++i )
+            printf( "%02x ", (unsigned char)Buffer[i] );
+        printf( "[SIZE %i]\n", ReceivedBytes );
 	}
 
 	if ( !ParentServer->OnReceivePacket( this, (unsigned char*)Buffer ) )

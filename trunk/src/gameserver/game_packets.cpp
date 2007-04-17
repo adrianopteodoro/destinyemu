@@ -33,7 +33,7 @@ bool CConnServer::CharDelete( CEncDec* encdec, CConnClient* thisclient, unsigned
     char delcharname[15];
     char delpassword[12];
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
-    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 36, (unsigned char*)this->CKeys );
+    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 44, (unsigned char*)this->CKeys );
     memcpy( delcharname, &buff[16], 15 );
     memcpy( delpassword, &buff[32], 12 );
 
@@ -138,24 +138,6 @@ bool CConnServer::CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned
     {
         return SendServerMsg( encdec, thisclient, "This character name already in use." );
     }
-}
-
-bool CConnServer::CharProcess( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
-{
-    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
-    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 36, (unsigned char*)this->CKeys );
-
-    if ( buff[4] == 0x13 && buff[5] == 0x02 )
-    {
-         return SendToWorld( encdec, thisclient, P );
-    }
-
-    if ( buff[4] == 0x0f && buff[5] == 0x02 )
-    {
-         return CharCreate( encdec, thisclient, P );
-    }
-
-    return true;
 }
 
 bool CConnServer::SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
@@ -265,7 +247,7 @@ bool CConnServer::ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsi
 
     // Packet Header
     packet->AddWord( 1824, 0 ); // packet size
-    packet->AddWord( 272, 4 ); // packet id
+    packet->AddWord( 274, 4 ); // packet id
     packet->AddWord( thisclient->PlayerSession->userid, 6 ); //Player ID
     packet->AddWord( thisclient->PlayerSession->userid, 124 );
 
@@ -277,6 +259,13 @@ bool CConnServer::ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsi
     result = mysql_store_result( mysql );
     CCharacter chars[6];
     unsigned posid = 0;
+    for (int j=0;j<15;j++)
+    {
+        ClearItem( chars[0].eqitems[j] );
+        ClearItem( chars[1].eqitems[j] );
+        ClearItem( chars[2].eqitems[j] );
+        ClearItem( chars[3].eqitems[j] );
+    }
     while (row = mysql_fetch_row( result ))
     {
         strcpy( chars[posid].char_name, row[0] );
@@ -288,9 +277,7 @@ bool CConnServer::ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsi
         chars[posid].Dex = atoi(row[6]);
         chars[posid].Con = atoi(row[7]);
         chars[posid].Mobid = atoi(row[8]);
-        for(int j=0; j<15; j++)
-            ClearItem( chars[posid].eqitems[j] );
-        if(!DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s' AND slotnum<15", row[0]))
+        if(!DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", row[0]))
             return true;
         result2 = mysql_store_result( mysql );
         while(row2 = mysql_fetch_row(result2))
@@ -311,30 +298,37 @@ bool CConnServer::ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsi
     unsigned charnum = 0;
     for (int k=0;k<posid;k++)
     {
-        packet->AddByte( 0x41, (2*k)+12 );
-        packet->AddByte( 0x08, (2*k)+13 );
-        packet->AddByte( 0x30, (2*k)+20 );
-        packet->AddByte( 0x08, (2*k)+21 );
-        packet->AddByte( chars[k].Level, (28*k)+92 ); // char level
-        packet->AddStr( chars[k].char_name, (16*k)+28 ); // char name
-        packet->AddByte( chars[k].Mobid, (128*k)+204 ); // mobid
-        packet->AddWord( chars[k].Str, (28*k)+108 ); // char str
-        packet->AddWord( chars[k].Int, (28*k)+110 ); // char int
-        packet->AddWord( chars[k].Dex, (28*k)+112 ); // char dex
-        packet->AddWord( chars[k].Con, (28*k)+114 ); // char con
-        packet->AddDWord( chars[k].gold, (4*k)+724 ); // char gold
-        packet->AddDWord( chars[k].Exp, (4*k)+740 ); // char exp
+        int charpos;
+        if(!DoSQL("SELECT posid FROM characters WHERE name='%s'", chars[k].char_name ))
+        return false;
+        result = mysql_store_result( mysql );
+        while ( row = mysql_fetch_row( result ) )
+            charpos = atoi(row[0]);
+        packet->AddByte( 0x41, (2*charpos)+12 );
+        packet->AddByte( 0x08, (2*charpos)+13 );
+        packet->AddByte( 0x30, (2*charpos)+20 );
+        packet->AddByte( 0x08, (2*charpos)+21 );
+        packet->AddByte( chars[k].Level, (28*charpos)+92 ); // char level
+        packet->AddStr( chars[k].char_name, (16*charpos)+28 ); // char name
+        packet->AddByte( chars[k].Mobid, (128*charpos)+204 ); // mobid
+        packet->AddWord( chars[k].Str, (28*charpos)+108 ); // char str
+        packet->AddWord( chars[k].Int, (28*charpos)+110 ); // char int
+        packet->AddWord( chars[k].Dex, (28*charpos)+112 ); // char dex
+        packet->AddWord( chars[k].Con, (28*charpos)+114 ); // char con
+        packet->AddDWord( chars[k].gold, (4*charpos)+724 ); // char gold
+        packet->AddDWord( chars[k].Exp, (4*charpos)+740 ); // char exp
 
         unsigned slotnum = 0;
-        for (int i=0;i<14;i++)
+        for (int i=0;i<15;i++)
         {
-            packet->AddWord( chars[charnum].eqitems[slotnum].itemid, (8*slotnum)+(128*charnum)+212 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].add1, (8*slotnum)+(128*charnum)+214 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].val1, (8*slotnum)+(128*charnum)+215 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].add2, (8*slotnum)+(128*charnum)+216 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].val2, (8*slotnum)+(128*charnum)+217 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].add3, (8*slotnum)+(128*charnum)+218 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].val3, (8*slotnum)+(128*charnum)+219 );
+            Log( MSG_INFO, "CharNum: %i SlotNum: %i ItemID: %i", charnum, slotnum, chars[charnum].eqitems[slotnum].itemid );
+            packet->AddWord( chars[charnum].eqitems[slotnum].itemid, (8*slotnum)+(128*charpos)+212 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add1, (8*slotnum)+(128*charpos)+214 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val1, (8*slotnum)+(128*charpos)+215 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add2, (8*slotnum)+(128*charpos)+216 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val2, (8*slotnum)+(128*charpos)+217 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add3, (8*slotnum)+(128*charpos)+218 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val3, (8*slotnum)+(128*charpos)+219 );
             slotnum++;
         }
         charnum++;
@@ -368,6 +362,13 @@ bool CConnServer::SendCharList( CEncDec* encdec, CConnClient* thisclient, unsign
     result = mysql_store_result( mysql );
     CCharacter chars[6];
     unsigned posid = 0;
+    for (int j=0;j<15;j++)
+    {
+        ClearItem( chars[0].eqitems[j] );
+        ClearItem( chars[1].eqitems[j] );
+        ClearItem( chars[2].eqitems[j] );
+        ClearItem( chars[3].eqitems[j] );
+    }
     while (row = mysql_fetch_row( result ))
     {
         strcpy( chars[posid].char_name, row[0] );
@@ -379,8 +380,6 @@ bool CConnServer::SendCharList( CEncDec* encdec, CConnClient* thisclient, unsign
         chars[posid].Dex = atoi(row[6]);
         chars[posid].Con = atoi(row[7]);
         chars[posid].Mobid = atoi(row[8]);
-        for(int j=0; j<15; j++)
-            ClearItem( chars[posid].eqitems[j] );
         if(!DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", row[0]))
             return true;
         result2 = mysql_store_result( mysql );
@@ -402,30 +401,37 @@ bool CConnServer::SendCharList( CEncDec* encdec, CConnClient* thisclient, unsign
     unsigned charnum = 0;
     for (int k=0;k<posid;k++)
     {
-        packet->AddByte( 0x41, (2*k)+12 );
-        packet->AddByte( 0x08, (2*k)+13 );
-        packet->AddByte( 0x30, (2*k)+20 );
-        packet->AddByte( 0x08, (2*k)+21 );
-        packet->AddByte( chars[k].Level, (28*k)+92 ); // char level
-        packet->AddStr( chars[k].char_name, (16*k)+28 ); // char name
-        packet->AddByte( chars[k].Mobid, (128*k)+204 ); // mobid
-        packet->AddWord( chars[k].Str, (28*k)+108 ); // char str
-        packet->AddWord( chars[k].Int, (28*k)+110 ); // char int
-        packet->AddWord( chars[k].Dex, (28*k)+112 ); // char dex
-        packet->AddWord( chars[k].Con, (28*k)+114 ); // char con
-        packet->AddDWord( chars[k].gold, (4*k)+724 ); // char gold
-        packet->AddDWord( chars[k].Exp, (4*k)+740 ); // char exp
+        int charpos;
+        if(!DoSQL("SELECT posid FROM characters WHERE name='%s'", chars[k].char_name ))
+        return false;
+        result = mysql_store_result( mysql );
+        while ( row = mysql_fetch_row( result ) )
+            charpos = atoi(row[0]);
+        packet->AddByte( 0x41, (2*charpos)+12 );
+        packet->AddByte( 0x08, (2*charpos)+13 );
+        packet->AddByte( 0x30, (2*charpos)+20 );
+        packet->AddByte( 0x08, (2*charpos)+21 );
+        packet->AddByte( chars[k].Level, (28*charpos)+92 ); // char level
+        packet->AddStr( chars[k].char_name, (16*charpos)+28 ); // char name
+        packet->AddByte( chars[k].Mobid, (128*charpos)+204 ); // mobid
+        packet->AddWord( chars[k].Str, (28*charpos)+108 ); // char str
+        packet->AddWord( chars[k].Int, (28*charpos)+110 ); // char int
+        packet->AddWord( chars[k].Dex, (28*charpos)+112 ); // char dex
+        packet->AddWord( chars[k].Con, (28*charpos)+114 ); // char con
+        packet->AddDWord( chars[k].gold, (4*charpos)+724 ); // char gold
+        packet->AddDWord( chars[k].Exp, (4*charpos)+740 ); // char exp
 
         unsigned slotnum = 0;
-        for (int i=0;i<14;i++)
+        for (int i=0;i<15;i++)
         {
-            packet->AddWord( chars[charnum].eqitems[slotnum].itemid, (8*slotnum)+(128*charnum)+212 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].add1, (8*slotnum)+(128*charnum)+214 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].val1, (8*slotnum)+(128*charnum)+215 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].add2, (8*slotnum)+(128*charnum)+216 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].val2, (8*slotnum)+(128*charnum)+217 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].add3, (8*slotnum)+(128*charnum)+218 );
-            packet->AddByte( chars[charnum].eqitems[slotnum].val3, (8*slotnum)+(128*charnum)+219 );
+            Log( MSG_INFO, "CharNum: %i SlotNum: %i ItemID: %i", charnum, slotnum, chars[charnum].eqitems[slotnum].itemid );
+            packet->AddWord( chars[charnum].eqitems[slotnum].itemid, (8*slotnum)+(128*charpos)+212 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add1, (8*slotnum)+(128*charpos)+214 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val1, (8*slotnum)+(128*charpos)+215 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add2, (8*slotnum)+(128*charpos)+216 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val2, (8*slotnum)+(128*charpos)+217 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].add3, (8*slotnum)+(128*charpos)+218 );
+            packet->AddByte( chars[charnum].eqitems[slotnum].val3, (8*slotnum)+(128*charpos)+219 );
             slotnum++;
         }
         charnum++;

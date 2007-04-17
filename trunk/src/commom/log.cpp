@@ -100,7 +100,6 @@ void Log( enum msg_type flag, char *Format, ... )
 	}
 
 	textcolor(LIGHTGRAY);
-	//printf("[%s]: ", timeStr);
 	vprintf( Format, ap );
 	printf( (flag==MSG_LOAD) ? "\r" : "\n" );
 

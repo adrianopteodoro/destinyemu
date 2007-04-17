@@ -52,6 +52,7 @@
 		<Unit filename="src\commom\sockets.h" />
 		<Unit filename="src\gameserver\game_client.cpp" />
 		<Unit filename="src\gameserver\game_functions.cpp" />
+		<Unit filename="src\gameserver\game_packetcontrol.cpp" />
 		<Unit filename="src\gameserver\game_packets.cpp" />
 		<Unit filename="src\gameserver\game_player.h" />
 		<Unit filename="src\gameserver\game_server.cpp" />
