@@ -9,3 +9,8 @@ DESTINY EMULATOR SVN CHANGE-LOG
 
 10/04/2007
     - Changed: Character and Items Loading from Database, item is now defined by slotnum (0 to 14 is equiped items and 15 to 77 is items on inventory)
+
+17/04/2007
+    - Fix: Fixed Char List now not show a blue cape in char with no cape in your invetory. [Snaity]
+    - Fix: Fixed a bug on char deletion with password verify, its work now. [Snaity]
+    - Test: Show other player packet test. [Snaity]
