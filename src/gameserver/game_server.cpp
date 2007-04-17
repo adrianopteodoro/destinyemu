@@ -115,13 +115,10 @@ bool CConnServer::OnReceivePacket( CClientSocket* thisclient, unsigned char* P )
     switch( P[0] + P[1] )
 	{
         case 0x74: return CheckLogin    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
-        case 0x24: return CharProcess   ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
-        case 0x2C: return CharDelete    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
-        case 0x34: return ObjectMove    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
     }
     switch( P[4] + P[5] )
 	{
 	    case 0x74: return CheckLogin    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
     }
-	return true;
+	return PacketControl   ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
 }

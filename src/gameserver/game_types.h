@@ -7,7 +7,7 @@ struct CAccount
 	unsigned int userid;
 	char username[17];
 	char password[33];
-	int accesslevel;
+	unsigned int accesslevel;
 	bool isLoggedIn;
 	bool inGame;
 };
@@ -16,76 +16,76 @@ struct CAccount
 struct CStats
 {
     //
-    int MaxHP;
-    int MaxMP;
+    unsigned int MaxHP;
+    unsigned int MaxMP;
     long int HP;
     long int MP;
-    int MaxWeight;
-    int Weight;
+    unsigned int MaxWeight;
+    unsigned int Weight;
 
     // Stats
-    int Str;
-    int Dex;
-    int Int;
-    int Con;
+    unsigned int Str;
+    unsigned int Dex;
+    unsigned int Int;
+    unsigned int Con;
 
     // Attr
-    int Attack_Power;
-    int Defense;
-    int Magic_Defense;
-    int Accury;
-    int Critical;
-    int Dodge;
-    int Attack_Speed;
-    int Move_Speed;
+    unsigned int Attack_Power;
+    unsigned int Defense;
+    unsigned int Magic_Defense;
+    unsigned int Accury;
+    unsigned int Critical;
+    unsigned int Dodge;
+    unsigned int Attack_Speed;
+    unsigned int Move_Speed;
 };
 
 //Items
 struct CItem
 {
-    int itemid;
-    int add1;
-    int add2;
-    int add3;
-    int val1;
-    int val2;
-    int val3;
+    unsigned int itemid;
+    unsigned int add1;
+    unsigned int add2;
+    unsigned int add3;
+    unsigned int val1;
+    unsigned int val2;
+    unsigned int val3;
 };
 
 // Position (include respawnid and save town map)
 struct CPosition
 {
-    int RespawnID;
-    int Pos_x;
-    int Pos_y;
+    unsigned int RespawnID;
+    unsigned int Pos_x;
+    unsigned int Pos_y;
 };
 
 // Player information
 struct CInfo
 {
 	char char_name[30];
-	int mobid;
-	int classid;
-    int Exp;
-    int Level;
+	unsigned int mobid;
+	unsigned int classid;
+    unsigned int Exp;
+    unsigned int Level;
     long int Gold;
     long int Storage_Gold;
-    int StatPoints;
-    int SkillPoints;
+    unsigned int StatPoints;
+    unsigned int SkillPoints;
 };
 
 // Characters List
 struct CCharacter {
 	char char_name[30];
-	int Level;
-	int Exp;
-	int Mobid;
-	int Str;
-	int Int;
-	int Dex;
-	int Con;
+	unsigned int Level;
+	unsigned int Exp;
+	unsigned int Mobid;
+	unsigned int Str;
+	unsigned int Int;
+	unsigned int Dex;
+	unsigned int Con;
 	long int gold;
-	CItem eqitems[14];
+	CItem eqitems[15];
 };
 
 #endif

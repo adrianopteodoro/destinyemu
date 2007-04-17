@@ -17,9 +17,9 @@ public:
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
 	bool CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
+	bool PacketControl( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
 	bool SendCharList( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
 	bool ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
-	bool CharProcess( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
 	bool CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
 	bool CharDelete( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
 	bool SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
