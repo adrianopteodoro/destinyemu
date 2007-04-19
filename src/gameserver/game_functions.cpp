@@ -1,5 +1,7 @@
 #include "game_sockets.h"
 
+//////// XML Reading
+
 bool readXMLInteger(xmlNodePtr node, const char* tag, int& value)
 {
 	char* nodeValue = (char*)xmlGetProp(node, (xmlChar*)tag);

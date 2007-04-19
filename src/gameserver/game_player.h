@@ -19,6 +19,11 @@ public:
     CInfo* PlayerInfo; // Player information (classid, mobid, gold, exp, ...)
     CPosition* PlayerPosition; // Player Position
 
+    bool isInvisibleMode;
+
+    // Player Vectors
+    std::vector<CConnClient*>	        VisibleClients;			// Visible Client List (Players)
+
     // Inventory
     CItem items[77];
 

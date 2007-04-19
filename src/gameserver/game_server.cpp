@@ -68,6 +68,13 @@ void CConnServer::LoadConfigs()
                     this->mydb = strvalue;
                 }
             }
+            if (xmlStrcmp(p->name, (const xmlChar*)"servername") == 0)
+            {
+                if(readXMLString(p, "value", strvalue))
+                {
+                    this->srvname = strvalue;
+                }
+            }
             p = p->next;
         }
         xmlFreeDoc(doc);

@@ -49,6 +49,9 @@ CConnClient::CConnClient( )
 	PlayerInfo->SkillPoints = 0;
 	PlayerInfo->StatPoints = 0;
 	PlayerInfo->Storage_Gold = 0;
+
+	VisibleClients.clear();
+	isInvisibleMode = false;
 }
 
 CConnClient::~CConnClient( )
@@ -102,7 +105,7 @@ bool CConnClient::loaddata()
 		items[itemnum].val3 = atoi(row[7]);
     }
     mysql_free_result(result);
-	//PlayerSession->isLoggedIn = true;
+	PlayerSession->isLoggedIn = true;
     //GServer->DoSQL("UPDATE accounts SET online=true where id=%u", PlayerSession->userid );
 	return true;
 }

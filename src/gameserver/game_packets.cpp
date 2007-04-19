@@ -23,6 +23,38 @@ bool CConnServer::ObjectMove( CEncDec* encdec, CConnClient* thisclient, unsigned
     memcpy( &unknow2, &buff[28], 2 );
     memcpy( &unknow3, &buff[30], 2 );
     memcpy( &unknow4, &buff[32], 2 );
+
+    packet->Free();
+    packet->AddWord( 172, 0 );
+    packet->AddWord( 868, 4 );
+    // end header
+
+    packet->AddWord( epos_x, 12 ); // pos x
+    packet->AddWord( epos_y, 14 ); // pos y
+    packet->AddWord( 61, 16 );
+    packet->AddStr( thisclient->PlayerInfo->char_name, 18 ); // char name
+    packet->AddByte( 150, 30 ); // player karma
+    packet->AddByte( thisclient->PlayerInfo->mobid, 34 ); // mob id
+    packet->AddWord( 1254, 36 ); //helm?
+    packet->AddWord( 5362, 38 ); // armor?
+    packet->AddByte( 34, 67 );
+    packet->AddByte( 05, 68 );
+    packet->AddByte( 0x09, 69 );
+    packet->AddWord( 28, 100 );
+    packet->AddWord( 95, 102 );
+    packet->AddWord( 104, 104 );
+    packet->AddWord( 106, 106 );
+    packet->AddWord( 108, 108 );
+    packet->AddWord( 110, 110 );
+    packet->AddWord( 112, 112 );
+    packet->AddWord( 114, 114 );
+    packet->AddWord( 116, 116 );
+    packet->AddWord( 118, 118 );
+    packet->AddWord( 120, 120 );
+    packet->AddWord( 122, 122 );
+    packet->SetPSize( 172 );
+
+    SendToVisible( encdec, thisclient, packet, false );
 	return true;
 }
 
@@ -197,6 +229,7 @@ bool CConnServer::SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigne
     packet->AddByte( 97, 742 ); // Player Karma
     packet->AddByte( 0x2b, 774 ); // Char Move
 
+
     for (int i=0;i<78;i++)
     {
         packet->AddWord( thisclient->items[i].itemid, (8*i)+116 );
@@ -211,27 +244,7 @@ bool CConnServer::SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigne
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1244, this->CKeys, this->Hash1, 0 );
     thisclient->SendPacket( this->encbuf, this->encsize );
 
-    packet->Free();
-    packet->AddWord( 172, 0 );
-    packet->AddWord( 868, 4 );
-    // end header
-
-    packet->AddWord( 2093, 12 ); // pos x
-    packet->AddWord( 2099, 14 ); // pos y
-    packet->AddWord( 61, 16 );
-    packet->AddByte( 150, 30 ); // player karma
-    packet->AddByte( 11, 34 ); // mob id
-    packet->AddWord( 1254, 36 ); //helm?
-    packet->AddWord( 5362, 38 ); // armor?
-    packet->AddByte( 34, 67 );
-    packet->AddByte( 05, 68 );
-    packet->AddByte( 0x09, 69 );
-    packet->AddWord( 28, 100 );
-    packet->AddWord( 95, 102 );
-    packet->AddStr( "Testando", 18 ); // char name
-
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, 0 );
-    thisclient->SendPacket( this->encbuf, this->encsize );
+    SendServerMsg( encdec, thisclient, "Welcome to %s, Powered by Destiny Emulator", this->srvname.c_str() );
 
 	return true;
 }
@@ -321,7 +334,6 @@ bool CConnServer::ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsi
         unsigned slotnum = 0;
         for (int i=0;i<15;i++)
         {
-            Log( MSG_INFO, "CharNum: %i SlotNum: %i ItemID: %i", charnum, slotnum, chars[charnum].eqitems[slotnum].itemid );
             packet->AddWord( chars[charnum].eqitems[slotnum].itemid, (8*slotnum)+(128*charpos)+212 );
             packet->AddByte( chars[charnum].eqitems[slotnum].add1, (8*slotnum)+(128*charpos)+214 );
             packet->AddByte( chars[charnum].eqitems[slotnum].val1, (8*slotnum)+(128*charpos)+215 );
@@ -424,7 +436,6 @@ bool CConnServer::SendCharList( CEncDec* encdec, CConnClient* thisclient, unsign
         unsigned slotnum = 0;
         for (int i=0;i<15;i++)
         {
-            Log( MSG_INFO, "CharNum: %i SlotNum: %i ItemID: %i", charnum, slotnum, chars[charnum].eqitems[slotnum].itemid );
             packet->AddWord( chars[charnum].eqitems[slotnum].itemid, (8*slotnum)+(128*charpos)+212 );
             packet->AddByte( chars[charnum].eqitems[slotnum].add1, (8*slotnum)+(128*charpos)+214 );
             packet->AddByte( chars[charnum].eqitems[slotnum].val1, (8*slotnum)+(128*charpos)+215 );
