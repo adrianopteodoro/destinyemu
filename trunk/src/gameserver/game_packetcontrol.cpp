@@ -14,5 +14,8 @@ bool CConnServer::PacketControl( CEncDec* encdec, CConnClient* thisclient, unsig
         case 0x0211: return CharDelete( encdec, thisclient, P );
         case 0x0213: return SendToWorld( encdec, thisclient, P );
         case 0x0366: return ObjectMove( encdec, thisclient, P );
+        case 0x0334: return SendServerMsg( encdec, thisclient, "Not implemented yet." ); // change srv
+        case 0x0215: return SendServerMsg( encdec, thisclient, "Not implemented yet." ); // gametocharlist
+        case 0x0290: return true; // teleport
     }
 }

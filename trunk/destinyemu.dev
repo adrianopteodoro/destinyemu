@@ -1,7 +1,7 @@
 [Project]
 FileName=destinyemu.dev
 Name=destinyemu
-UnitCount=21
+UnitCount=22
 Type=1
 Ver=1
 ObjFiles=
@@ -213,7 +213,7 @@ BuildCmd=
 Major=2
 Minor=0
 Release=0
-Build=77
+Build=101
 LanguageID=1033
 CharsetID=1252
 CompanyName=Destiny Emulator
@@ -249,6 +249,16 @@ BuildCmd=
 
 [Unit21]
 FileName=src\gameserver\game_packetcontrol.cpp
+CompileCpp=1
+Folder=destinyemu
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit22]
+FileName=src\gameserver\game_extrafunctions.cpp
 CompileCpp=1
 Folder=destinyemu
 Compile=1

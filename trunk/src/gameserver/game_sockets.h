@@ -14,6 +14,9 @@ public:
     bool OnServerReady( );
 	void DeleteClientSocket( CClientSocket* thisclient );
 
+	// Functions
+	void SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwrite* pak, bool dothisclient );
+
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
 	bool CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
@@ -31,6 +34,7 @@ public:
 	std::string myuser;
 	std::string mydb;
 	std::string mypass;
+	std::string srvname;
 	char* versionfile;
 	char* datfile;
 };
