@@ -4,7 +4,7 @@ CConnServer::CConnServer( )
 {
     int intvalue;
     std::string strvalue;
-    xmlDocPtr doc = xmlParseFile(".\\conf\\gameserver.xml");
+    xmlDocPtr doc = xmlParseFile(".\\serverconfig.xml");
     if (doc)
     {
         xmlNodePtr root, p;
