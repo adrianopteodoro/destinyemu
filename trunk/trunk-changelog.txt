@@ -14,3 +14,9 @@ DESTINY EMULATOR SVN CHANGE-LOG
     - Fix: Fixed Char List now not show a blue cape in char with no cape in your invetory. [Snaity]
     - Fix: Fixed a bug on char deletion with password verify, its work now. [Snaity]
     - Test: Show other player packet test. [Snaity]
+
+22/04/2007
+    - Changed: gameserver.xml to serverconfig.xml and put out from conf dir. [Snaity]
+    - Added: Data dir and startchar.xml with new chars start items, stats, gold, and inventory. [Snaity]
+    - Adding: Threads for NPC, MOBS, DROPS and players things. [Snaity]
+    - Moding: Source code, for better loads and data acessing. [Snaity] 
