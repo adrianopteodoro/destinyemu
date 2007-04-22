@@ -2,14 +2,6 @@
 
 CConnServer::CConnServer( )
 {
-}
-
-CConnServer::~CConnServer( )
-{
-}
-
-void CConnServer::LoadConfigs()
-{
     int intvalue;
     std::string strvalue;
     xmlDocPtr doc = xmlParseFile(".\\conf\\gameserver.xml");
@@ -75,6 +67,41 @@ void CConnServer::LoadConfigs()
                     this->srvname = strvalue;
                 }
             }
+            if (xmlStrcmp(p->name, (const xmlChar*)"autoacc") == 0)
+            {
+                if(readXMLInteger(p, "value", intvalue))
+                {
+                    this->autoacc = intvalue;
+                }
+            }
+            if (xmlStrcmp(p->name, (const xmlChar*)"xp_rate") == 0)
+            {
+                if(readXMLInteger(p, "value", intvalue))
+                {
+                    this->xprate = intvalue;
+                }
+            }
+            if (xmlStrcmp(p->name, (const xmlChar*)"drop_rate") == 0)
+            {
+                if(readXMLInteger(p, "value", intvalue))
+                {
+                    this->droprate = intvalue;
+                }
+            }
+            if (xmlStrcmp(p->name, (const xmlChar*)"gold_rate") == 0)
+            {
+                if(readXMLInteger(p, "value", intvalue))
+                {
+                    this->goldrate = intvalue;
+                }
+            }
+            if (xmlStrcmp(p->name, (const xmlChar*)"gold_drop´chance") == 0)
+            {
+                if(readXMLInteger(p, "value", intvalue))
+                {
+                    this->goldchance = intvalue;
+                }
+            }
             p = p->next;
         }
         xmlFreeDoc(doc);
@@ -91,16 +118,34 @@ void CConnServer::LoadConfigs()
     }
 }
 
+CConnServer::~CConnServer( )
+{
+}
+
+// Load or main process
+void CConnServer::OnServerStep( )
+{
+    pthread_create( &WorldThread[WORLD_THREAD], &at, WorldProcess, NULL);
+    pthread_create( &WorldThread[VISUALITY_THREAD], &at, VisibilityProcess, NULL);
+    pthread_create( &MapThread[0], &at, MapProcess, NULL);
+    Log( MSG_INFO, "Process Loaded. WorldDelay %i | MapDelay %i | VisualDelay %i",700,10,200);
+}
+
 bool CConnServer::OnServerReady( )
 {
+    ServerOnline = true;
     GServer = this;
+    clock_t timer = clock();
     CEncDec *encdec = new CEncDec();
     encdec->LoadLib();
     if ( ReadKeysFromFile( ".\\clientkeys.dat", this->CKeys ) > 0){
 		Log( MSG_WARNING, "Error on reading Keys from file!" );
 	}else{
-	    Log( MSG_INFO, "All Client Keys Loaded" );
+	    Log( MSG_INFO, "Succefully loaded Encryption Keys from \"clientkeys.dat\"" );
     }
+    Log( MSG_INFO, "Server Rates: XP - %ix | DROP - %ix | GOLD - %ix", this->xprate, this->droprate, this->goldrate );
+    float loadtime = (float)( clock() - timer ) / CLOCKS_PER_SEC;
+	Log(  MSG_INFO, "Server took %.4f seconds to load", loadtime );
     return true;
 }
 
@@ -113,7 +158,23 @@ CConnClient* CConnServer::CreateClientSocket( )
 
 void CConnServer::DeleteClientSocket( CClientSocket* thisclient )
 {
+	pthread_mutex_lock( &PlayerMutex );
 	delete (CConnClient*)thisclient;
+	pthread_mutex_unlock( &PlayerMutex );
+}
+
+// disconect all the clients
+void CConnServer::DisconnectAll()
+{
+    for(UINT i=0;i<ClientList.size();i++)
+    {
+        CConnClient* otherclient = (CConnClient*) ClientList.at(i);
+		if (otherclient->PlayerSession->inGame)
+		{
+            otherclient->isActive = false;
+        }
+	}
+    Sleep(10);
 }
 
 bool CConnServer::OnReceivePacket( CClientSocket* thisclient, unsigned char* P )

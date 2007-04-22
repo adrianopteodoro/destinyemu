@@ -24,13 +24,14 @@ bool CConnServer::ObjectMove( CEncDec* encdec, CConnClient* thisclient, unsigned
     memcpy( &unknow3, &buff[30], 2 );
     memcpy( &unknow4, &buff[32], 2 );
 
+
     packet->Free();
     packet->AddWord( 172, 0 );
     packet->AddWord( 868, 4 );
     // end header
 
-    packet->AddWord( epos_x, 12 ); // pos x
-    packet->AddWord( epos_y, 14 ); // pos y
+    packet->AddWord( spos_x, 12 ); // pos x
+    packet->AddWord( spos_y, 14 ); // pos y
     packet->AddWord( 61, 16 );
     packet->AddStr( thisclient->PlayerInfo->char_name, 18 ); // char name
     packet->AddByte( 150, 30 ); // player karma
@@ -107,7 +108,7 @@ bool CConnServer::CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1113)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1125)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1137)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 4, 1149)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid,add1,addval1) VALUES ('%s',4,1149,29,3)", newcharname);
             for (int i=0;i<4;i++)
                 DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
             for (int i=0;i<4;i++)
@@ -123,7 +124,7 @@ bool CConnServer::CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1266)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1278)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1290)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 4, 1302)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid,add1,addval1) VALUES ('%s', 4, 1302,29,3)", newcharname);
             for (int i=0;i<4;i++)
                 DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
             for (int i=0;i<4;i++)
@@ -139,7 +140,7 @@ bool CConnServer::CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1419)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1422)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1425)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 4, 1428)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid,add1,addval1) VALUES ('%s', 4, 1428,29,3)", newcharname);
             for (int i=0;i<4;i++)
                 DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
             for (int i=0;i<4;i++)
@@ -155,7 +156,7 @@ bool CConnServer::CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1569)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1572)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1575)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 4, 1578)", newcharname);
+            DoSQL("INSERT INTO char_items (owner,slotnum,itemid,add1,addval1) VALUES ('%s', 4, 1578,29,3)", newcharname);
             for (int i=0;i<4;i++)
                 DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
             for (int i=0;i<4;i++)
@@ -485,7 +486,24 @@ bool CConnServer::CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned
         return false;
     result = mysql_store_result( mysql );
     if (mysql_num_rows( result ) == 0) {
-        return SendServerMsg( encdec, thisclient, "Invalid ID, check your ID." );
+        if ( this->autoacc == 1 )
+        {
+            if(!DoSQL( "INSERT INTO `accounts` (`username`,`password`,`active`) VALUES ('%s','%s','1')", thisclient->PlayerSession->username, thisclient->PlayerSession->password ))
+                return false;
+            if(!DoSQL( "SELECT * FROM accounts WHERE username='%s'", thisclient->PlayerSession->username ))
+                return false;
+            result = mysql_store_result( mysql );
+            while ( row = mysql_fetch_row( result ) )
+            {
+                thisclient->PlayerSession->userid = 40000 + atoi(row[0]);
+                thisclient->PlayerSession->accesslevel = atoi(row[6]);
+            }
+            return SendCharList( (CEncDec*)encdec, (CConnClient*)thisclient, P );
+        }
+        else
+        {
+            return SendServerMsg( encdec, thisclient, "Invalid ID, check your ID." );
+        }
     }
     else
     {

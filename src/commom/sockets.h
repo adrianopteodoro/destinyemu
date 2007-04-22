@@ -39,6 +39,7 @@
 #include <assert.h>
 #include <math.h>
 #include <vector>
+#include <pthread.h>
 #include <csignal>
 #include "log.h"
 #include "config.h"
@@ -46,7 +47,7 @@
 #include "encdec.h"
 
 typedef char SBYTE;
-typedef unsigned char BYTE; 
+typedef unsigned char BYTE;
 typedef short SWORD;
 typedef unsigned short WORD;
 typedef long SDWORD;
@@ -109,7 +110,7 @@ public:
 	void ServerLoop( );
 	void FillFDS( fd_set* fds );
 	void HandleClients( fd_set* fds );
-	void AddUser( SOCKET sock, sockaddr_in* ClientInfo, int id );
+	void AddUser( SOCKET sock, sockaddr_in* ClientInfo );
 	void DisconnectClient( CClientSocket* thisclient );
 	bool DoSQL(char *Format, ...);
 
@@ -127,7 +128,6 @@ public:
 	MYSQL*						mysql;
 	unsigned short				port;
 };
-extern int servernum;
 // -----------------------------------------------------------------------------------------
 
 #endif
