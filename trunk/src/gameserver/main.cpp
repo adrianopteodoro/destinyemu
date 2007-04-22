@@ -1,17 +1,29 @@
 #include "game_sockets.h"
 
 CConnServer* GServer;
-int servernum;
+pthread_mutex_t MainMutex, PlayerMutex, MonsterMutex, DropMutex;
 
 int main(int argc, char *argv[])
 {
-
     // Show Emulator Header
     ShowHeader();
-
+    StartSignal( );
     // Initialize MySQL
     MYSQL mysql;
+    if (!mysql_thread_safe())
+    {
+        Log( MSG_ERROR, "Mysql is not tread-safe" );
+        #ifdef _WIN32
+        system("pause");
+        #endif
+        return -1;
+    }
 	mysql_init( &mysql );
+
+	pthread_mutex_init( &MainMutex, NULL );
+    pthread_mutex_init( &PlayerMutex, NULL );
+    pthread_mutex_init( &MonsterMutex, NULL );
+    pthread_mutex_init( &DropMutex, NULL );
 
     // Initialize Winsock
 	WSADATA wsa;
@@ -25,7 +37,10 @@ int main(int argc, char *argv[])
 	} else { Log(MSG_INFO, "Initialized and verified Winsock 2.2" ); }
 
 	CConnServer *server = new CConnServer();
-	server->LoadConfigs();
+	if(server==NULL)
+        return -1;
+    pthread_attr_init(&server->at);
+    pthread_attr_setdetachstate(&server->at, PTHREAD_CREATE_JOINABLE);
     // Initialize our mysql connection
 	if ( !mysql_real_connect( &mysql, server->myhost.c_str(), server->myuser.c_str(), server->mypass.c_str(), server->mydb.c_str(), 0, NULL, 0 ) )
 	{
@@ -41,8 +56,14 @@ int main(int argc, char *argv[])
 	server->StartServer();
 
 	// Clean up everything
+	pthread_attr_destroy(&server->at);
 	delete server;
 	mysql_close( &mysql );
 	WSACleanup( );
-	return 0;
+	StopSignal( );
+	pthread_mutex_destroy( &DropMutex );
+	pthread_mutex_destroy( &MonsterMutex );
+	pthread_mutex_destroy( &PlayerMutex );
+	pthread_mutex_destroy( &MainMutex );
+	return EXIT_SUCCESS;
 }

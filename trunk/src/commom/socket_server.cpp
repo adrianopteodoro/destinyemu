@@ -105,7 +105,7 @@ fd_set		fds;
             #endif
 			// TODO: check if server is full
 			if (NewSocket != INVALID_SOCKET)
-				AddUser( NewSocket, &ClientInfo, servernum );
+				AddUser( NewSocket, &ClientInfo );
 			else
 				Log( MSG_ERROR, "Error accepting socket: %i", WSAGetLastError() );
 		}
@@ -155,7 +155,7 @@ void CServerSocket::HandleClients( fd_set* fds )
 // -----------------------------------------------------------------------------------------
 // Add a new user to our server
 // -----------------------------------------------------------------------------------------
-void CServerSocket::AddUser( SOCKET sock, sockaddr_in* ClientInfo, int id )
+void CServerSocket::AddUser( SOCKET sock, sockaddr_in* ClientInfo )
 {
 	CClientSocket* thisclient = this->CreateClientSocket( );
 	if (thisclient==NULL)

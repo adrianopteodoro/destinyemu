@@ -15,6 +15,7 @@
 				<Compiler>
 					<Add directory="src" />
 					<Add directory="src\iconv" />
+					<Add directory="src\pthread" />
 				</Compiler>
 				<Linker>
 					<Add library="lib\libxml2.lib" />
@@ -22,6 +23,7 @@
 					<Add library="lib\libiconv.lib" />
 					<Add library="lib\libmysql.lib" />
 					<Add library="C:\Arquivos de programas\CodeBlocks\lib\libws2_32.a" />
+					<Add library="lib\libpthreadGC.lib" />
 					<Add directory="lib" />
 				</Linker>
 			</Target>
