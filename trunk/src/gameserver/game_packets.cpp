@@ -54,8 +54,6 @@ bool CConnServer::ObjectMove( CEncDec* encdec, CConnClient* thisclient, unsigned
     packet->AddWord( 120, 120 );
     packet->AddWord( 122, 122 );
     packet->SetPSize( 172 );
-
-    SendToVisible( encdec, thisclient, packet, false );
 	return true;
 }
 
