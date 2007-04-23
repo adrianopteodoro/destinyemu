@@ -55,10 +55,12 @@
 		<Unit filename="src\gameserver\game_client.cpp" />
 		<Unit filename="src\gameserver\game_extrafunctions.cpp" />
 		<Unit filename="src\gameserver\game_functions.cpp" />
+		<Unit filename="src\gameserver\game_mainprocess.cpp" />
 		<Unit filename="src\gameserver\game_packetcontrol.cpp" />
 		<Unit filename="src\gameserver\game_packets.cpp" />
 		<Unit filename="src\gameserver\game_player.h" />
 		<Unit filename="src\gameserver\game_server.cpp" />
+		<Unit filename="src\gameserver\game_signal.cpp" />
 		<Unit filename="src\gameserver\game_sockets.h" />
 		<Unit filename="src\gameserver\game_types.h" />
 		<Unit filename="src\gameserver\main.cpp" />
