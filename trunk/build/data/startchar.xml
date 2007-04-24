@@ -1,10 +1,48 @@
 <?xml version="1.0"?>
-<startchar>
-	<transknight mobid="1" str="8" int="4" dex="7" con="6" helm="1101" armor="1113" arms="1125" pants="1137" legs="1149" weapon="861" />
-	<foema mobid="11" str="5" int="8" dex="5" con="5" helm="1254" armor="1266" arms="1278" pants="1290" legs="1302" weapon="891" />
-	<bestmaster mobid="21" str="6" int="6" dex="9" con="5" helm="1416" armor="1419" arms="1422" pants="1425" legs="1428" weapon="861" />
-	<hunter mobid="31" str="8" int="9" dex="13" con="6" helm="1566" armor="1569" arms="1572" pants="1575" legs="1578" weapon="816" />
+<transknight mobid="1" str="8" int="4" dex="7" con="6">
+	<inventory slot="0" itemid="1101" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="1" itemid="1113" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="2" itemid="1125" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="3" itemid="1137" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="4" itemid="1149" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="5" itemid="861" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<startgold value="30000" />
-</startchar>
+</transknight>
+
+<foema mobid="11" str="5" int="8" dex="5" con="5">
+	<inventory slot="0" itemid="1254" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="1" itemid="1266" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="2" itemid="1278" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="3" itemid="1290" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="4" itemid="1302" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="5" itemid="891" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
+	<startgold value="30000" />
+</foema>
+
+<bestmaster mobid="21" str="6" int="6" dex="9" con="5">
+	<inventory slot="0" itemid="1416" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="1" itemid="1419" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="2" itemid="1422" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="3" itemid="1425" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="4" itemid="1428" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="5" itemid="861" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
+	<startgold value="30000" />
+</bestmaster>
+
+<hunter mobid="31" str="8" int="9" dex="13" con="6">
+	<inventory slot="0" itemid="1566" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="1" itemid="1569" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="2" itemid="1572" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="3" itemid="1575" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="4" itemid="1578" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="5" itemid="816" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
+	<startgold value="30000" />
+</hunter>
