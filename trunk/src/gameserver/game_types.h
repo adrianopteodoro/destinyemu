@@ -1,9 +1,29 @@
 #ifndef _GAME_TYPES_H_
 #define _GAME_TYPES_H_
 
+struct CTime
+{
+	clock_t lastAttackTime;
+	clock_t lastRegenTime;
+	clock_t lastMoveTime;
+	clock_t lastSaveTime;
+	clock_t lastGG;
+	clock_t initSkill;
+};
+
+// -----------------------------------------------------------------------------------------
+// A 2d point, for positions
+// -----------------------------------------------------------------------------------------
+struct fPoint {
+	float x;
+	float y;
+	float z; // Unused?
+};
+
 // Account
 struct CAccount
 {
+    unsigned int clientid;
 	unsigned int userid;
 	char username[17];
 	char password[33];
@@ -55,9 +75,9 @@ struct CItem
 // Position (include respawnid and save town map)
 struct CPosition
 {
-    unsigned int RespawnID;
-    unsigned int Pos_x;
-    unsigned int Pos_y;
+    UINT RespawnID;
+    fPoint Cpos; // Current Position
+    fPoint Dpos; // Destine Position
 };
 
 // Player information

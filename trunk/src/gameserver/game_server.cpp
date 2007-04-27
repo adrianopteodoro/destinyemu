@@ -179,14 +179,13 @@ void CConnServer::DisconnectAll()
 
 bool CConnServer::OnReceivePacket( CClientSocket* thisclient, unsigned char* P )
 {
-    CEncDec* encdec = new CEncDec();
     switch( P[0] + P[1] )
 	{
-        case 0x74: return CheckLogin    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
+        case 0x74: return CheckLogin    ( (CConnClient*)thisclient, P );
     }
     switch( P[4] + P[5] )
 	{
-	    case 0x74: return CheckLogin    ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
+	    case 0x74: return CheckLogin    ( (CConnClient*)thisclient, P );
     }
-	return PacketControl   ( (CEncDec*)encdec, (CConnClient*)thisclient, P );
+	return PacketControl   ( (CConnClient*)thisclient, P );
 }

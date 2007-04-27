@@ -5,10 +5,11 @@ CConnClient::CConnClient( )
     PlayerSession = new CAccount;
     assert(PlayerSession);
     // Account
+    PlayerSession->clientid = 0;
 	PlayerSession->userid = 0;
     memset( PlayerSession->username, '\0', 17 );
     memset( PlayerSession->password, '\0', 33 );
-	PlayerSession->accesslevel = 100;
+	PlayerSession->accesslevel = 1;
 	PlayerSession->isLoggedIn = false;
 	PlayerSession->inGame = false;
 	// Stats
@@ -35,8 +36,10 @@ CConnClient::CConnClient( )
 	PlayerPosition = new CPosition;
 	assert(PlayerPosition);
 	PlayerPosition->RespawnID = 0;
-	PlayerPosition->Pos_x = 0;
-	PlayerPosition->Pos_y = 0;
+	PlayerPosition->Cpos.x = 0;
+	PlayerPosition->Cpos.y = 0;
+	PlayerPosition->Dpos.x = 0;
+	PlayerPosition->Dpos.y = 0;
 	// Player Info
 	PlayerInfo = new CInfo;
 	assert(PlayerInfo);
@@ -49,7 +52,18 @@ CConnClient::CConnClient( )
 	PlayerInfo->SkillPoints = 0;
 	PlayerInfo->StatPoints = 0;
 	PlayerInfo->Storage_Gold = 0;
+	// Times
+    PlayerTime = new CTime;
+    assert(PlayerTime);
+    PlayerTime->lastAttackTime = 0;
+    PlayerTime->lastRegenTime = 0;
+    PlayerTime->lastMoveTime = 0;
+    PlayerTime->lastSaveTime = 0;
+    PlayerTime->lastGG = 0;
+    PlayerTime->initSkill = 0;
 
+    Saved = false;
+    ready = false;
 	VisibleClients.clear();
 	isInvisibleMode = false;
 }
@@ -84,8 +98,8 @@ bool CConnClient::loaddata()
     PlayerStats->Dex = atoi(row[11]);
     PlayerStats->Con = atoi(row[12]);
     PlayerInfo->mobid = atoi(row[13]);
-    PlayerPosition->Pos_x = atoi(row[14]);
-    PlayerPosition->Pos_y = atoi(row[15]);
+    PlayerPosition->Cpos.x = atoi(row[14]);
+    PlayerPosition->Cpos.y = atoi(row[15]);
     PlayerInfo->classid = atoi(row[16]);
     mysql_free_result(result);
     if(!GServer->DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", PlayerInfo->char_name))
