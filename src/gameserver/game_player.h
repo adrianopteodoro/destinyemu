@@ -18,14 +18,22 @@ public:
     CStats* PlayerStats; // Player Stats
     CInfo* PlayerInfo; // Player information (classid, mobid, gold, exp, ...)
     CPosition* PlayerPosition; // Player Position
+    CTime* PlayerTime; // Player Time  (lastmove, lastattack ... )
 
+    bool VisiblityList( );
+    bool ClearObject( unsigned int otherclientid );
+    bool PlayerMovement();
+
+    bool ready;
+    bool Saved;
+    UINT targetid;
     bool isInvisibleMode;
 
     // Player Vectors
     std::vector<CConnClient*>	        VisibleClients;			// Visible Client List (Players)
 
     // Inventory
-    CItem items[77];
+    CItem items[78];
 
     // General Functions
     bool loaddata();

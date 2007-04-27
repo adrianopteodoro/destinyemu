@@ -23,18 +23,21 @@ public:
 
 	// Functions
 	void SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwrite* pak, bool dothisclient );
+	bool IsVisible( CConnClient* thisclient, CConnClient* otherclient );
+	float distance( fPoint pos1, fPoint pos2 );
 
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
-	bool CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
-	bool PacketControl( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
-	bool SendCharList( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
-	bool ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
-	bool CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
-	bool CharDelete( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
-	bool SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
-	bool ObjectMove( CEncDec* encdec, CConnClient* thisclient, unsigned char* P );
-	bool SendServerMsg( CEncDec* encdec, CConnClient* thisclient ,char* Format, ...);
+	bool CheckLogin( CConnClient* thisclient, unsigned char* P );
+	bool PacketControl( CConnClient* thisclient, unsigned char* P );
+	bool SendCharList( CConnClient* thisclient, unsigned char* P );
+	bool ResendCharList( CConnClient* thisclient, unsigned char* P );
+	bool CharCreate( CConnClient* thisclient, unsigned char* P );
+	bool CharDelete( CConnClient* thisclient, unsigned char* P );
+	bool SendToWorld( CConnClient* thisclient, unsigned char* P );
+	bool ObjectMove( CConnClient* thisclient, unsigned char* P );
+	bool SendServerMsg( CConnClient* thisclient ,char* Format, ...);
+	bool SpawnChar( CConnClient* thisclient, CConnClient* otherclient );
 
 	// configuration things
 	int myport;
@@ -58,6 +61,7 @@ public:
 };
 
 extern class CConnServer* GServer;
+extern class CEncDec* encdec;
 extern pthread_mutex_t MainMutex, PlayerMutex, MonsterMutex, DropMutex;
 
 PVOID VisibilityProcess( PVOID TS );

@@ -7,6 +7,16 @@ PVOID MapProcess( PVOID TS )
     {
         pthread_mutex_lock( &PlayerMutex );
         // Player
+        for(UINT i=0;i<GServer->ClientList.size();i++)
+        {
+            CConnClient* thisclient = (CConnClient*) GServer->ClientList.at(i);
+            if(!thisclient->ready) continue;
+            pthread_mutex_lock( &MainMutex );
+            if(thisclient->PlayerMovement()==false)
+                Log( MSG_WARNING, "PlayerMovement FALSE! ID:%i",
+                    thisclient->PlayerSession->clientid );
+            pthread_mutex_unlock( &MainMutex );
+        }
         pthread_mutex_unlock( &PlayerMutex );
         pthread_mutex_lock( &MonsterMutex );
         // Monster
@@ -27,7 +37,17 @@ PVOID VisibilityProcess(PVOID TS)
         pthread_mutex_lock( &DropMutex );
         pthread_mutex_lock( &MonsterMutex );
         pthread_mutex_lock( &PlayerMutex );
-
+        for(UINT i=0;i<GServer->ClientList.size();i++)
+        {
+            CConnClient* thisclient = (CConnClient*) GServer->ClientList.at(i);
+            if(!thisclient->ready) continue;
+            if(!thisclient->PlayerSession->inGame || !thisclient->PlayerSession->isLoggedIn)
+                continue;
+            pthread_mutex_lock( &MainMutex );
+            if(!thisclient->VisiblityList())
+                Log(MSG_WARNING, "Visibility False: %u", thisclient->PlayerSession->clientid );
+            pthread_mutex_unlock( &MainMutex );
+        }
         pthread_mutex_unlock( &PlayerMutex );
         pthread_mutex_unlock( &MonsterMutex );
         pthread_mutex_unlock( &DropMutex );

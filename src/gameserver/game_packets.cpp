@@ -1,13 +1,10 @@
 #include "game_sockets.h"
 
+CEncDec* encdec = new CEncDec();
 bufwrite* packet = new bufwrite();
 
-bool CConnServer::ObjectMove( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
+bool CConnServer::ObjectMove( CConnClient* thisclient, unsigned char* P )
 {
-    int spos_x;
-    int spos_y;
-    int epos_x;
-    int epos_y;
     int unknow1;
     int unknow2;
     int unknow3;
@@ -15,49 +12,33 @@ bool CConnServer::ObjectMove( CEncDec* encdec, CConnClient* thisclient, unsigned
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 52, (unsigned char*)this->CKeys );
 
-    memcpy( &spos_x, &buff[12], 2 );
-    memcpy( &spos_y, &buff[14], 2 );
-    memcpy( &unknow1, &buff[16], 1 );
-    memcpy( &epos_x, &buff[24], 2 );
-    memcpy( &epos_y, &buff[26], 2 );
-    memcpy( &unknow2, &buff[28], 2 );
-    memcpy( &unknow3, &buff[30], 2 );
-    memcpy( &unknow4, &buff[32], 2 );
-
+    memcpy( &thisclient->PlayerPosition->Cpos.x, &buff[12], 2 );
+    memcpy( &thisclient->PlayerPosition->Cpos.y, &buff[14], 2 );
+    memcpy( &thisclient->PlayerPosition->Dpos.x, &buff[24], 2 );
+    memcpy( &thisclient->PlayerPosition->Dpos.y, &buff[26], 2 );
 
     packet->Free();
-    packet->AddWord( 172, 0 );
-    packet->AddWord( 868, 4 );
-    // end header
-
-    packet->AddWord( spos_x, 12 ); // pos x
-    packet->AddWord( spos_y, 14 ); // pos y
-    packet->AddWord( 61, 16 );
-    packet->AddStr( thisclient->PlayerInfo->char_name, 18 ); // char name
-    packet->AddByte( 150, 30 ); // player karma
-    packet->AddByte( thisclient->PlayerInfo->mobid, 34 ); // mob id
-    packet->AddWord( 1254, 36 ); //helm?
-    packet->AddWord( 5362, 38 ); // armor?
-    packet->AddByte( 34, 67 );
-    packet->AddByte( 05, 68 );
-    packet->AddByte( 0x09, 69 );
-    packet->AddWord( 28, 100 );
-    packet->AddWord( 95, 102 );
-    packet->AddWord( 104, 104 );
-    packet->AddWord( 106, 106 );
-    packet->AddWord( 108, 108 );
-    packet->AddWord( 110, 110 );
-    packet->AddWord( 112, 112 );
-    packet->AddWord( 114, 114 );
-    packet->AddWord( 116, 116 );
-    packet->AddWord( 118, 118 );
-    packet->AddWord( 120, 120 );
-    packet->AddWord( 122, 122 );
-    packet->SetPSize( 172 );
+    packet->AddWord( 52, 0 );
+    packet->AddByte( 0x69, 4 );
+    packet->AddByte( 0x03, 5 );
+    packet->AddWord( thisclient->PlayerSession->userid, 6 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 );
+    packet->AddByte( (int)&buff[16], 16 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Dpos.x, 24 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Dpos.y, 26 );
+    packet->AddByte( (int)&buff[28], 28 );
+    packet->AddByte( (int)&buff[29], 29 );
+    packet->AddByte( (int)&buff[30], 30 );
+    packet->AddByte( (int)&buff[31], 31 );
+    packet->AddByte( (int)&buff[32], 32 );
+    packet->AddByte( (int)&buff[33], 33 );
+    packet->SetPSize( 52 );
+    SendToVisible( encdec, thisclient, packet, false );
 	return true;
 }
 
-bool CConnServer::CharDelete( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
+bool CConnServer::CharDelete( CConnClient* thisclient, unsigned char* P )
 {
     MYSQL_RES *result;
 	MYSQL_ROW row;
@@ -75,15 +56,15 @@ bool CConnServer::CharDelete( CEncDec* encdec, CConnClient* thisclient, unsigned
     {
         DoSQL("DELETE FROM characters WHERE name='%s'", delcharname);
         DoSQL("DELETE FROM char_items WHERE owner='%s'", delcharname);
-        return ResendCharList( encdec, thisclient, P );
+        return ResendCharList( thisclient, P );
     }
     else
     {
-        return SendServerMsg( encdec, thisclient, "Invalid password, try again." );
+        return SendServerMsg( thisclient, "Invalid password, try again." );
     }
 }
 
-bool CConnServer::CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
+bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
 {
     MYSQL_RES *result;
 	MYSQL_ROW row;
@@ -163,15 +144,15 @@ bool CConnServer::CharCreate( CEncDec* encdec, CConnClient* thisclient, unsigned
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 24, 923)", newcharname);
             break;
         }
-        return ResendCharList( encdec, thisclient, P );
+        return ResendCharList( thisclient, P );
     }
     else
     {
-        return SendServerMsg( encdec, thisclient, "This character name already in use." );
+        return SendServerMsg( thisclient, "This character name already in use." );
     }
 }
 
-bool CConnServer::SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
+bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
 {
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 36, (unsigned char*)this->CKeys );
@@ -195,17 +176,17 @@ bool CConnServer::SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigne
     // Load Char data
     thisclient->loaddata();
 
-    packet->AddWord( thisclient->PlayerPosition->Pos_x, 12 );
-    packet->AddWord( thisclient->PlayerPosition->Pos_y, 14 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 );
     packet->AddStr( thisclient->PlayerInfo->char_name, 16 ); // charname
     packet->AddDWord( thisclient->PlayerInfo->Gold, 40 ); // gold
     packet->AddDWord( thisclient->PlayerInfo->Exp, 44 ); // earned experience
-    packet->AddWord( thisclient->PlayerPosition->Pos_x, 48 );
-    packet->AddWord( thisclient->PlayerPosition->Pos_y, 50 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 48 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 50 );
     packet->AddByte( thisclient->PlayerInfo->classid, 36 ); // classindent
     packet->AddWord( thisclient->PlayerInfo->Level, 80 ); // lvl
-    packet->AddWord( thisclient->PlayerStats->Defense, 82 ); // defense
-    packet->AddWord( thisclient->PlayerStats->Attack_Power, 84 ); // ataque
+    packet->AddWord( thisclient->PlayerStats->Defense+1000, 82 ); // defense
+    packet->AddWord( thisclient->PlayerStats->Attack_Power+1000, 84 ); // ataque
     packet->AddWord( thisclient->PlayerStats->MaxHP, 88 ); // hp total
     packet->AddWord( thisclient->PlayerStats->MaxMP, 90 ); // mp total
     packet->AddWord( thisclient->PlayerStats->HP, 92 ); // hp
@@ -226,6 +207,10 @@ bool CConnServer::SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigne
     packet->AddByte( 28, 114 ); // Player Add3
     packet->AddByte( 30, 115 );
     packet->AddByte( 97, 742 ); // Player Karma
+    packet->AddByte( 4, 768 ); // resist
+    packet->AddByte( 4, 769 ); // resist
+    packet->AddByte( 4, 770 ); // resist
+    packet->AddByte( 4, 771 ); // resist
     packet->AddByte( 0x2b, 774 ); // Char Move
 
 
@@ -243,18 +228,19 @@ bool CConnServer::SendToWorld( CEncDec* encdec, CConnClient* thisclient, unsigne
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1244, this->CKeys, this->Hash1, 0 );
     thisclient->SendPacket( this->encbuf, this->encsize );
 
-    SendServerMsg( encdec, thisclient, "Welcome to %s, Powered by Destiny Emulator", this->srvname.c_str() );
+    SendServerMsg( thisclient, "Welcome to %s, Powered by Destiny Emulator", this->srvname.c_str() );
+    thisclient->PlayerSession->inGame = true;
+    thisclient->ready = true;
 
 	return true;
 }
 
-bool CConnServer::ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
+bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
 {
     MYSQL_RES *result;
 	MYSQL_ROW row;
 	MYSQL_RES *result2;
 	MYSQL_ROW row2;
-    bufwrite* packet = new bufwrite();
     packet->Free();
 
     // Packet Header
@@ -320,7 +306,7 @@ bool CConnServer::ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsi
         packet->AddByte( 0x08, (2*charpos)+13 );
         packet->AddByte( 0x30, (2*charpos)+20 );
         packet->AddByte( 0x08, (2*charpos)+21 );
-        packet->AddByte( chars[k].Level, (28*charpos)+92 ); // char level
+        packet->AddWord( chars[k].Level, (28*charpos)+92 ); // char level
         packet->AddStr( chars[k].char_name, (16*charpos)+28 ); // char name
         packet->AddByte( chars[k].Mobid, (128*charpos)+204 ); // mobid
         packet->AddWord( chars[k].Str, (28*charpos)+108 ); // char str
@@ -350,13 +336,12 @@ bool CConnServer::ResendCharList( CEncDec* encdec, CConnClient* thisclient, unsi
 	return true;
 }
 
-bool CConnServer::SendCharList( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
+bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
 {
     MYSQL_RES *result;
 	MYSQL_ROW row;
 	MYSQL_RES *result2;
 	MYSQL_ROW row2;
-    bufwrite* packet = new bufwrite();
     packet->Free();
 
     // Packet Header
@@ -422,7 +407,7 @@ bool CConnServer::SendCharList( CEncDec* encdec, CConnClient* thisclient, unsign
         packet->AddByte( 0x08, (2*charpos)+13 );
         packet->AddByte( 0x30, (2*charpos)+20 );
         packet->AddByte( 0x08, (2*charpos)+21 );
-        packet->AddByte( chars[k].Level, (28*charpos)+92 ); // char level
+        packet->AddWord( chars[k].Level, (28*charpos)+92 ); // char level
         packet->AddStr( chars[k].char_name, (16*charpos)+28 ); // char name
         packet->AddByte( chars[k].Mobid, (128*charpos)+204 ); // mobid
         packet->AddWord( chars[k].Str, (28*charpos)+108 ); // char str
@@ -458,7 +443,7 @@ bool CConnServer::SendCharList( CEncDec* encdec, CConnClient* thisclient, unsign
 	return true;
 }
 
-bool CConnServer::CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned char* P )
+bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
 {
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     if ( P[0] + P[1] == 0x74 )
@@ -496,11 +481,11 @@ bool CConnServer::CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned
                 thisclient->PlayerSession->userid = 40000 + atoi(row[0]);
                 thisclient->PlayerSession->accesslevel = atoi(row[6]);
             }
-            return SendCharList( (CEncDec*)encdec, (CConnClient*)thisclient, P );
+            return SendCharList( thisclient, P );
         }
         else
         {
-            return SendServerMsg( encdec, thisclient, "Invalid ID, check your ID." );
+            return SendServerMsg( thisclient, "Invalid ID, check your ID." );
         }
     }
     else
@@ -509,7 +494,7 @@ bool CConnServer::CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned
             return false;
         result = mysql_store_result( mysql );
         if (mysql_num_rows( result ) == 0) {
-            return SendServerMsg( encdec, thisclient, "Invalid Password, please check your Password." );
+            return SendServerMsg( thisclient, "Invalid Password, please check your Password." );
         }
         else
         {
@@ -517,7 +502,7 @@ bool CConnServer::CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned
                 return false;
             result = mysql_store_result( mysql );
             if (mysql_num_rows( result ) == 0) {
-                return SendServerMsg( encdec, thisclient, "This ID is not active, please check it on website." );
+                return SendServerMsg( thisclient, "This ID is not active, please check it on website." );
             }
             else
             {
@@ -525,7 +510,7 @@ bool CConnServer::CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned
                     return false;
                 result = mysql_store_result( mysql );
                 if (mysql_num_rows( result ) == 0) {
-                    return SendServerMsg( encdec, thisclient, "This ID is online, please try other ID." );
+                    return SendServerMsg( thisclient, "This ID is online, please try other ID." );
                 }
                 else
                 {
@@ -535,9 +520,10 @@ bool CConnServer::CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned
                     while ( row = mysql_fetch_row( result ) )
                     {
                         thisclient->PlayerSession->userid = 40000 + atoi(row[0]);
+                        thisclient->PlayerSession->isLoggedIn = true;
                         thisclient->PlayerSession->accesslevel = atoi(row[6]);
                     }
-                    return SendCharList( (CEncDec*)encdec, (CConnClient*)thisclient, P );
+                    return SendCharList( thisclient, P );
                 }
             }
         }
@@ -545,7 +531,7 @@ bool CConnServer::CheckLogin( CEncDec* encdec, CConnClient* thisclient, unsigned
 	return true;
 }
 
-bool CConnServer::SendServerMsg( CEncDec* encdec, CConnClient* thisclient ,char* Format, ...)
+bool CConnServer::SendServerMsg( CConnClient* thisclient ,char* Format, ...)
 {
     char Buffer[2000];
 	va_list ap; va_start( ap, Format );
@@ -557,5 +543,43 @@ bool CConnServer::SendServerMsg( CEncDec* encdec, CConnClient* thisclient ,char*
     packet->AddByte( 0x01, 5 );
     packet->AddStr( Buffer, 12 );
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 108, this->CKeys, this->Hash1, 0 );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+}
+
+bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
+{
+    packet->Free();
+    packet->AddWord( 172, 0 );
+    packet->AddWord( 868, 4 );
+    packet->AddWord( otherclient->PlayerSession->userid, 6 );
+    // end header
+
+    packet->AddWord( (int)otherclient->PlayerPosition->Cpos.x, 12 ); // pos x
+    packet->AddWord( (int)otherclient->PlayerPosition->Cpos.y, 14 ); // pos y
+    packet->AddWord( 61, 16 );
+    packet->AddStr( otherclient->PlayerInfo->char_name, 18 ); // char name
+    packet->AddByte( 150, 30 ); // player karma
+    packet->AddByte( otherclient->PlayerInfo->mobid, 34 ); // mob id
+    for (int i=0;i<15;i++)
+    {
+        packet->AddWord( otherclient->items[i].itemid, (2*i)+36 );
+    }
+    packet->AddByte( 34, 67 );
+    packet->AddByte( 05, 68 );
+    packet->AddByte( 0x09, 69 );
+    packet->AddWord( 28, 100 );
+    packet->AddWord( 95, 102 );
+    packet->AddWord( 104, 104 );
+    packet->AddWord( 106, 106 );
+    packet->AddWord( 108, 108 );
+    packet->AddWord( 110, 110 );
+    packet->AddWord( 112, 112 );
+    packet->AddWord( 114, 114 );
+    packet->AddWord( 116, 116 );
+    packet->AddWord( 118, 118 );
+    packet->AddWord( 120, 120 );
+    packet->AddWord( 122, 122 );
+
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, 0 );
     thisclient->SendPacket( this->encbuf, this->encsize );
 }

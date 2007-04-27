@@ -29,11 +29,11 @@
 	<servername value="Destiny Test Server" />
 
 	<!-- XP Gain Rate -->
-	<xp_rate value="1" />
+	<xp_rate value="100" />
 	<!-- Drop Item Rate -->
 	<drop_rate value="90" />
 	<!-- Gold Droped Value Rate -->
 	<gold_rate value="70" />
-	<!-- Gold Drop Chance, 100% always drop Gold -->
+	<!-- Gold Drop Chance, 100 always drop Gold -->
 	<gold_dropchance value="40" />
 </wydserver>
