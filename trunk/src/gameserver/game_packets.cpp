@@ -9,9 +9,11 @@ bool CConnServer::ObjectMove( CConnClient* thisclient, unsigned char* P )
     int unknow2;
     int unknow3;
     int unknow4;
+    int sdid;
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 52, (unsigned char*)this->CKeys );
 
+    memcpy( &sdid, &buff[6], 2 );
     memcpy( &thisclient->PlayerPosition->Cpos.x, &buff[12], 2 );
     memcpy( &thisclient->PlayerPosition->Cpos.y, &buff[14], 2 );
     memcpy( &thisclient->PlayerPosition->Dpos.x, &buff[24], 2 );
@@ -19,9 +21,9 @@ bool CConnServer::ObjectMove( CConnClient* thisclient, unsigned char* P )
 
     packet->Free();
     packet->AddWord( 52, 0 );
-    packet->AddByte( 0x69, 4 );
+    packet->AddByte( 0x66, 4 );
     packet->AddByte( 0x03, 5 );
-    packet->AddWord( thisclient->PlayerSession->userid, 6 );
+    packet->AddWord( sdid, 6 );
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 );
     packet->AddByte( (int)&buff[16], 16 );
@@ -176,6 +178,8 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     // Load Char data
     thisclient->loaddata();
 
+    packet->AddByte( 15, 39 );
+
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 );
     packet->AddStr( thisclient->PlayerInfo->char_name, 16 ); // charname
@@ -185,8 +189,8 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 50 );
     packet->AddByte( thisclient->PlayerInfo->classid, 36 ); // classindent
     packet->AddWord( thisclient->PlayerInfo->Level, 80 ); // lvl
-    packet->AddWord( thisclient->PlayerStats->Defense+1000, 82 ); // defense
-    packet->AddWord( thisclient->PlayerStats->Attack_Power+1000, 84 ); // ataque
+    packet->AddWord( thisclient->PlayerStats->Defense, 82 ); // defense
+    packet->AddWord( thisclient->PlayerStats->Attack_Power, 84 ); // ataque
     packet->AddWord( thisclient->PlayerStats->MaxHP, 88 ); // hp total
     packet->AddWord( thisclient->PlayerStats->MaxMP, 90 ); // mp total
     packet->AddWord( thisclient->PlayerStats->HP, 92 ); // hp
@@ -195,25 +199,31 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( thisclient->PlayerStats->Int, 98 ); // int
     packet->AddWord( thisclient->PlayerStats->Dex, 100 ); // dex
     packet->AddWord( thisclient->PlayerStats->Con, 102 ); // con
-    packet->AddByte( 0, 107 ); // aprendiz
-    packet->AddByte( 0, 104 ); // aprendiz
-    packet->AddByte( 0, 105 ); // aprendiz
-    packet->AddByte( 0, 106 ); // aprendiz
+    packet->AddByte( 0, 107 ); // skill master1
+    packet->AddByte( 0, 104 ); // skill master2
+    packet->AddByte( 0, 105 ); // skill master3
+    packet->AddByte( 0, 106 ); // skill master4
     packet->AddByte( thisclient->PlayerInfo->mobid, 108 ); // mobile id (if player class id)
     packet->AddByte( 43, 110 ); // Player Add1
-    packet->AddByte( 30, 111 );
+    packet->AddByte( 0, 111 );
     packet->AddByte( 86, 112 ); // Player Add2
-    packet->AddByte( 30, 113 );
+    packet->AddByte( 0, 113 );
     packet->AddByte( 28, 114 ); // Player Add3
-    packet->AddByte( 30, 115 );
-    packet->AddByte( 97, 742 ); // Player Karma
-    packet->AddByte( 4, 768 ); // resist
-    packet->AddByte( 4, 769 ); // resist
-    packet->AddByte( 4, 770 ); // resist
-    packet->AddByte( 4, 771 ); // resist
-    packet->AddByte( 0x2b, 774 ); // Char Move
+    packet->AddByte( 1, 115 );
+    packet->AddByte( 4, 768 ); // resist1
+    packet->AddByte( 4, 769 ); // resist2
+    packet->AddByte( 4, 770 ); // resist3
+    packet->AddByte( 4, 771 ); // resist4
+    packet->AddByte( 0xff, 774 ); // Char Move
+    packet->AddByte( 0, 775 ); // Player Size
 
+    for (int a=0;a<6;a++)
+        packet->AddByte( 0xff, 760+a );
 
+    for (int a=0;a<18;a++)
+        packet->AddByte( 0xff, 778+a );
+
+    // Load Inventory Items
     for (int i=0;i<78;i++)
     {
         packet->AddWord( thisclient->items[i].itemid, (8*i)+116 );

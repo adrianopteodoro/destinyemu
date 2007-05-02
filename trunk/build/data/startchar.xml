@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<transknight mobid="1" str="8" int="4" dex="7" con="6">
+<transknight mobid="1" level="0" str="8" int="4" dex="7" con="6" skpts="0" stpts="0" skmpts="0">
 	<inventory slot="0" itemid="1101" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="1" itemid="1113" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="2" itemid="1125" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
@@ -8,10 +8,9 @@
 	<inventory slot="5" itemid="861" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
-	<startgold value="30000" />
 </transknight>
 
-<foema mobid="11" str="5" int="8" dex="5" con="5">
+<foema mobid="11" level="0" str="5" int="8" dex="5" con="5" skpts="0" stpts="0" skmpts="0">
 	<inventory slot="0" itemid="1254" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="1" itemid="1266" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="2" itemid="1278" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
@@ -20,10 +19,9 @@
 	<inventory slot="5" itemid="891" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
-	<startgold value="30000" />
 </foema>
 
-<bestmaster mobid="21" str="6" int="6" dex="9" con="5">
+<bestmaster mobid="21" level="0" str="6" int="6" dex="9" con="5" skpts="0" stpts="0" skmpts="0">
 	<inventory slot="0" itemid="1416" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="1" itemid="1419" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="2" itemid="1422" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
@@ -32,10 +30,9 @@
 	<inventory slot="5" itemid="861" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
-	<startgold value="30000" />
 </bestmaster>
 
-<hunter mobid="31" str="8" int="9" dex="13" con="6">
+<hunter mobid="31" level="0" str="8" int="9" dex="13" con="6" skpts="0" stpts="0" skmpts="0">
 	<inventory slot="0" itemid="1566" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="1" itemid="1569" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="2" itemid="1572" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
@@ -44,5 +41,4 @@
 	<inventory slot="5" itemid="816" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
-	<startgold value="30000" />
 </hunter>
