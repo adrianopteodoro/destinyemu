@@ -12,7 +12,7 @@ float CConnServer::distance( fPoint pos1, fPoint pos2 )
 
 // Send a packet too all X who are visible
 // -- CLIENT --
-void CConnServer::SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwrite* pak, bool dothisclient )
+void CConnServer::SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwrite* pak, int size, bool dothisclient )
 {
     for(unsigned j=0; j<thisclient->VisibleClients.size(); j++)
     {
@@ -22,7 +22,7 @@ void CConnServer::SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwr
 	}
 	if(dothisclient)
 	{
-        this->encsize = encdec->WYD2_Encrypt( this->encbuf, pak->buff(), pak->psize(), this->CKeys, this->Hash1, 0 );
+        this->encsize = encdec->WYD2_Encrypt( this->encbuf, pak->buff(), size, this->CKeys, this->Hash1, 0 );
         thisclient->SendPacket( this->encbuf, this->encsize );
 	}
 }

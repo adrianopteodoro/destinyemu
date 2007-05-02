@@ -22,7 +22,7 @@ public:
 	void DisconnectAll();
 
 	// Functions
-	void SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwrite* pak, bool dothisclient );
+	void SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwrite* pak, int size, bool dothisclient );
 	bool IsVisible( CConnClient* thisclient, CConnClient* otherclient );
 	float distance( fPoint pos1, fPoint pos2 );
 
