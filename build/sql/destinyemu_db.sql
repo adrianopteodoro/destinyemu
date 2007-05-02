@@ -22,7 +22,7 @@ CREATE TABLE `accounts` (
   `online` int(11) default '0',
   `acesslevel` int(10) default '1',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `char_items` */
 
@@ -38,7 +38,7 @@ CREATE TABLE `char_items` (
   `add3` int(10) default '0',
   `addval3` int(10) default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `characters` */
 
@@ -67,7 +67,7 @@ CREATE TABLE `characters` (
   `pos_x` int(10) default '2093',
   `pos_y` int(10) default '2097',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `storage` */
 
