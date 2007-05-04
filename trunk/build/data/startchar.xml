@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<startitems>
 <transknight mobid="1" level="0" str="8" int="4" dex="7" con="6" skpts="0" stpts="0" skmpts="0">
 	<inventory slot="0" itemid="1101" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="1" itemid="1113" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
@@ -42,3 +43,4 @@
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 </hunter>
+</startitems>
