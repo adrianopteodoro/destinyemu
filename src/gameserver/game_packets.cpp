@@ -177,8 +177,6 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     // Load Char data
     thisclient->loaddata();
 
-    packet->AddByte( 15, 39 );
-
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 );
     packet->AddStr( thisclient->PlayerInfo->char_name, 16 ); // charname
@@ -198,10 +196,10 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( thisclient->PlayerStats->Int, 98 ); // int
     packet->AddWord( thisclient->PlayerStats->Dex, 100 ); // dex
     packet->AddWord( thisclient->PlayerStats->Con, 102 ); // con
-    packet->AddByte( 0, 107 ); // skill master1
-    packet->AddByte( 0, 104 ); // skill master2
-    packet->AddByte( 0, 105 ); // skill master3
-    packet->AddByte( 0, 106 ); // skill master4
+    packet->AddByte( 200, 107 ); // skill master1
+    packet->AddByte( 200, 104 ); // skill master2
+    packet->AddByte( 200, 105 ); // skill master3
+    packet->AddByte( 200, 106 ); // skill master4
     packet->AddByte( thisclient->PlayerInfo->mobid, 108 ); // mobile id (if player class id)
     packet->AddByte( 43, 110 ); // Player Add1
     packet->AddByte( 0, 111 );
@@ -213,14 +211,19 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddByte( 4, 769 ); // resist2
     packet->AddByte( 4, 770 ); // resist3
     packet->AddByte( 4, 771 ); // resist4
-    packet->AddByte( 0xff, 774 ); // Char Move
-    packet->AddByte( 0, 775 ); // Player Size
 
     for (int a=0;a<6;a++)
         packet->AddByte( 0xff, 760+a );
 
     for (int a=0;a<18;a++)
         packet->AddByte( 0xff, 778+a );
+
+    //for (int a=0;a<60;a++)
+        //packet->AddByte( 75+a,740+a );
+
+    packet->AddWord( 150, 742 );
+    packet->AddByte( 0xff, 774 ); // Char Move
+    packet->AddByte( 0, 775 ); // Player Size
 
     // Load Inventory Items
     for (int i=0;i<78;i++)
@@ -241,6 +244,62 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     thisclient->PlayerSession->inGame = true;
     thisclient->ready = true;
 
+    packet->Free();
+    packet->AddWord( 172, 0 );
+    packet->AddWord( 868, 4 );
+    packet->AddWord( 12000, 6 );
+    // end header
+
+    packet->AddWord( 2131, 12 ); // pos x
+    packet->AddWord( 2152, 14 ); // pos y
+    packet->AddWord( 61, 16 );
+    packet->AddStr( thisclient->PlayerInfo->char_name, 18 ); // char name
+    packet->AddWord( 151, 30 ); // chaos point
+    packet->AddByte( thisclient->PlayerInfo->mobid, 34 ); // mob id
+    for (int i=0;i<15;i++)
+    {
+        packet->AddWord( thisclient->items[i].itemid, (2*i)+36 );
+    }
+    packet->AddByte( 0x00, 66 );
+    packet->AddByte( 0x22, 67 );
+    packet->AddByte( 0x09, 69 );
+    packet->AddWord( 199, 100 );
+    packet->AddWord( 745, 102 );
+    packet->AddWord( 521, 104 );
+    packet->AddWord( 84, 107 );
+    packet->AddWord( 274, 108 );
+    packet->AddWord( 728, 110 );
+    packet->AddWord( 60, 112 );
+    packet->AddWord( 65, 114 );
+    packet->AddWord( 5, 116 );
+    packet->AddWord( 8, 118 );
+    packet->AddWord( 5, 120 );
+    packet->AddWord( 5, 122 );
+    packet->AddWord( 2, 128 );
+    packet->AddWord( 44, 130 );
+
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, 0 );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+
+    packet->Free();
+    packet->AddWord( 52, 0 );
+    packet->AddByte( 0x66, 4 );
+    packet->AddByte( 0x03, 5 );
+    packet->AddWord( 12000, 6 );
+    packet->AddWord( 2131, 12 ); // pos x
+    packet->AddWord( 2152, 14 );
+    packet->AddByte( 0, 16 );
+    packet->AddWord( 2138, 24 );
+    packet->AddWord( 2153, 26 );
+    packet->AddByte( 0, 28 );
+    packet->AddByte( 0, 29 );
+    packet->AddByte( 0, 30 );
+    packet->AddByte( 0, 31 );
+    packet->AddByte( 0, 32 );
+    packet->AddByte( 0, 33 );
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 52, this->CKeys, this->Hash1, 0 );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+
 	return true;
 }
 
@@ -256,7 +315,6 @@ bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( 1824, 0 ); // packet size
     packet->AddWord( 274, 4 ); // packet id
     packet->AddWord( thisclient->PlayerSession->userid, 6 ); //Player ID
-    packet->AddWord( thisclient->PlayerSession->userid, 124 );
 
     // Char List
     if(!DoSQL("SELECT name,cexp,clevel,gold, \
