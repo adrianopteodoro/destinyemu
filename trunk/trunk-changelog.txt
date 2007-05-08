@@ -23,3 +23,6 @@ DESTINY EMULATOR SVN CHANGE-LOG
 
 02/05/2007
     - Added: Visibility Process, the start way to view MOBS, DROPS, NPCS and Players, its working now you can see other players in game but not show he's walking in world. [Snaity]
+
+07/05/2007
+    - Added: Dev-Cpp Project File, to people using Dev-Cpp IDE to compile GNU C++ Projects. [Snaity]
