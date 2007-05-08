@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<InitItem>
+<itens Fixed="map">
+	<item ID="471" PosX="217" PosY="215" Rolation="1" description="teste" />
+	<item ID="417" PosX="217" PosY="221" Rolation="1" description="teste2" />
+</itens>
+</initItem>
