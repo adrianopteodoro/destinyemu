@@ -22,6 +22,7 @@ class bufwrite
         void AddStr(std::string co, int gdzie);
         void AddWord( unsigned short h, int offset );
         void AddDWord( unsigned long h, int offset );
+        int GetWord( unsigned char* src, int offset );
         void Free( );
 };
 
