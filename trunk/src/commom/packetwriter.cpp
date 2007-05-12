@@ -66,6 +66,13 @@ void bufwrite::AddWord( unsigned short h, int offset )
      memcpy( (char*)&D[offset], (int*)&h, 2 );
 }
 
+int bufwrite::GetWord( unsigned char* src, int offset )
+{
+     int value;
+     memcpy( &value, &D[offset], 2 );
+     return value;
+}
+
 void bufwrite::AddDWord( unsigned long h, int offset )
 {
      memcpy( (char*)&D[offset], (int*)&h, 4 );
