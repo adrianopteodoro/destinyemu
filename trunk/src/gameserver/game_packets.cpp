@@ -3,26 +3,36 @@
 CEncDec* encdec = new CEncDec();
 bufwrite* packet = new bufwrite();
 
-bool CConnServer::ObjectMove( CConnClient* thisclient, unsigned char* P )
+bool CConnServer::SendChat( CConnClient* thisclient, unsigned char* P )
 {
-    unsigned int unknow1;
-    unsigned int unknow2;
-    unsigned int unknow3;
-    unsigned int unknow4;
-    unsigned int sdid;
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 52, (unsigned char*)this->CKeys );
 
-    sdid = packet->GetWord( buff, 12 );
-    thisclient->PlayerPosition->Cpos.x = packet->GetWord( buff, 12 );
-    thisclient->PlayerPosition->Cpos.y = packet->GetWord( buff, 14 );
-    thisclient->PlayerPosition->Dpos.x = packet->GetWord( buff, 24 );
-    thisclient->PlayerPosition->Dpos.y = packet->GetWord( buff, 26 );
-    //printf("Player ID: %x OO: %x POSX: %x\n", sdid, thisclient->PlayerSession->userid, thisclient->PlayerPosition->Cpos.x);
+    packet->Free();
+    for (int i=0;i<108;i++)
+        packet->AddByte( buff[i], i );
+    packet->AddWord( thisclient->PlayerSession->userid, 6 );
+    SendToVisible( encdec, thisclient, packet, 108, false );
+	return true;
+}
+
+bool CConnServer::ObjectMove( CConnClient* thisclient, unsigned char* P )
+{
+    unsigned short sdid;
+    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
+    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 52, (unsigned char*)this->CKeys );
+
+    memcpy( &sdid, &buff[6], 2 );
+    memcpy( (unsigned short*)&thisclient->PlayerPosition->Cpos.x, &buff[12], 2 );
+    memcpy( (unsigned short*)&thisclient->PlayerPosition->Cpos.y, &buff[14], 2 );
+    memcpy( (unsigned short*)&thisclient->PlayerPosition->Dpos.x, &buff[24], 2 );
+    memcpy( (unsigned short*)&thisclient->PlayerPosition->Dpos.y, &buff[26], 2 );
+    printf("Player ID: %04x OO: %04x POSX: %04x\n", sdid, thisclient->PlayerSession->userid, thisclient->PlayerPosition->Cpos.x);
 
     packet->Free();
     for (int i=0;i<52;i++)
         packet->AddByte( buff[i], i );
+    packet->AddWord( thisclient->PlayerSession->userid, 6 );
     SendToVisible( encdec, thisclient, packet, 52, false );
 	return true;
 }
@@ -206,10 +216,10 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     for (int a=0;a<18;a++)
         packet->AddByte( 0xff, 778+a );
 
-    //for (int a=0;a<60;a++)
-        //packet->AddByte( 75+a,740+a );
+    for (int a=0;a<200;a++)
+        packet->AddByte( 150,600+a );
 
-    packet->AddWord( 150, 742 );
+    //packet->AddWord( 150, 742 );
     packet->AddByte( 0xff, 774 ); // Char Move
     packet->AddByte( 0, 775 ); // Player Size
 
@@ -234,43 +244,42 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
 
     packet->Free();
     packet->AddWord( 172, 0 );
-    packet->AddWord( 868, 4 );
-    packet->AddWord( 12000, 6 );
+    packet->AddByte( 0x64, 4 );
+    packet->AddByte( 0x03, 5 );
+    packet->AddWord( 30000, 6 );
     // end header
 
     packet->AddWord( 2177, 12 ); // pos x
     packet->AddWord( 2114, 14 ); // pos y
-    packet->AddByte( 110, 16 );//34
-    packet->AddByte( 1, 17 );
+    packet->AddWord( 1390, 16 );
+    for (int i=0;i<12;i++)
+        packet->AddByte( 0xcc, 18+i );
     packet->AddStr( "Meio_Orc", 18 ); // char name
     packet->AddWord( 75, 30 ); // chaos point
     packet->AddByte( 208, 34 ); // mob id
-    /*for (int i=0;i<15;i++)
-    {
-        packet->AddWord( thisclient->items[i].itemid, (2*i)+36 );
-    }*/
     packet->AddWord( 705, 46 );
-    packet->AddWord( 738, 62 );
-    packet->AddWord( 2380, 64 );
+    packet->AddWord( 2380, 62 );
     packet->AddByte( 0, 66 );//0
     packet->AddByte( 0, 67 );//34
     packet->AddWord( 0, 69 );//player effect
     packet->AddWord( 43, 100 );// 199
-    packet->AddWord( 1, 102 );// 745
+    packet->AddWord( 3, 102 );// 745
     packet->AddWord( 93, 104 );//521
     packet->AddByte( 2, 107 );//84
-    packet->AddWord( thisclient->PlayerStats->MaxHP, 108 );//max hp
-    packet->AddWord( thisclient->PlayerStats->MaxMP, 110 );//max mana
-    packet->AddWord( thisclient->PlayerStats->HP, 112 );//current hp
-    packet->AddWord( thisclient->PlayerStats->MP, 114 );//current mana
+    //------------------------------------
+    packet->AddWord( 800, 108 );//max hp
+    packet->AddWord( 0, 110 );//max mana
+    packet->AddWord( 200, 112 );//current hp
+    packet->AddWord( 0, 114 );//current mana
+    //-------------------------------------
     packet->AddWord( 5, 116 );//5
-    packet->AddWord( 43, 118 );//8
-    packet->AddWord( 43, 120 );//5
-    packet->AddWord( 43, 122 );//5
-    packet->AddWord( 43, 124 );//5
-    packet->AddWord( 43, 126 );//5
-    packet->AddWord( 43, 128 );//2
-    packet->AddByte( 43, 130 );//43
+    packet->AddWord( 70, 118 );//8
+    packet->AddWord( 30, 120 );//5
+    packet->AddWord( 200, 122 );//5
+    packet->AddWord( 2047, 124 );//5
+    packet->AddWord( 2047, 126 );//5
+    packet->AddWord( 0, 128 );//2
+    packet->AddByte( 0, 130 );//43
     for (int i=0;i<29;i++)
     {
         packet->AddByte( 0xcc, 147+i );
@@ -493,7 +502,15 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
 bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
 {
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
-    int cliver;
+    unsigned short cliver;
+    unsigned short opcode;
+    memcpy( &opcode, &buff[4], 2 );
+    textcolor(14);
+    printf("[RECVPACKET] OPCODE 0x%04x - SIZE %i\n", opcode, thisclient->PSize );
+	textcolor(7);
+    for (int i=0;i<thisclient->PSize;i++)
+        printf("%02x ", buff[i]);
+    printf("\n");
     if ( P[0] + P[1] == 0x74 )
     {
         encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 116, (unsigned char*)this->CKeys );
@@ -607,8 +624,10 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     packet->AddWord( (int)otherclient->PlayerPosition->Cpos.x, 12 ); // pos x
     packet->AddWord( (int)otherclient->PlayerPosition->Cpos.y, 14 ); // pos y
     packet->AddWord( 61, 16 );
+    for (int i=0;i<12;i++)
+        packet->AddByte( 0xcc, 18+i );
     packet->AddStr( otherclient->PlayerInfo->char_name, 18 ); // char name
-    packet->AddByte( 125, 30 ); // player karma
+    packet->AddByte( 150, 30 ); // player karma
     packet->AddByte( otherclient->PlayerInfo->mobid, 34 ); // mob id
     for (int i=0;i<15;i++)
     {

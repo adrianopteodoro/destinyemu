@@ -38,6 +38,7 @@ public:
 	bool ObjectMove( CConnClient* thisclient, unsigned char* P );
 	bool SendServerMsg( CConnClient* thisclient ,char* Format, ...);
 	bool SpawnChar( CConnClient* thisclient, CConnClient* otherclient );
+	bool SendChat( CConnClient* thisclient, unsigned char* P );
 
 	// configuration things
 	int myport;
