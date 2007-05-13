@@ -40,6 +40,9 @@
 			<Add library="ws2_32" />
 			<Add directory=".\lib" />
 		</Linker>
+		<Unit filename="destinyemu_private.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Unit filename="src\commom\config.cpp" />
 		<Unit filename="src\commom\config.h" />
 		<Unit filename="src\commom\encdec.cpp" />

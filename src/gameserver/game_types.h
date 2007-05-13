@@ -18,6 +18,7 @@ struct fPoint {
 	float x;
 	float y;
 	float z; // Unused?
+	unsigned short RespawnID;
 };
 
 // Account

@@ -33,6 +33,7 @@ bool CConnServer::PacketControl( CConnClient* thisclient, unsigned char* P )
         case 0x0213: return SendToWorld( thisclient, P );
         case 0x0366: return ObjectMove( thisclient, P );
         case 0x0369: return true; // Unknow
+        case 0x0333: return SendChat( thisclient, P );
         case 0x0334: return SendServerMsg( thisclient, "Not implemented yet." ); // change srv
         case 0x0215: return SendServerMsg( thisclient, "Not implemented yet." ); // gametocharlist
         case 0x0290: return true; // teleport
