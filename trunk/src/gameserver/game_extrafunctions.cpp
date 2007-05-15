@@ -1,5 +1,19 @@
 #include "game_sockets.h"
 
+// This function gets a new clientID for a npc, monster or mob
+unsigned CConnServer::GetNewClientID( )
+{
+	for (unsigned i=1; i<=0xffff; i++)
+    {
+		if (ClientIDList[i]!=0 && time(NULL)-ClientIDList[i]>10)
+        {
+			ClientIDList[i] = 0;
+			return i;
+		}
+	}
+	return 0;
+}
+
 // calc distance
 float CConnServer::distance( fPoint pos1, fPoint pos2 )
 {

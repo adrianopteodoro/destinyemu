@@ -25,6 +25,7 @@ public:
 	void SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwrite* pak, int size, bool dothisclient );
 	bool IsVisible( CConnClient* thisclient, CConnClient* otherclient );
 	float distance( fPoint pos1, fPoint pos2 );
+	unsigned GetNewClientID( );
 
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
@@ -39,6 +40,9 @@ public:
 	bool SendServerMsg( CConnClient* thisclient ,char* Format, ...);
 	bool SpawnChar( CConnClient* thisclient, CConnClient* otherclient );
 	bool SendChat( CConnClient* thisclient, unsigned char* P );
+
+	// Lists
+	UINT ClientIDList[0x10000];	// Clients List
 
 	// configuration things
 	int myport;

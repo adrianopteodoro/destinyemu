@@ -52,9 +52,9 @@ PVOID VisibilityProcess(PVOID TS)
         pthread_mutex_unlock( &MonsterMutex );
         pthread_mutex_unlock( &DropMutex );
         #ifdef _WIN32
-        Sleep(200);
+        Sleep(20);
         #else
-        usleep(200);
+        usleep(20);
         #endif
     }
     pthread_exit(NULL);

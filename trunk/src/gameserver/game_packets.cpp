@@ -9,9 +9,8 @@ bool CConnServer::SendChat( CConnClient* thisclient, unsigned char* P )
     encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 52, (unsigned char*)this->CKeys );
 
     packet->Free();
-    for (int i=0;i<108;i++)
+    for (int i=0;i<109;i++)
         packet->AddByte( buff[i], i );
-    packet->AddWord( thisclient->PlayerSession->userid, 6 );
     SendToVisible( encdec, thisclient, packet, 108, false );
 	return true;
 }
@@ -19,21 +18,27 @@ bool CConnServer::SendChat( CConnClient* thisclient, unsigned char* P )
 bool CConnServer::ObjectMove( CConnClient* thisclient, unsigned char* P )
 {
     unsigned short sdid;
+    unsigned short dx;
+    unsigned short dy;
+    unsigned short cx;
+    unsigned short cy;
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 52, (unsigned char*)this->CKeys );
 
     memcpy( &sdid, &buff[6], 2 );
-    memcpy( (unsigned short*)&thisclient->PlayerPosition->Cpos.x, &buff[12], 2 );
-    memcpy( (unsigned short*)&thisclient->PlayerPosition->Cpos.y, &buff[14], 2 );
-    memcpy( (unsigned short*)&thisclient->PlayerPosition->Dpos.x, &buff[24], 2 );
-    memcpy( (unsigned short*)&thisclient->PlayerPosition->Dpos.y, &buff[26], 2 );
-    printf("Player ID: %04x OO: %04x POSX: %04x\n", sdid, thisclient->PlayerSession->userid, thisclient->PlayerPosition->Cpos.x);
+    memcpy( &cx, &buff[12], 2 );
+    memcpy( &cy, &buff[14], 2 );
+    memcpy( &dx, &buff[24], 2 );
+    memcpy( &dy, &buff[26], 2 );
 
     packet->Free();
-    for (int i=0;i<52;i++)
+    for (int i=0;i<53;i++)
         packet->AddByte( buff[i], i );
-    packet->AddWord( thisclient->PlayerSession->userid, 6 );
     SendToVisible( encdec, thisclient, packet, 52, false );
+    thisclient->PlayerPosition->Cpos.x = dx;
+    thisclient->PlayerPosition->Cpos.y = dy;
+    thisclient->PlayerPosition->Dpos.x = dx;
+    thisclient->PlayerPosition->Dpos.y = dy;
 	return true;
 }
 
@@ -165,7 +170,7 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
 
     packet->AddWord( 1244, 0 ); // packet size
     packet->AddWord( 276, 4 ); // packet id
-    packet->AddWord( thisclient->PlayerSession->userid, 6 ); //Player ID
+    packet->AddWord( thisclient->PlayerSession->clientid, 6 ); //Player ID
 
     while ( row = mysql_fetch_row( result ) )
     {
@@ -204,24 +209,23 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddByte( 86, 112 ); // Player Add2
     packet->AddByte( 0, 113 );
     packet->AddByte( 28, 114 ); // Player Add3
-    packet->AddByte( 1, 115 );
+    packet->AddByte( 0, 115 );
     packet->AddByte( 4, 768 ); // resist1
     packet->AddByte( 4, 769 ); // resist2
     packet->AddByte( 4, 770 ); // resist3
     packet->AddByte( 4, 771 ); // resist4
 
-    for (int a=0;a<6;a++)
+    for (int a=0;a<5;a++)
         packet->AddByte( 0xff, 760+a );
 
     for (int a=0;a<18;a++)
         packet->AddByte( 0xff, 778+a );
 
-    for (int a=0;a<200;a++)
-        packet->AddByte( 150,600+a );
+    /*for (int a=0;a<200;a++)
+        packet->AddByte( 150,600+a );*/
 
-    //packet->AddWord( 150, 742 );
-    packet->AddByte( 0xff, 774 ); // Char Move
-    packet->AddByte( 0, 775 ); // Player Size
+    //packet->AddWord( 150, 87 );
+    packet->AddByte( thisclient->PlayerSession->clientid, 774 ); // ClientID
 
     // Load Inventory Items
     for (int i=0;i<78;i++)
@@ -237,8 +241,8 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
 
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1244, this->CKeys, this->Hash1, 0 );
     thisclient->SendPacket( this->encbuf, this->encsize );
-
     SendServerMsg( thisclient, "Welcome to %s, Powered by Destiny Emulator", this->srvname.c_str() );
+
     thisclient->PlayerSession->inGame = true;
     thisclient->ready = true;
 
@@ -262,9 +266,9 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddByte( 0, 66 );//0
     packet->AddByte( 0, 67 );//34
     packet->AddWord( 0, 69 );//player effect
-    packet->AddWord( 43, 100 );// 199
-    packet->AddWord( 3, 102 );// 745
-    packet->AddWord( 93, 104 );//521
+    packet->AddWord( 43, 100 );// Level
+    packet->AddWord( 3, 102 );// Defesa
+    packet->AddWord( 93, 104 );// Atack
     packet->AddByte( 2, 107 );//84
     //------------------------------------
     packet->AddWord( 800, 108 );//max hp
@@ -272,10 +276,10 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( 200, 112 );//current hp
     packet->AddWord( 0, 114 );//current mana
     //-------------------------------------
-    packet->AddWord( 5, 116 );//5
-    packet->AddWord( 70, 118 );//8
-    packet->AddWord( 30, 120 );//5
-    packet->AddWord( 200, 122 );//5
+    packet->AddWord( 5, 116 );//str
+    packet->AddWord( 70, 118 );//int
+    packet->AddWord( 30, 120 );//dex
+    packet->AddWord( 200, 122 );//con
     packet->AddWord( 2047, 124 );//5
     packet->AddWord( 2047, 126 );//5
     packet->AddWord( 0, 128 );//2
@@ -303,7 +307,6 @@ bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
     // Packet Header
     packet->AddWord( 1824, 0 ); // packet size
     packet->AddWord( 274, 4 ); // packet id
-    packet->AddWord( thisclient->PlayerSession->userid, 6 ); //Player ID
 
     // Char List
     if(!DoSQL("SELECT name,cexp,clevel,gold, \
@@ -404,7 +407,6 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( 1824, 0 ); // packet size
     packet->AddWord( 270, 4 ); // packet id
     packet->AddWord( thisclient->PlayerSession->userid, 6 ); //Player ID
-    packet->AddWord( thisclient->PlayerSession->userid, 124 );
 
     // Char List
     if(!DoSQL("SELECT name,cexp,clevel,gold, \
@@ -493,6 +495,10 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
 
     // Char List Encryption Keys
     packet->AddStr( (char*)thisclient->KeysLogin, 1800 );
+    packet->AddWord( thisclient->PlayerSession->clientid, 120 );
+    packet->AddWord( thisclient->PlayerSession->clientid, 122 );
+    packet->AddWord( thisclient->PlayerSession->clientid, 124 );
+    packet->AddWord( thisclient->PlayerSession->clientid, 126 );
 
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1823, this->CKeys, this->Hash1, 0 );
     thisclient->SendPacket( this->encbuf, this->encsize );
@@ -586,7 +592,14 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
                     result = mysql_store_result( mysql );
                     while ( row = mysql_fetch_row( result ) )
                     {
-                        thisclient->PlayerSession->userid = 20000 + atoi(row[0]);
+                        // Assign a new id to this person
+                        thisclient->PlayerSession->clientid = GetNewClientID();
+                        if (thisclient->PlayerSession->clientid <= 0)
+                        {
+                            Log( MSG_WARNING, "User '%s'(#%i) denied access. Server is full.", thisclient->PlayerSession->username, thisclient->PlayerSession->userid );
+                            return false;
+                        }
+                        Log( MSG_INFO, "User '%s'(#%i) assigned id #%i", thisclient->PlayerSession->username, thisclient->PlayerSession->userid, thisclient->PlayerSession->clientid );
                         thisclient->PlayerSession->isLoggedIn = true;
                         thisclient->PlayerSession->accesslevel = atoi(row[1]);
                     }
@@ -618,12 +631,12 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     packet->Free();
     packet->AddWord( 172, 0 );
     packet->AddWord( 868, 4 );
-    packet->AddWord( otherclient->PlayerSession->userid, 6 );
+    packet->AddWord( 30000, 6 );
     // end header
 
     packet->AddWord( (int)otherclient->PlayerPosition->Cpos.x, 12 ); // pos x
     packet->AddWord( (int)otherclient->PlayerPosition->Cpos.y, 14 ); // pos y
-    packet->AddWord( 61, 16 );
+    packet->AddWord( otherclient->PlayerSession->clientid, 16 );
     for (int i=0;i<12;i++)
         packet->AddByte( 0xcc, 18+i );
     packet->AddStr( otherclient->PlayerInfo->char_name, 18 ); // char name
@@ -633,28 +646,28 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     {
         packet->AddWord( otherclient->items[i].itemid, (2*i)+36 );
     }
-    packet->AddByte( 0xff, 66 );
-    packet->AddByte( 0x22, 67 );
+    packet->AddWord( otherclient->PlayerSession->clientid, 66 );
     packet->AddWord( 00, 69 );//Player Effect
-    packet->AddWord( 199, 100 );
-    packet->AddWord( 745, 102 );
-    packet->AddWord( 521, 104 );
+    packet->AddWord( otherclient->PlayerInfo->Level, 100 );
+    packet->AddWord( otherclient->PlayerStats->Attack_Power, 102 );
+    packet->AddWord( otherclient->PlayerStats->Defense, 104 );
     packet->AddWord( 84, 107 );
     packet->AddWord( otherclient->PlayerStats->MaxHP, 108 );//max hp
     packet->AddWord( otherclient->PlayerStats->MaxMP, 110 );//max mana
     packet->AddWord( otherclient->PlayerStats->HP, 112 );//current hp
     packet->AddWord( otherclient->PlayerStats->MP, 114 );//current mana
-    packet->AddWord( 5, 116 );
-    packet->AddWord( 8, 118 );
-    packet->AddWord( 5, 120 );
-    packet->AddWord( 5, 122 );
+    packet->AddWord( otherclient->PlayerStats->Str, 116 );
+    packet->AddWord( otherclient->PlayerStats->Int, 118 );
+    packet->AddWord( otherclient->PlayerStats->Dex, 120 );
+    packet->AddWord( otherclient->PlayerStats->Con, 122 );
     packet->AddWord( 2, 128 );
-    packet->AddWord( 43, 130 );
+    packet->AddWord( 0, 130 );
 
     for (int i=0;i<29;i++)
     {
         packet->AddByte( 0xcc, 147+i );
     }
+    packet->AddByte( 0x00, 172 );
 
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, 0 );
     thisclient->SendPacket( this->encbuf, this->encsize );
