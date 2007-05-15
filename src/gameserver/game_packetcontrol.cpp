@@ -5,21 +5,23 @@ bool CConnServer::PacketControl( CConnClient* thisclient, unsigned char* P )
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, thisclient->PSize, (unsigned char*)this->CKeys );
     unsigned short opcode;
+    unsigned short cid;
     memcpy( &opcode, &buff[4], 2 );
+    memcpy( &cid, &buff[6], 2 );
     if ( thisclient->PSize != 52 )
     {
         FILE *fh = NULL;
         fh = fopen( ".\\logs\\recv_packets.log", "a+" );
         if ( fh != NULL )
         {
-		   fprintf( fh, "[RECVPACKET]\nOPCODE: 0x%04x\nSIZE: %i\nSID: %08u\nDATA:\n", opcode, thisclient->PSize, sock );
+		   fprintf( fh, "[RECVPACKET]\nCLIENTID: %i\nOPCODE: 0x%04x\nSIZE: %i\nSID: %08u\nDATA:\n", cid, opcode, thisclient->PSize, sock );
 		   for ( int i=0; i<thisclient->PSize; ++i )
                fprintf( fh, "%02x ", buff[i] );
            fprintf( fh, "\n\n" );
 	       fclose( fh );
 	    }
 	    textcolor(14);
-	    printf("[RECVPACKET] OPCODE 0x%04x - SIZE %i\n", opcode, thisclient->PSize );
+	    printf("[RECVPACKET] OPCODE 0x%04x - CLIENTID %i - SIZE %i\n", opcode, cid, thisclient->PSize );
 	    textcolor(7);
 		for ( int i=0; i<thisclient->PSize; ++i )
             printf( "%02x ", buff[i] );
