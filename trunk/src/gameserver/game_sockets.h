@@ -30,7 +30,7 @@ public:
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
 	bool CheckLogin( CConnClient* thisclient, unsigned char* P );
-	bool PacketControl( CConnClient* thisclient, unsigned char* P );
+	bool PacketControl( CConnClient* thisclient, int size, unsigned char* P );
 	bool SendCharList( CConnClient* thisclient, unsigned char* P );
 	bool ResendCharList( CConnClient* thisclient, unsigned char* P );
 	bool CharCreate( CConnClient* thisclient, unsigned char* P );

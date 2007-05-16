@@ -5,12 +5,9 @@ bufwrite* packet = new bufwrite();
 
 bool CConnServer::SendChat( CConnClient* thisclient, unsigned char* P )
 {
-    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
-    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 52, (unsigned char*)this->CKeys );
-
     packet->Free();
     for (int i=0;i<109;i++)
-        packet->AddByte( buff[i], i );
+        packet->AddByte( P[i], i );
     SendToVisible( encdec, thisclient, packet, 108, false );
 	return true;
 }
@@ -22,18 +19,16 @@ bool CConnServer::ObjectMove( CConnClient* thisclient, unsigned char* P )
     unsigned short dy;
     unsigned short cx;
     unsigned short cy;
-    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
-    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 52, (unsigned char*)this->CKeys );
 
-    memcpy( &sdid, &buff[6], 2 );
-    memcpy( &cx, &buff[12], 2 );
-    memcpy( &cy, &buff[14], 2 );
-    memcpy( &dx, &buff[24], 2 );
-    memcpy( &dy, &buff[26], 2 );
+    memcpy( &sdid, &P[6], 2 );
+    memcpy( &cx, &P[12], 2 );
+    memcpy( &cy, &P[14], 2 );
+    memcpy( &dx, &P[24], 2 );
+    memcpy( &dy, &P[26], 2 );
 
     packet->Free();
     for (int i=0;i<53;i++)
-        packet->AddByte( buff[i], i );
+        packet->AddByte( P[i], i );
     SendToVisible( encdec, thisclient, packet, 52, false );
     thisclient->PlayerPosition->Cpos.x = dx;
     thisclient->PlayerPosition->Cpos.y = dy;
@@ -48,10 +43,8 @@ bool CConnServer::CharDelete( CConnClient* thisclient, unsigned char* P )
 	MYSQL_ROW row;
     char delcharname[15];
     char delpassword[12];
-    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
-    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 44, (unsigned char*)this->CKeys );
-    memcpy( delcharname, &buff[16], 15 );
-    memcpy( delpassword, &buff[32], 12 );
+    memcpy( delcharname, &P[16], 15 );
+    memcpy( delpassword, &P[32], 12 );
 
     if(!DoSQL( "SELECT * FROM accounts WHERE username='%s' AND password='%s'", thisclient->PlayerSession->username, delpassword ))
         return false;
@@ -73,20 +66,18 @@ bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
     MYSQL_RES *result;
 	MYSQL_ROW row;
     char newcharname[15];
-    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
-    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 36, (unsigned char*)this->CKeys );
-    memcpy( newcharname, &buff[16], 15 );
+    memcpy( newcharname, &P[16], 15 );
     if(!DoSQL( "SELECT name FROM characters WHERE name='%s'", newcharname ))
         return false;
     result = mysql_store_result( mysql );
     if (mysql_num_rows( result ) == 0)
     {
-        switch (buff[32])
+        switch (P[32])
         {
             //transknight
             case 0:
             DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
-            VALUES ('%s', '%s', 1, 50, 10, 8, 4, 7, 6, 1000, %i, 0)", newcharname, thisclient->PlayerSession->username, buff[12]);
+            VALUES ('%s', '%s', 1, 50, 10, 8, 4, 7, 6, 1000, %i, 0)", newcharname, thisclient->PlayerSession->username, P[12]);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1101)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1113)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1125)", newcharname);
@@ -102,7 +93,7 @@ bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
             //foema
             case 1:
             DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
-            VALUES ('%s', '%s', 11, 40, 30, 5, 8, 5, 5, 1000, %i, 1)", newcharname, thisclient->PlayerSession->username, buff[12]);
+            VALUES ('%s', '%s', 11, 40, 30, 5, 8, 5, 5, 1000, %i, 1)", newcharname, thisclient->PlayerSession->username, P[12]);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1254)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1266)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1278)", newcharname);
@@ -118,7 +109,7 @@ bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
             // beastmaster
             case 2:
             DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
-            VALUES ('%s', '%s', 21, 40, 30, 6, 6, 9, 5, 1000, %i, 2)", newcharname, thisclient->PlayerSession->username, buff[12]);
+            VALUES ('%s', '%s', 21, 40, 30, 6, 6, 9, 5, 1000, %i, 2)", newcharname, thisclient->PlayerSession->username, P[12]);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1416)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1419)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1422)", newcharname);
@@ -134,7 +125,7 @@ bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
             // hunter
             case 3:
             DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
-            VALUES ('%s', '%s', 31, 40, 30, 8, 9, 13, 6, 1000, %i, 3)", newcharname, thisclient->PlayerSession->username, buff[12]);
+            VALUES ('%s', '%s', 31, 40, 30, 8, 9, 13, 6, 1000, %i, 3)", newcharname, thisclient->PlayerSession->username, P[12]);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1566)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1569)", newcharname);
             DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1572)", newcharname);
@@ -158,13 +149,11 @@ bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
 
 bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
 {
-    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
-    encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 36, (unsigned char*)this->CKeys );
     MYSQL_RES *result;
 	MYSQL_ROW row;
     packet->Free();
 
-    if(!DoSQL( "SELECT name FROM characters WHERE uid='%s' AND posid='%i'", thisclient->PlayerSession->username, buff[12] ))
+    if(!DoSQL( "SELECT name FROM characters WHERE uid='%s' AND posid='%i'", thisclient->PlayerSession->username, P[12] ))
         return false;
     result = mysql_store_result( mysql );
 
@@ -510,13 +499,6 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     unsigned short cliver;
     unsigned short opcode;
-    memcpy( &opcode, &buff[4], 2 );
-    textcolor(14);
-    printf("[RECVPACKET] OPCODE 0x%04x - SIZE %i\n", opcode, thisclient->PSize );
-	textcolor(7);
-    for (int i=0;i<thisclient->PSize;i++)
-        printf("%02x ", buff[i]);
-    printf("\n");
     if ( P[0] + P[1] == 0x74 )
     {
         encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 116, (unsigned char*)this->CKeys );
