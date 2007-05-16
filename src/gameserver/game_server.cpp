@@ -189,5 +189,19 @@ bool CConnServer::OnReceivePacket( CClientSocket* thisclient, unsigned char* P )
 	{
 	    case 0x74: return CheckLogin    ( (CConnClient*)thisclient, P );
     }
-	return PacketControl   ( (CConnClient*)thisclient, P );
+    if ( P[0] != 0x74 || P[4] != 0x74 )
+    {
+        int packet_size = 0;
+        int lastbyte = 0;
+        int DecLen = 0;
+        while (thisclient->PSize != lastbyte)
+        {
+            memcpy( &packet_size, &P[lastbyte], 2 );
+            unsigned char* buff = (unsigned char*)malloc(packet_size);
+            DecLen = encdec->WYD2_Decrypt(buff, &P[lastbyte], packet_size, this->CKeys);
+            lastbyte = lastbyte + packet_size;
+            return PacketControl   ( (CConnClient*)thisclient, packet_size, buff );
+        }
+    }
+    return true;
 }

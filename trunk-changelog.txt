@@ -26,3 +26,7 @@ DESTINY EMULATOR SVN CHANGE-LOG
 
 07/05/2007
     - Added: Dev-Cpp Project File, to people using Dev-Cpp IDE to compile GNU C++ Projects. [Snaity]
+
+16/07/2007
+    - Solved: Packet Reception, server is receiving some part of packet incorretly and 2 or more packets in one receive data. [Snaity]
+    - Fixed: You can see now other players walking in the world, but its in testing. [Snaity]
