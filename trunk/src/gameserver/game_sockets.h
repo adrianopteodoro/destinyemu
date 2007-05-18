@@ -26,6 +26,7 @@ public:
 	bool IsVisible( CConnClient* thisclient, CConnClient* otherclient );
 	float distance( fPoint pos1, fPoint pos2 );
 	unsigned GetNewClientID( );
+	void SendToAll( CEncDec* encdec, bufwrite* pak, int size );
 
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
@@ -40,6 +41,12 @@ public:
 	bool SendServerMsg( CConnClient* thisclient ,char* Format, ...);
 	bool SpawnChar( CConnClient* thisclient, CConnClient* otherclient );
 	bool SendChat( CConnClient* thisclient, unsigned char* P );
+	bool ChangeInventory( CConnClient* thisclient, unsigned char* P );
+	bool CConnServer::packetCommand( CConnClient* thisclient, unsigned char* P );
+
+	// GM Commands Functions
+	bool pakGMNotice( CConnClient* thisclient, unsigned char* P );
+	bool pakGMTele( CConnClient* thisclient, unsigned char* P, int x, int y );
 
 	// Lists
 	UINT ClientIDList[0x10000];	// Clients List
@@ -67,6 +74,7 @@ public:
 
 extern class CConnServer* GServer;
 extern class CEncDec* encdec;
+extern class bufwrite* packet;
 extern pthread_mutex_t MainMutex, PlayerMutex, MonsterMutex, DropMutex;
 
 PVOID VisibilityProcess( PVOID TS );

@@ -1,5 +1,16 @@
 #include "game_sockets.h"
 
+void CConnServer::SendToAll( CEncDec* encdec, bufwrite* pak, int size )
+{
+    for(UINT i=0;i<ClientList.size();i++)
+    {
+        CConnClient* otherclient = (CConnClient*) ClientList.at( i );
+		if (otherclient->PlayerSession->inGame)
+            this->encsize = encdec->WYD2_Encrypt( this->encbuf, pak->buff(), size, this->CKeys, this->Hash1, 0 );
+            otherclient->SendPacket( this->encbuf, this->encsize );
+	}
+}
+
 // This function gets a new clientID for a npc, monster or mob
 unsigned CConnServer::GetNewClientID( )
 {
@@ -31,7 +42,7 @@ void CConnServer::SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwr
     for(unsigned j=0; j<thisclient->VisibleClients.size(); j++)
     {
 		CConnClient* otherclient = thisclient->VisibleClients.at( j );
-		this->encsize = encdec->WYD2_Encrypt( this->encbuf, pak->buff(), pak->psize(), this->CKeys, this->Hash1, 0 );
+		this->encsize = encdec->WYD2_Encrypt( this->encbuf, pak->buff(), size, this->CKeys, this->Hash1, 0 );
 		otherclient->SendPacket( this->encbuf, this->encsize );
 	}
 	if(dothisclient)

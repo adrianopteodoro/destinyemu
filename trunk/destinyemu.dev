@@ -1,7 +1,7 @@
 [Project]
 FileName=destinyemu.dev
 Name=destinyemu
-UnitCount=26
+UnitCount=27
 Type=1
 Ver=1
 ObjFiles=
@@ -306,4 +306,14 @@ OriginalFilename=
 ProductName=
 ProductVersion=
 AutoIncBuildNr=0
+
+[Unit27]
+FileName=src\gameserver\game_commands.cpp
+CompileCpp=1
+Folder=gameserver
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 
