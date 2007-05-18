@@ -97,6 +97,10 @@ void Log( enum msg_type flag, char *Format, ... )
 			textcolor(LIGHTRED);
 			printf("[LOADING]: ");
 			break;
+        case MSG_GMACTION:
+			textcolor(MAGENTA);
+			printf("[GM ACTION]: ");
+			break;
 	}
 
 	textcolor(LIGHTGRAY);

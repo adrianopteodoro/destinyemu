@@ -3,6 +3,18 @@
 CEncDec* encdec = new CEncDec();
 bufwrite* packet = new bufwrite();
 
+bool CConnServer::ChangeInventory( CConnClient* thisclient, unsigned char* P )
+{
+    packet->Free();
+    for (int i=0;i<21;i++)
+        packet->AddByte( P[i], i );
+    //DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
+            VALUES ('%s', '%s', 1, 50, 10, 8, 4, 7, 6, 1000, %i, 0)", newcharname, thisclient->PlayerSession->username, P[12]);
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 20, this->CKeys, this->Hash1, 0 );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+	return true;
+}
+
 bool CConnServer::SendChat( CConnClient* thisclient, unsigned char* P )
 {
     packet->Free();
@@ -242,23 +254,25 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( 30000, 6 );
     // end header
 
-    packet->AddWord( 2177, 12 ); // pos x
-    packet->AddWord( 2114, 14 ); // pos y
+    packet->AddWord( 2104, 12 ); // pos x
+    packet->AddWord( 2116, 14 ); // pos y
     packet->AddWord( 1390, 16 );
     for (int i=0;i<12;i++)
         packet->AddByte( 0xcc, 18+i );
-    packet->AddStr( "Meio_Orc", 18 ); // char name
+    packet->AddStr( "NPC_COBAIA", 18 ); // char name
     packet->AddWord( 75, 30 ); // chaos point
-    packet->AddByte( 208, 34 ); // mob id
-    packet->AddWord( 705, 46 );
-    packet->AddWord( 2380, 62 );
+    packet->AddByte( 1, 34 ); // mob id
+
+    //packet->AddWord( 705, 46 );
+    //packet->AddWord( 2380, 62 );
     packet->AddByte( 0, 66 );//0
     packet->AddByte( 0, 67 );//34
     packet->AddWord( 0, 69 );//player effect
     packet->AddWord( 43, 100 );// Level
     packet->AddWord( 3, 102 );// Defesa
     packet->AddWord( 93, 104 );// Atack
-    packet->AddByte( 2, 107 );//84
+    packet->AddByte( 1, 106 );// mobcode
+    packet->AddByte( 1, 107 );//84
     //------------------------------------
     packet->AddWord( 800, 108 );//max hp
     packet->AddWord( 0, 110 );//max mana
@@ -626,14 +640,20 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     packet->AddByte( otherclient->PlayerInfo->mobid, 34 ); // mob id
     for (int i=0;i<15;i++)
     {
-        packet->AddWord( otherclient->items[i].itemid, (2*i)+36 );
+        packet->AddWord( otherclient->items[i].itemid |
+        otherclient->items[i].add1 |
+        otherclient->items[i].add2 |
+        otherclient->items[i].add3 |
+        otherclient->items[i].val1 |
+        otherclient->items[i].val2 |
+        otherclient->items[i].val3, (2*i)+36 );
     }
     packet->AddWord( otherclient->PlayerSession->clientid, 66 );
     packet->AddWord( 00, 69 );//Player Effect
     packet->AddWord( otherclient->PlayerInfo->Level, 100 );
     packet->AddWord( otherclient->PlayerStats->Attack_Power, 102 );
     packet->AddWord( otherclient->PlayerStats->Defense, 104 );
-    packet->AddWord( 84, 107 );
+    packet->AddByte( 84, 107 );
     packet->AddWord( otherclient->PlayerStats->MaxHP, 108 );//max hp
     packet->AddWord( otherclient->PlayerStats->MaxMP, 110 );//max mana
     packet->AddWord( otherclient->PlayerStats->HP, 112 );//current hp

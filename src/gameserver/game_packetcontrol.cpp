@@ -28,8 +28,13 @@ bool CConnServer::PacketControl( CConnClient* thisclient, int size, unsigned cha
         case 0x0366: return ObjectMove( thisclient, P );
         case 0x0369: return true; // Unknow
         case 0x0333: return SendChat( thisclient, P );
-        case 0x0334: return SendServerMsg( thisclient, "Not implemented yet." ); // change srv
+        case 0x0334: return packetCommand( thisclient, P );
         case 0x0215: return SendServerMsg( thisclient, "Not implemented yet." ); // gametocharlist
         case 0x0290: return true; // teleport
+        case 0x0376: return ChangeInventory( thisclient, P );
+        case 0x03a0: return true;
+        default:
+            Log( MSG_WARNING, "Received Unknow OPCODE: 0x%04x", opcode );
+        break;
     }
 }

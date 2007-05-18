@@ -16,7 +16,8 @@ enum msg_type {
 	MSG_FATALERROR,
 	MSG_HACK,
 	MSG_LOAD,
-	MSG_SDEBUG
+	MSG_SDEBUG,
+	MSG_GMACTION
 };
 
 // -----------------------------------------------------------------------------------------
