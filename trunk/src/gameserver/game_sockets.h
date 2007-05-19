@@ -27,6 +27,7 @@ public:
 	float distance( fPoint pos1, fPoint pos2 );
 	unsigned GetNewClientID( );
 	void SendToAll( CEncDec* encdec, bufwrite* pak, int size );
+	bool LoadConfigs();
 
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
@@ -58,6 +59,7 @@ public:
 	int droprate;
 	int goldrate;
 	int goldchance;
+	int cliversion;
 	std::string myhost;
 	std::string myuser;
 	std::string mydb;

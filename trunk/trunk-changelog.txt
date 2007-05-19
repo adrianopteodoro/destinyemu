@@ -30,3 +30,7 @@ DESTINY EMULATOR SVN CHANGE-LOG
 16/07/2007
     - Solved: Packet Reception, server is receiving some part of packet incorretly and 2 or more packets in one receive data. [Snaity]
     - Fixed: You can see now other players walking in the world, but its in testing. [Snaity]
+
+18/07/2007
+    - Added: GM Comands Functions, and added a /notice <msg> GM Command, this command send a notice to all connected players and only acesslevel > 90 account can use it. [Snaity]
+    - Added: Client Version Block, you now can set it on config file. [Snaity]
