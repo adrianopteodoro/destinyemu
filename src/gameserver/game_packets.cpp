@@ -534,6 +534,8 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
     MYSQL_RES *result;
 	MYSQL_ROW row;
     bufwrite *packet = new bufwrite();
+    if(this->cliversion == cliver)
+    {
 	if(!DoSQL( "SELECT username,password,active,online FROM accounts WHERE username='%s'", thisclient->PlayerSession->username ))
         return false;
     result = mysql_store_result( mysql );
@@ -603,6 +605,11 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
                 }
             }
         }
+    }
+    }
+    else
+    {
+        SendServerMsg( thisclient, "Wrong Client Version, Download Correct Version." );
     }
 	return true;
 }

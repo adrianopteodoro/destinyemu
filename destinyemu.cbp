@@ -60,7 +60,9 @@
 		<Unit filename="src\gameserver\game_commands.cpp" />
 		<Unit filename="src\gameserver\game_extrafunctions.cpp" />
 		<Unit filename="src\gameserver\game_functions.cpp" />
+		<Unit filename="src\gameserver\game_loadfiles.cpp" />
 		<Unit filename="src\gameserver\game_mainprocess.cpp" />
+		<Unit filename="src\gameserver\game_monster.cpp" />
 		<Unit filename="src\gameserver\game_packetcontrol.cpp" />
 		<Unit filename="src\gameserver\game_packets.cpp" />
 		<Unit filename="src\gameserver\game_player.cpp" />
