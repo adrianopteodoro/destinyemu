@@ -18,7 +18,7 @@ public:
     // class functions
     bool LoadLib();
     int WYD2_Decrypt( unsigned char* Dest, unsigned char* Src, int Len, unsigned char* ClientKeys );
-    int WYD2_Encrypt( unsigned char* Dest, unsigned char* Src, unsigned short Len, unsigned char* EncDecKeys, unsigned long Hash1, unsigned long CurTimeStamp );
+    int WYD2_Encrypt( unsigned char* Dest, unsigned char* Src, unsigned short Len, unsigned char* EncDecKeys, unsigned long Hash1, time_t CurTimeStamp );
     unsigned long WYD2_GetHash1( unsigned char*Keys, unsigned long dwCounter );
 };
 

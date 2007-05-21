@@ -8,9 +8,8 @@ bool CConnServer::ChangeInventory( CConnClient* thisclient, unsigned char* P )
     packet->Free();
     for (int i=0;i<21;i++)
         packet->AddByte( P[i], i );
-    //DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
-            VALUES ('%s', '%s', 1, 50, 10, 8, 4, 7, 6, 1000, %i, 0)", newcharname, thisclient->PlayerSession->username, P[12]);
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 20, this->CKeys, this->Hash1, 0 );
+    time(&this->curtime);
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 20, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -240,7 +239,8 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
         packet->AddByte( thisclient->items[i].val3, (8*i)+123 );
     }
 
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1244, this->CKeys, this->Hash1, 0 );
+    time(&this->curtime);
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1244, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
     SendServerMsg( thisclient, "Welcome to %s, Powered by Destiny Emulator", this->srvname.c_str() );
 
@@ -267,11 +267,11 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     //packet->AddWord( 2380, 62 );
     packet->AddByte( 0, 66 );//0
     packet->AddByte( 0, 67 );//34
-    packet->AddWord( 0, 69 );//player effect
+    packet->AddWord( 1, 69 );//player effect
     packet->AddWord( 43, 100 );// Level
     packet->AddWord( 3, 102 );// Defesa
     packet->AddWord( 93, 104 );// Atack
-    packet->AddByte( 1, 106 );// mobcode
+    packet->AddByte( 20, 106 );// mobcode
     packet->AddByte( 1, 107 );//84
     //------------------------------------
     packet->AddWord( 800, 108 );//max hp
@@ -293,7 +293,8 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     }
     packet->AddByte( 0x00, 172 );
 
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, 0 );
+    time(&this->curtime);
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 
 	return true;
@@ -393,7 +394,8 @@ bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
         charnum++;
     }
 
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 756, this->CKeys, this->Hash1, 0 );
+    time(&this->curtime);
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 756, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -503,7 +505,8 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( thisclient->PlayerSession->clientid, 124 );
     packet->AddWord( thisclient->PlayerSession->clientid, 126 );
 
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1823, this->CKeys, this->Hash1, 0 );
+    time(&this->curtime);
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1823, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -513,6 +516,7 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     unsigned short cliver;
     unsigned short opcode;
+    time_t rtime;
     if ( P[0] + P[1] == 0x74 )
     {
         encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 116, (unsigned char*)this->CKeys );
@@ -616,6 +620,7 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
 
 bool CConnServer::SendServerMsg( CConnClient* thisclient ,char* Format, ...)
 {
+    time(&this->curtime);
     char Buffer[2000];
 	va_list ap; va_start( ap, Format );
 	vsprintf( Buffer, Format, ap );
@@ -625,12 +630,13 @@ bool CConnServer::SendServerMsg( CConnClient* thisclient ,char* Format, ...)
     packet->AddByte( 0x01, 4 );
     packet->AddByte( 0x01, 5 );
     packet->AddStr( Buffer, 12 );
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 108, this->CKeys, this->Hash1, 0 );
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 108, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 }
 
 bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
 {
+    time(&this->curtime);
     packet->Free();
     packet->AddWord( 172, 0 );
     packet->AddWord( 868, 4 );
@@ -660,6 +666,7 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     packet->AddWord( otherclient->PlayerInfo->Level, 100 );
     packet->AddWord( otherclient->PlayerStats->Attack_Power, 102 );
     packet->AddWord( otherclient->PlayerStats->Defense, 104 );
+    packet->AddByte( 0, 106 );
     packet->AddByte( 84, 107 );
     packet->AddWord( otherclient->PlayerStats->MaxHP, 108 );//max hp
     packet->AddWord( otherclient->PlayerStats->MaxMP, 110 );//max mana
@@ -678,6 +685,39 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     }
     packet->AddByte( 0x00, 172 );
 
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, 0 );
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+}
+
+bool CConnServer::SendNPCSellItems( CConnClient* thisclient, unsigned char* P )
+{
+    packet->Free();
+    packet->AddByte( 236, 0 );
+    packet->AddByte( 0x7C, 4 );
+    packet->AddByte( 0x01, 5 );
+    packet->AddWord( 30000, 6 );
+    packet->AddWord( 1, 12 );
+    packet->AddWord( 698, 16 );
+    packet->AddWord( 699, 22 );
+    packet->AddWord( 496, 28 );
+    packet->AddWord( 497, 34 );
+    packet->AddWord( 410, 48 );
+    packet->AddWord( 411, 54 );
+    packet->AddWord( 1764, 60 );
+    for(int i=0;i<8;i++)
+    {
+        packet->AddByte( 0xcc, 48+i );
+    }
+    for(int i=0;i<16;i++)
+    {
+        packet->AddByte( 0xcc, 88+i );
+    }
+    for(int i=0;i<8;i++)
+    {
+        packet->AddByte( 0xcc, 160+i );
+    }
+    packet->AddByte( 14, 232 );
+    time(&this->curtime);
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 236, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 }
