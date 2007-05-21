@@ -43,11 +43,13 @@ public:
 	bool SpawnChar( CConnClient* thisclient, CConnClient* otherclient );
 	bool SendChat( CConnClient* thisclient, unsigned char* P );
 	bool ChangeInventory( CConnClient* thisclient, unsigned char* P );
-	bool CConnServer::packetCommand( CConnClient* thisclient, unsigned char* P );
+	bool packetCommand( CConnClient* thisclient, unsigned char* P );
+	bool SendNPCSellItems( CConnClient* thisclient, unsigned char* P );
 
 	// GM Commands Functions
 	bool pakGMNotice( CConnClient* thisclient, unsigned char* P );
 	bool pakGMTele( CConnClient* thisclient, unsigned char* P, int x, int y );
+	bool pakGMSpawn( CConnClient* thisclient, unsigned char* P, int mobcode, int mobid, char* name );
 
 	// Lists
 	UINT ClientIDList[0x10000];	// Clients List
@@ -67,6 +69,9 @@ public:
 	std::string srvname;
 	char* versionfile;
 	char* datfile;
+
+	//timestamp
+	time_t curtime;
 
     bool ServerOnline;
     pthread_t WorldThread[3];

@@ -35,7 +35,7 @@ int CEncDec::WYD2_Decrypt( unsigned char* Dest, unsigned char* Src, int Len, uns
     return PDecrypt( Dest, Src, Len, ClientKeys );
 }
 
-int CEncDec::WYD2_Encrypt( unsigned char* Dest, unsigned char* Src, unsigned short Len, unsigned char* EncDecKeys, unsigned long Hash1, unsigned long CurTimeStamp )
+int CEncDec::WYD2_Encrypt( unsigned char* Dest, unsigned char* Src, unsigned short Len, unsigned char* EncDecKeys, unsigned long Hash1, time_t CurTimeStamp )
 {
     return PEncrypt( Dest, Src, Len, EncDecKeys, Hash1, CurTimeStamp );
 }
