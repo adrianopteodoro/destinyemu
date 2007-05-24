@@ -6,6 +6,7 @@ bool CConnServer::packetCommand( CConnClient* thisclient, unsigned char* P )
 {
     char* command = strtok( (char*)&P[12] , " ");
     if (command==NULL) return true;
+    //Log( MSG_INFO,"Command: %s", command);
     if (strcmp(command, "notice")==0)
     {
         if(90 > thisclient->PlayerSession->accesslevel)
@@ -48,6 +49,24 @@ bool CConnServer::packetCommand( CConnClient* thisclient, unsigned char* P )
         Log( MSG_GMACTION, "%s: /spawn %i %i %s" , thisclient->PlayerInfo->char_name, mobcode, mobid, name );
         return pakGMSpawn( thisclient, P, mobcode, mobid, name );
     }
+    if (strcmp(command, "time")==0)
+    {
+        time_t rawtime;
+        struct tm * timeinfo;
+        time(&rawtime);
+        timeinfo = localtime ( &rawtime );
+        SendServerMsg( thisclient, "%s", asctime(timeinfo));
+        return true;
+    }
+    if (strcmp(command, "srv")==0)
+    {
+        char* tmp;
+        if ((tmp = strtok( (char*)&P[28], " "))==NULL) return true; char* va1 = tmp;
+        if ((tmp = strtok(NULL, " "))==NULL) return true; char* va2 = tmp;
+        if ((tmp = strtok(NULL, " "))==NULL) return true; char* va3 = tmp;
+        Log( MSG_GMACTION, "%s: /srv %s %s %s" , thisclient->PlayerInfo->char_name, va1, va2, va3 );
+        return true;
+    }
     return true;
 }
 
@@ -71,14 +90,29 @@ bool CConnServer::pakGMNotice( CConnClient* thisclient, unsigned char* P )
 
 bool CConnServer::pakGMTele( CConnClient* thisclient, unsigned char* P, int x, int y )
 {
-    time(&this->curtime);
     packet->Free();
     packet->AddByte( 92, 0 );
     packet->AddByte( 0x36, 4 );
     packet->AddByte( 0x03, 5 );
     packet->AddWord( thisclient->PlayerSession->clientid, 6 );
-    packet->AddWord( 255, 12 );
-    packet->AddWord( 1151, 14 );
+    packet->AddWord( 27259, 12 );
+    packet->AddWord( 1942, 14 );
+    packet->AddWord( 124, 16 );
+    packet->AddWord( 2456, 20 );
+    packet->AddWord( 2001, 22 );
+    packet->AddWord( 2456, 24 );
+    packet->AddWord( 2001, 26 );
+    packet->AddWord( 44, 28 );
+    packet->AddWord( 1305, 30 );
+    packet->AddWord( 255, 32 );
+    packet->AddWord( 25000, 36 );
+    packet->AddWord( 5796, 40 );
+    packet->AddWord( 3145, 42 );
+    packet->AddWord( 1305, 44 );
+    packet->AddWord( 124, 48 );
+    packet->AddWord( 65535, 50 );
+
+    this->curtime = clock();
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 92, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
     return true;
@@ -132,7 +166,6 @@ bool CConnServer::pakGMSpawn( CConnClient* thisclient, unsigned char* P, int mob
     }
     packet->AddByte( 0x00, 172 );
 
-    time(&this->curtime);
     SendToVisible( encdec, thisclient, packet, 172, true );
     npcid++;
     return true;
