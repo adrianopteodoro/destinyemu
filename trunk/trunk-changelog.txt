@@ -34,3 +34,6 @@ DESTINY EMULATOR SVN CHANGE-LOG
 18/05/2007
     - Added: GM Comands Functions, and added a /notice <msg> GM Command, this command send a notice to all connected players and only acesslevel > 90 account can use it. [Snaity]
     - Added: Client Version Block, you now can set it on config file. [Snaity]
+
+23/05/2007
+    - Added: GM Command /spawn <mobcode> <mobid> <mobname> for NPC/MONSTERS test. [Snaity]
