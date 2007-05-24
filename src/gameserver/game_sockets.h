@@ -71,7 +71,7 @@ public:
 	char* datfile;
 
 	//timestamp
-	time_t curtime;
+	clock_t curtime;
 
     bool ServerOnline;
     pthread_t WorldThread[3];
