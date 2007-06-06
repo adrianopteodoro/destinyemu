@@ -29,7 +29,6 @@
 			<Add option="lib/libmysql.a" />
 			<Add option="lib/libxml2.a" />
 			<Add option="lib/libpthreadGC.a" />
-			<Add option="lib/libsqlite3.a" />
 			<Add library="ws2_32" />
 			<Add directory=".\lib" />
 		</Linker>

@@ -1,6 +1,16 @@
 #ifndef _GAME_TYPES_H_
 #define _GAME_TYPES_H_
 
+struct CLanguage
+{
+    std::string id_invalid;
+    std::string id_online;
+    std::string id_notactive;
+    std::string pwd_invalid;
+    std::string name_alreadyexist;
+    std::string wrong_cliver;
+};
+
 struct CTime
 {
 	clock_t lastAttackTime;

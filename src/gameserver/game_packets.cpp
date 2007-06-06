@@ -74,7 +74,7 @@ bool CConnServer::CharDelete( CConnClient* thisclient, unsigned char* P )
     }
     else
     {
-        return SendServerMsg( thisclient, "Invalid password, try again." );
+        return SendServerMsg( thisclient, &lang->pwd_invalid[0] );
     }
 }
 
@@ -96,7 +96,7 @@ bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
     }
     else
     {
-        return SendServerMsg( thisclient, "This character name already in use." );
+        return SendServerMsg( thisclient, &lang->name_alreadyexist[0] );
     }
 }
 
@@ -184,7 +184,6 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     this->curtime = clock();
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1244, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
-    SendServerMsg( thisclient, "Welcome to %s, Powered by Destiny Emulator", this->srvname.c_str() );
 
     thisclient->PlayerSession->inGame = true;
     thisclient->ready = true;
@@ -502,7 +501,7 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
         }
         else
         {
-            return SendServerMsg( thisclient, "Invalid ID, check your ID." );
+            return SendServerMsg( thisclient, &lang->id_invalid[0], thisclient->PlayerSession->username );
         }
     }
     else
@@ -511,7 +510,7 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
             return false;
         result = mysql_store_result( mysql );
         if (mysql_num_rows( result ) == 0) {
-            return SendServerMsg( thisclient, "Invalid Password, please check your Password." );
+            return SendServerMsg( thisclient, &lang->pwd_invalid[0] );
         }
         else
         {
@@ -519,7 +518,7 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
                 return false;
             result = mysql_store_result( mysql );
             if (mysql_num_rows( result ) == 0) {
-                return SendServerMsg( thisclient, "This ID is not active, please check it on website." );
+                return SendServerMsg( thisclient, &lang->id_notactive[0], thisclient->PlayerSession->username );
             }
             else
             {
@@ -527,7 +526,7 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
                     return false;
                 result = mysql_store_result( mysql );
                 if (mysql_num_rows( result ) == 0) {
-                    return SendServerMsg( thisclient, "This ID is online, please try other ID." );
+                    return SendServerMsg( thisclient, &lang->id_online[0], thisclient->PlayerSession->username );
                 }
                 else
                 {
@@ -537,6 +536,7 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
                     while ( row = mysql_fetch_row( result ) )
                     {
                         // Assign a new id to this person
+                        thisclient->PlayerSession->userid = atoi(row[0]);
                         thisclient->PlayerSession->clientid = GetNewClientID();
                         if (thisclient->PlayerSession->clientid <= 0)
                         {

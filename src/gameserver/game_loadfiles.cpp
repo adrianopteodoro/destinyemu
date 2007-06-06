@@ -112,6 +112,7 @@ bool CConnServer::LoadCreateChar( CConnClient* thisclient, int charclass, char* 
 
 bool CConnServer::LoadConfigs()
 {
+    int cfgcount = 0;
     int intvalue;
     std::string strvalue;
     xmlDocPtr doc = xmlParseFile(".\\serverconfig.xml");
@@ -134,6 +135,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLInteger(p, "value", intvalue))
                 {
                     this->port = intvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"mysql_port") == 0)
@@ -141,6 +143,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLInteger(p, "value", intvalue))
                 {
                     this->myport = intvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"mysql_host") == 0)
@@ -148,6 +151,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLString(p, "value", strvalue))
                 {
                     this->myhost = strvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"mysql_user") == 0)
@@ -155,6 +159,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLString(p, "value", strvalue))
                 {
                     this->myuser = strvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"mysql_pass") == 0)
@@ -162,6 +167,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLString(p, "value", strvalue))
                 {
                     this->mypass = strvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"mysql_db") == 0)
@@ -169,6 +175,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLString(p, "value", strvalue))
                 {
                     this->mydb = strvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"servername") == 0)
@@ -176,6 +183,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLString(p, "value", strvalue))
                 {
                     this->srvname = strvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"autoacc") == 0)
@@ -183,6 +191,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLInteger(p, "value", intvalue))
                 {
                     this->autoacc = intvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"xp_rate") == 0)
@@ -190,6 +199,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLInteger(p, "value", intvalue))
                 {
                     this->xprate = intvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"drop_rate") == 0)
@@ -197,6 +207,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLInteger(p, "value", intvalue))
                 {
                     this->droprate = intvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"gold_rate") == 0)
@@ -204,6 +215,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLInteger(p, "value", intvalue))
                 {
                     this->goldrate = intvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"gold_dropchance") == 0)
@@ -211,6 +223,7 @@ bool CConnServer::LoadConfigs()
                 if(readXMLInteger(p, "value", intvalue))
                 {
                     this->goldchance = intvalue;
+                    cfgcount++;
                 }
             }
             if (xmlStrcmp(p->name, (const xmlChar*)"client_version") == 0)
@@ -218,17 +231,101 @@ bool CConnServer::LoadConfigs()
                 if(readXMLInteger(p, "value", intvalue))
                 {
                     this->cliversion = intvalue;
+                    cfgcount++;
                 }
             }
             p = p->next;
         }
         xmlFreeDoc(doc);
-        Log( MSG_INFO, "Loaded all configurations." );
+        Log( MSG_INFO, "Loaded %i configurations in \".\\serverconfig.xml\".", cfgcount );
         return true;
     }
     else
     {
         Log( MSG_FATALERROR, "Error on Loading \".\\serverconfig.xml\"" );
+        return false;
+    }
+}
+
+bool CConnServer::LoadLanguage()
+{
+    int strcount = 0;
+    int intvalue;
+    std::string strvalue;
+    lang = new CLanguage;
+    assert(lang);
+    xmlDocPtr doc = xmlParseFile(".\\data\\Language.xml");
+    if (doc)
+    {
+        xmlNodePtr root, p;
+        root = xmlDocGetRootElement(doc);
+        if(xmlStrcmp(root->name,(const xmlChar*)"language") != 0){
+            xmlFreeDoc(doc);
+            Log( MSG_FATALERROR, "Error on Loading \".\\data\\Language.xml\"" );
+            return false;
+        }
+
+        p = root->children;
+
+        while (p)
+        {
+            if (xmlStrcmp(p->name, (const xmlChar*)"id_invalid") == 0)
+            {
+                if(readXMLString(p, "value", strvalue))
+                {
+                    lang->id_invalid = strvalue;
+                    strcount++;
+                }
+            }
+            if (xmlStrcmp(p->name, (const xmlChar*)"id_online") == 0)
+            {
+                if(readXMLString(p, "value", strvalue))
+                {
+                    lang->id_online = strvalue;
+                    strcount++;
+                }
+            }
+            if (xmlStrcmp(p->name, (const xmlChar*)"id_notactive") == 0)
+            {
+                if(readXMLString(p, "value", strvalue))
+                {
+                    lang->id_notactive = strvalue;
+                    strcount++;
+                }
+            }
+            if (xmlStrcmp(p->name, (const xmlChar*)"pwd_invalid") == 0)
+            {
+                if(readXMLString(p, "value", strvalue))
+                {
+                    lang->pwd_invalid = strvalue;
+                    strcount++;
+                }
+            }
+            if (xmlStrcmp(p->name, (const xmlChar*)"name_alreadyexist") == 0)
+            {
+                if(readXMLString(p, "value", strvalue))
+                {
+                    lang->name_alreadyexist = strvalue;
+                    strcount++;
+                }
+            }
+            if (xmlStrcmp(p->name, (const xmlChar*)"wrong_cliver") == 0)
+            {
+                if(readXMLString(p, "value", strvalue))
+                {
+                    lang->wrong_cliver = strvalue;
+                    strcount++;
+                }
+            }
+            p = p->next;
+        }
+        xmlFreeDoc(doc);
+        Log( MSG_INFO, "Loaded %i strings in \".\\data\\Language.xml\".", strcount );
+        return true;
+    }
+    else
+    {
+        Log( MSG_FATALERROR, "Error on Loading \".\\data\\Language.xml\"" );
         return false;
     }
 }
