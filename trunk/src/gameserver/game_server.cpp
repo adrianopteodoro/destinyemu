@@ -5,6 +5,7 @@ CConnServer::CConnServer( )
     for(unsigned i=0; i<0xffff; i++)
         ClientIDList[i] = 1;
     LoadConfigs();
+    LoadLanguage();
 }
 
 CConnServer::~CConnServer( )

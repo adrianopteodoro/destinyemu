@@ -29,6 +29,7 @@ public:
 	void SendToAll( CEncDec* encdec, bufwrite* pak, int size );
 	bool LoadConfigs();
 	bool LoadCreateChar( CConnClient* thisclient, int charclass, char* charname, int destpos );
+	bool LoadLanguage();
 
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
@@ -73,6 +74,9 @@ public:
 
 	//timestamp
 	clock_t curtime;
+
+	//Language Struct
+	CLanguage* lang;
 
     bool ServerOnline;
     pthread_t WorldThread[3];
