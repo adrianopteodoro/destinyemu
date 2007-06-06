@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
+<!--
+	New Characters Start Inventory Items and Stats
+	If you edit the new created characters start with items and stats as you have configured here.
+-->
 <startitems>
 <transknight mobid="1" level="0" str="8" int="4" dex="7" con="6" skpts="0" stpts="0" skmpts="0">
 	<inventory slot="0" itemid="1101" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
@@ -7,6 +11,7 @@
 	<inventory slot="3" itemid="1137" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="4" itemid="1149" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="5" itemid="861" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="13" itemid="3986" add1="0" val1="36" add2="0" val2="36" add3="100" val3="1" />
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 </transknight>
@@ -18,6 +23,7 @@
 	<inventory slot="3" itemid="1290" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="4" itemid="1302" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="5" itemid="891" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="13" itemid="3986" add1="0" val1="36" add2="0" val2="36" add3="100" val3="1" />
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 </foema>
@@ -29,6 +35,7 @@
 	<inventory slot="3" itemid="1425" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="4" itemid="1428" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="5" itemid="861" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="13" itemid="3986" add1="0" val1="36" add2="0" val2="36" add3="100" val3="1" />
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 </bestmaster>
@@ -40,6 +47,7 @@
 	<inventory slot="3" itemid="1575" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="4" itemid="1578" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="5" itemid="816" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	<inventory slot="13" itemid="3986" add1="0" val1="36" add2="0" val2="36" add3="100" val3="1" />
 	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 </hunter>

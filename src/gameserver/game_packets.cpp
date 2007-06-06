@@ -52,6 +52,8 @@ bool CConnServer::CharDelete( CConnClient* thisclient, unsigned char* P )
 {
     MYSQL_RES *result;
 	MYSQL_ROW row;
+	MYSQL_RES *result2;
+	MYSQL_ROW row2;
     char delcharname[15];
     char delpassword[12];
     memcpy( delcharname, &P[16], 15 );
@@ -63,7 +65,11 @@ bool CConnServer::CharDelete( CConnClient* thisclient, unsigned char* P )
     if (mysql_num_rows( result ) == 1)
     {
         DoSQL("DELETE FROM characters WHERE name='%s'", delcharname);
-        DoSQL("DELETE FROM char_items WHERE owner='%s'", delcharname);
+        if(!DoSQL( "SELECT id FROM characters WHERE name='%s'", delcharname ))
+            return false;
+        result2 = mysql_store_result( mysql );
+        row2 = mysql_fetch_row(result2);
+        DoSQL("DELETE FROM char_items WHERE owner='%i'", row2[0]);
         return ResendCharList( thisclient, P );
     }
     else
@@ -76,6 +82,8 @@ bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
 {
     MYSQL_RES *result;
 	MYSQL_ROW row;
+	MYSQL_RES *result2;
+	MYSQL_ROW row2;
     char newcharname[15];
     memcpy( newcharname, &P[16], 15 );
     if(!DoSQL( "SELECT name FROM characters WHERE name='%s'", newcharname ))
@@ -83,73 +91,7 @@ bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
     result = mysql_store_result( mysql );
     if (mysql_num_rows( result ) == 0)
     {
-        switch (P[32])
-        {
-            //transknight
-            case 0:
-            DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
-            VALUES ('%s', '%s', 1, 50, 10, 8, 4, 7, 6, 1000, %i, 0)", newcharname, thisclient->PlayerSession->username, P[12]);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1101)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1113)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1125)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1137)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid,add1,addval1) VALUES ('%s',4,1149,29,3)", newcharname);
-            for (int i=0;i<4;i++)
-                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
-            for (int i=0;i<4;i++)
-                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 405)", newcharname, 19+i);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 23, 861)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 24, 917)", newcharname);
-            break;
-            //foema
-            case 1:
-            DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
-            VALUES ('%s', '%s', 11, 40, 30, 5, 8, 5, 5, 1000, %i, 1)", newcharname, thisclient->PlayerSession->username, P[12]);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1254)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1266)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1278)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1290)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid,add1,addval1) VALUES ('%s', 4, 1302,29,3)", newcharname);
-            for (int i=0;i<4;i++)
-                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
-            for (int i=0;i<4;i++)
-                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 405)", newcharname, 19+i);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 23, 891)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 24, 918)", newcharname);
-            break;
-            // beastmaster
-            case 2:
-            DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
-            VALUES ('%s', '%s', 21, 40, 30, 6, 6, 9, 5, 1000, %i, 2)", newcharname, thisclient->PlayerSession->username, P[12]);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1416)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1419)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1422)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1425)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid,add1,addval1) VALUES ('%s', 4, 1428,29,3)", newcharname);
-            for (int i=0;i<4;i++)
-                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
-            for (int i=0;i<4;i++)
-                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 405)", newcharname, 19+i);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 23, 861)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 24, 917)", newcharname);
-            break;
-            // hunter
-            case 3:
-            DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid) \
-            VALUES ('%s', '%s', 31, 40, 30, 8, 9, 13, 6, 1000, %i, 3)", newcharname, thisclient->PlayerSession->username, P[12]);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 0, 1566)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 1, 1569)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 2, 1572)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 3, 1575)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid,add1,addval1) VALUES ('%s', 4, 1578,29,3)", newcharname);
-            for (int i=0;i<4;i++)
-                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 400)", newcharname, 15+i);
-            for (int i=0;i<4;i++)
-                DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', '%i', 405)", newcharname, 19+i);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 23, 816)", newcharname);
-            DoSQL("INSERT INTO char_items (owner,slotnum,itemid) VALUES ('%s', 24, 923)", newcharname);
-            break;
-        }
+        LoadCreateChar( thisclient, (int)P[32], newcharname, (int)P[12] );
         return ResendCharList( thisclient, P );
     }
     else
@@ -313,7 +255,7 @@ bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( 274, 4 ); // packet id
 
     // Char List
-    if(!DoSQL("SELECT name,cexp,clevel,gold, \
+    if(!DoSQL("SELECT id,name,cexp,clevel,gold, \
 	cstr,cint,cdex,ccon,mobid,posid FROM characters \
 	WHERE uid='%s'", thisclient->PlayerSession->username ))
         return false;
@@ -329,15 +271,15 @@ bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
     }
     while (row = mysql_fetch_row( result ))
     {
-        strcpy( chars[posid].char_name, row[0] );
-        chars[posid].Exp = atoi(row[1]);
-        chars[posid].Level = atoi(row[2]);
-        chars[posid].gold = atoi(row[3]);
-        chars[posid].Str = atoi(row[4]);
-        chars[posid].Int = atoi(row[5]);
-        chars[posid].Dex = atoi(row[6]);
-        chars[posid].Con = atoi(row[7]);
-        chars[posid].Mobid = atoi(row[8]);
+        strcpy( chars[posid].char_name, row[1] );
+        chars[posid].Exp = atoi(row[2]);
+        chars[posid].Level = atoi(row[3]);
+        chars[posid].gold = atoi(row[4]);
+        chars[posid].Str = atoi(row[5]);
+        chars[posid].Int = atoi(row[6]);
+        chars[posid].Dex = atoi(row[7]);
+        chars[posid].Con = atoi(row[8]);
+        chars[posid].Mobid = atoi(row[9]);
         if(!DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", row[0]))
             return true;
         result2 = mysql_store_result( mysql );
@@ -414,7 +356,7 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( thisclient->PlayerSession->userid, 6 ); //Player ID
 
     // Char List
-    if(!DoSQL("SELECT name,cexp,clevel,gold, \
+    if(!DoSQL("SELECT id,name,cexp,clevel,gold, \
 	cstr,cint,cdex,ccon,mobid,posid FROM characters \
 	WHERE uid='%s'", thisclient->PlayerSession->username ))
         return false;
@@ -430,15 +372,15 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
     }
     while (row = mysql_fetch_row( result ))
     {
-        strcpy( chars[posid].char_name, row[0] );
-        chars[posid].Exp = atoi(row[1]);
-        chars[posid].Level = atoi(row[2]);
-        chars[posid].gold = atoi(row[3]);
-        chars[posid].Str = atoi(row[4]);
-        chars[posid].Int = atoi(row[5]);
-        chars[posid].Dex = atoi(row[6]);
-        chars[posid].Con = atoi(row[7]);
-        chars[posid].Mobid = atoi(row[8]);
+        strcpy( chars[posid].char_name, row[1] );
+        chars[posid].Exp = atoi(row[2]);
+        chars[posid].Level = atoi(row[3]);
+        chars[posid].gold = atoi(row[4]);
+        chars[posid].Str = atoi(row[5]);
+        chars[posid].Int = atoi(row[6]);
+        chars[posid].Dex = atoi(row[7]);
+        chars[posid].Con = atoi(row[8]);
+        chars[posid].Mobid = atoi(row[9]);
         if(!DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", row[0]))
             return true;
         result2 = mysql_store_result( mysql );

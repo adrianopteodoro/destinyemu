@@ -6,6 +6,7 @@ CConnClient::CConnClient( )
     assert(PlayerSession);
     // Account
     PlayerSession->clientid = 0;
+    PlayerSession->charid = 0;
 	PlayerSession->userid = 0;
     memset( PlayerSession->username, '\0', 17 );
     memset( PlayerSession->password, '\0', 33 );
@@ -76,33 +77,32 @@ bool CConnClient::loaddata()
 {
     MYSQL_RES *result;
 	MYSQL_ROW row;
-	if(!GServer->DoSQL("SELECT id,cexp,clevel,gold,skpoints,stpoints,storage_gold,max_hp, \
+	if(!GServer->DoSQL("SELECT id,cexp,clevel,gold,skpoints,stpoints,max_hp, \
 	max_mp,cstr,cint,cdex,ccon,mobid,pos_x,pos_y,classid FROM characters \
 	WHERE name='%s' AND uid='%s'", PlayerInfo->char_name, PlayerSession->username))
         return false;
 	result = mysql_store_result( GServer->mysql );
     row = mysql_fetch_row(result);
-    PlayerSession->userid = 30000 + atoi(row[0]);
+    PlayerSession->charid = atoi(row[0]);
     PlayerInfo->Exp = atoi(row[1]);
     PlayerInfo->Level = atoi(row[2]);
     PlayerInfo->Gold = atoi(row[3]);
     PlayerInfo->SkillPoints = atoi(row[4]);
     PlayerInfo->StatPoints = atoi(row[5]);
-    PlayerInfo->Storage_Gold = atoi(row[6]);
-    PlayerStats->MaxHP = atoi(row[7]);
-    PlayerStats->MaxMP = atoi(row[8]);
-    PlayerStats->HP = atoi(row[7]);
-    PlayerStats->MP = atoi(row[8]);
-    PlayerStats->Str = atoi(row[9]);
-    PlayerStats->Int = atoi(row[10]);
-    PlayerStats->Dex = atoi(row[11]);
-    PlayerStats->Con = atoi(row[12]);
-    PlayerInfo->mobid = atoi(row[13]);
-    PlayerPosition->Cpos.x = atoi(row[14]);
-    PlayerPosition->Cpos.y = atoi(row[15]);
-    PlayerInfo->classid = atoi(row[16]);
-    mysql_free_result(result);
-    if(!GServer->DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", PlayerInfo->char_name))
+    PlayerStats->MaxHP = atoi(row[6]);
+    PlayerStats->MaxMP = atoi(row[7]);
+    PlayerStats->HP = atoi(row[6]);
+    PlayerStats->MP = atoi(row[7]);
+    PlayerStats->Str = atoi(row[8]);
+    PlayerStats->Int = atoi(row[9]);
+    PlayerStats->Dex = atoi(row[10]);
+    PlayerStats->Con = atoi(row[11]);
+    PlayerInfo->mobid = atoi(row[12]);
+    PlayerPosition->Cpos.x = atoi(row[13]);
+    PlayerPosition->Cpos.y = atoi(row[14]);
+    PlayerInfo->classid = atoi(row[15]);
+    //mysql_free_result(result);
+    if(!GServer->DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", row[0]))
 	   return true;
 	result = mysql_store_result(GServer->mysql);
 	for(unsigned j=0; j<77; j++)

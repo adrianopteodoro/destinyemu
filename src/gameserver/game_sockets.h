@@ -28,6 +28,7 @@ public:
 	unsigned GetNewClientID( );
 	void SendToAll( CEncDec* encdec, bufwrite* pak, int size );
 	bool LoadConfigs();
+	bool LoadCreateChar( CConnClient* thisclient, int charclass, char* charname, int destpos );
 
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );

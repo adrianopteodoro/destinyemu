@@ -25,6 +25,7 @@ struct fPoint {
 struct CAccount
 {
     unsigned int clientid;
+    unsigned int charid;
 	unsigned int userid;
 	char username[17];
 	char password[33];

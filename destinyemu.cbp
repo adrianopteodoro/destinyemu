@@ -12,18 +12,7 @@
 				<Option object_output=".\src\gameserver\objs" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Compiler>
-					<Add directory="src" />
-					<Add directory="src\iconv" />
-					<Add directory="src\pthread" />
-				</Compiler>
 				<Linker>
-					<Add library="lib\libxml2.lib" />
-					<Add library="lib\libcharset.lib" />
-					<Add library="lib\libiconv.lib" />
-					<Add library="lib\libmysql.lib" />
-					<Add library="C:\Arquivos de programas\CodeBlocks\lib\libws2_32.a" />
-					<Add library="lib\libpthreadGC.lib" />
 					<Add directory="lib" />
 				</Linker>
 			</Target>
@@ -31,12 +20,16 @@
 		<Compiler>
 			<Add directory=".\src\iconv" />
 			<Add directory=".\src" />
+			<Add directory=".\src\pthread" />
+			<Add directory=".\src\litesql" />
 		</Compiler>
 		<Linker>
-			<Add option="lib/libcharset.lib" />
-			<Add option="lib/libiconv.lib" />
-			<Add option="lib/libmysql.lib" />
-			<Add option="lib/libxml2.lib" />
+			<Add option="lib/libcharset.a" />
+			<Add option="lib/libiconv.a" />
+			<Add option="lib/libmysql.a" />
+			<Add option="lib/libxml2.a" />
+			<Add option="lib/libpthreadGC.a" />
+			<Add option="lib/libsqlite3.a" />
 			<Add library="ws2_32" />
 			<Add directory=".\lib" />
 		</Linker>
