@@ -1,5 +1,18 @@
 #include "game_sockets.h"
 
+unsigned CConnServer::GetNewMobID( )
+{
+	for (unsigned i=2000; i<=0xffff; i++)
+    {
+		if (ClientIDList[i]!=0 && time(NULL)-ClientIDList[i]>10)
+        {
+			ClientIDList[i] = 0;
+			return i;
+		}
+	}
+	return 0;
+}
+
 void CConnServer::SendToAll( CEncDec* encdec, bufwrite* pak, int size )
 {
     for(UINT i=0;i<ClientList.size();i++)
@@ -67,6 +80,15 @@ bool CConnServer::IsVisible( CConnClient* thisclient, CConnClient* otherclient )
     {
 		if (otherclient==thisclient->VisibleClients.at(j))
             return true;
+	}
+	return false;
+}
+
+// -- NPC --
+bool CConnServer::IsVisible( CConnClient* thisclient, CNPC* thisnpc )
+{
+	for(unsigned j=0; j<thisclient->VisibleNPCs.size(); j++) {
+		if (thisnpc==thisclient->VisibleNPCs.at(j)) return true;
 	}
 	return false;
 }

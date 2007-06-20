@@ -24,9 +24,9 @@
 	<mysql_port value="3306" />
 	
 	<!-- Auto Create Account on first login with invalid account. 1=YES\0=NO -->
-	<autoacc value="1" />
+	<autoacc value="0" />
 	<!-- Name of your Server -->
-	<servername value="DTS" />
+	<servername value="Test Server" />
 	<!-- Client Version -->
 	<client_version value="748" />
 

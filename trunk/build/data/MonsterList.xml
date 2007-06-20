@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<npclist>
-<npc name="Aki" mobid="1" pos_x="2144" pos_y="2088" npctype="">
-	<inventory itemid="1565" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
-	<sell itemid="1565" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
-</npc>
-</npclist>

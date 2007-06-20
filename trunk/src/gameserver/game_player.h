@@ -30,7 +30,8 @@ public:
     bool isInvisibleMode;
 
     // Player Vectors
-    std::vector<CConnClient*>	        VisibleClients;			// Visible Client List (Players)
+    std::vector<CConnClient*>   VisibleClients; // Visible Client List (Players)
+    std::vector<CNPC*>          VisibleNPCs;    // Visible NPC List
 
     // Inventory
     CItem items[78];

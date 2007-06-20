@@ -3,6 +3,7 @@
 bool CConnClient::VisiblityList( )
 {
 	std::vector<CConnClient*>	newVisibleClients;
+	std::vector<CNPC*>			newVisibleNPCs;
 	// Clients
     for(UINT i=0;i<GServer->ClientList.size();i++)
     {
@@ -30,8 +31,35 @@ bool CConnClient::VisiblityList( )
 			}
         }
     }
+    // Npcs
+	for(unsigned i=0; i< GServer->NPCList.size(); i++)
+    {
+		CNPC* thisnpc = GServer->NPCList.at(i);
+		float distance = GServer->distance( this->PlayerPosition->Cpos, thisnpc->pos );
+		if ( GServer->IsVisible( this, thisnpc ) )
+        {
+			if ( distance < MAXVISUALRANGE )
+            {
+				newVisibleNPCs.push_back( thisnpc );
+            }
+			else
+			{
+        		this->ClearObject( thisnpc->clientid );
+            }
+		}
+        else
+        {
+			if ( distance < MINVISUALRANGE )
+            {
+				newVisibleNPCs.push_back( thisnpc );
+				GServer->SpawnNPC( this, thisnpc );
+			}
+		}
+	}
     VisibleClients.clear();
+    VisibleNPCs.clear();
 	VisibleClients = newVisibleClients;
+	VisibleNPCs = newVisibleNPCs;
     return true;
 }
 

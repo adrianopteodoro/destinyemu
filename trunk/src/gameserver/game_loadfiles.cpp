@@ -1,4 +1,5 @@
 #include "game_sockets.h"
+#include <fstream>
 
 bool CConnServer::LoadCreateChar( CConnClient* thisclient, int charclass, char* charname, int destpos )
 {
@@ -65,10 +66,10 @@ bool CConnServer::LoadCreateChar( CConnClient* thisclient, int charclass, char* 
                 readXMLInteger(p, "stpts", stpts) &&
                 readXMLInteger(p, "skmpts", skmpts))
                 {
-                    DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid,skpoints,stpoints,skmpoints) \
-                    VALUES ('%s', '%s', '%i', 50, 10, '%i', '%i', '%i', '%i', 0, '%i', '%i', '%i', '%i', '%i')",
+                    DoSQL("INSERT INTO characters (name,uid,mobid,max_hp,max_mp,cstr,cint,cdex,ccon,gold,posid,classid,skpoints,stpoints,skmpoints,clevel) \
+                    VALUES ('%s', '%s', '%i', 50, 10, '%i', '%i', '%i', '%i', 0, '%i', '%i', '%i', '%i', '%i', '%i')",
                     charname, thisclient->PlayerSession->username,
-                    mobid, cstr, cint, cdex, ccon, destpos, charclass, skpts, stpts, skmpts);
+                    mobid, cstr, cint, cdex, ccon, destpos, charclass, skpts, stpts, skmpts, level);
                     if(!DoSQL( "SELECT id FROM characters WHERE name='%s'", charname ))
                         return false;
                     result = mysql_store_result( mysql );
@@ -113,6 +114,7 @@ bool CConnServer::LoadCreateChar( CConnClient* thisclient, int charclass, char* 
 bool CConnServer::LoadConfigs()
 {
     int cfgcount = 0;
+    Log( MSG_INFO, "Loading Config File..." );
     int intvalue;
     std::string strvalue;
     xmlDocPtr doc = xmlParseFile(".\\serverconfig.xml");
@@ -250,6 +252,7 @@ bool CConnServer::LoadConfigs()
 bool CConnServer::LoadLanguage()
 {
     int strcount = 0;
+    Log( MSG_INFO, "Loading Language File..." );
     int intvalue;
     std::string strvalue;
     lang = new CLanguage;
@@ -326,6 +329,178 @@ bool CConnServer::LoadLanguage()
     else
     {
         Log( MSG_FATALERROR, "Error on Loading \".\\data\\Language.xml\"" );
+        return false;
+    }
+}
+
+bool CConnServer::LoadNPCList()
+{
+    int strcount = 0;
+    Log( MSG_INFO, "Loading NPC List..." );
+
+    int posx;
+    int posy;
+    std::string strvalue;
+    xmlDocPtr doc = xmlParseFile(".\\data\\NpcList.xml");
+    if (doc)
+    {
+        xmlNodePtr root, p;
+        root = xmlDocGetRootElement(doc);
+        if(xmlStrcmp(root->name,(const xmlChar*)"npclist") != 0){
+            xmlFreeDoc(doc);
+            Log( MSG_FATALERROR, "Error on Loading \".\\data\\NpcList.xml\"" );
+            return false;
+        }
+
+        p = root->children;
+
+        while (p)
+        {
+            if (xmlStrcmp(p->name, (const xmlChar*)"npc") == 0)
+            {
+                if(readXMLInteger(p, "pos_x", posx) && readXMLInteger(p, "pos_y", posy) && readXMLString(p, "npcfile", strvalue))
+                {
+                    LoadNPCFile( &strvalue[0], posx, posy );
+                    strcount++;
+                }
+            }
+            p = p->next;
+        }
+        xmlFreeDoc(doc);
+        Log( MSG_INFO, "Loaded %i NPCS in \".\\data\\NpcList.xml\".", strcount );
+        return true;
+    }
+    else
+    {
+        Log( MSG_FATALERROR, "Error on Loading \".\\data\\NpcList.xml\"" );
+        return false;
+    }
+}
+
+bool CConnServer::LoadNPCFile( char* filename, int posx, int posy )
+{
+    std::string npcfile;
+    npcfile = ".\\npcs\\";
+    npcfile += filename;
+    int slotnum;
+    int intvalue;
+    std::string strvalue;
+    xmlDocPtr doc2 = xmlParseFile(npcfile.c_str());
+
+    CNPC* thisnpc = new (nothrow) CNPC;
+    for(unsigned j=0; j<15; j++)
+        ClearItem( thisnpc->inventory[j] );
+    thisnpc->pos.x = posx;
+    thisnpc->pos.y = posy;
+
+    if (doc2)
+    {
+        xmlNodePtr root2, p2, z2;
+        root2 = xmlDocGetRootElement(doc2);
+        while (root2)
+        {
+            if(xmlStrcmp(root2->name,(const xmlChar*)"npc") == 0)
+            {
+                if(readXMLString(root2, "name", strvalue))
+                {
+                    thisnpc->npcname = strvalue;
+                }
+                if(readXMLInteger(root2, "mobid", intvalue))
+                {
+                    thisnpc->mobid = intvalue;
+                }
+                if(readXMLInteger(root2, "mobcode", intvalue))
+                {
+                    thisnpc->mobcode = intvalue;
+                }
+                if(readXMLInteger(root2, "level", intvalue))
+                {
+                    thisnpc->level = intvalue;
+                }
+                if(readXMLInteger(root2, "str", intvalue))
+                {
+                    thisnpc->n_str = intvalue;
+                }
+                if(readXMLInteger(root2, "int", intvalue))
+                {
+                    thisnpc->n_int = intvalue;
+                }
+                if(readXMLInteger(root2, "dex", intvalue))
+                {
+                    thisnpc->n_dex = intvalue;
+                }
+                if(readXMLInteger(root2, "con", intvalue))
+                {
+                    thisnpc->n_con = intvalue;
+                }
+                p2 = root2->children;
+                while(p2)
+                {
+                    if(xmlStrcmp(p2->name,(const xmlChar*)"inventory") == 0)
+                    {
+                        z2 = p2->children;
+                        while(z2)
+                        {
+                            if(xmlStrcmp(z2->name,(const xmlChar*)"item") == 0)
+                            {
+                                if(readXMLInteger(z2, "slotnum", intvalue))
+                                    slotnum = intvalue;
+                                if(readXMLInteger(z2, "itemid", intvalue))
+                                    thisnpc->inventory[slotnum].itemid = intvalue;
+                                if(readXMLInteger(z2, "add1", intvalue))
+                                    thisnpc->inventory[slotnum].add1 = intvalue;
+                                if(readXMLInteger(z2, "val1", intvalue))
+                                    thisnpc->inventory[slotnum].val1 = intvalue;
+                                if(readXMLInteger(z2, "add2", intvalue))
+                                    thisnpc->inventory[slotnum].add2 = intvalue;
+                                if(readXMLInteger(z2, "val2", intvalue))
+                                    thisnpc->inventory[slotnum].val2 = intvalue;
+                                if(readXMLInteger(z2, "add3", intvalue))
+                                    thisnpc->inventory[slotnum].add3 = intvalue;
+                                if(readXMLInteger(z2, "val3", intvalue))
+                                    thisnpc->inventory[slotnum].val3 = intvalue;
+                            }
+                            z2 = z2->next;
+                        }
+                    }
+                    if(xmlStrcmp(p2->name,(const xmlChar*)"shopitems") == 0)
+                    {
+                        z2 = p2->children;
+                        while(z2)
+                        {
+                            if(xmlStrcmp(z2->name,(const xmlChar*)"item") == 0)
+                            {
+                                if(readXMLInteger(z2, "slotnum", intvalue))
+                                    slotnum = intvalue;
+                                if(readXMLInteger(z2, "itemid", intvalue))
+                                    thisnpc->shopitems[slotnum].itemid = intvalue;
+                                if(readXMLInteger(z2, "add1", intvalue))
+                                    thisnpc->shopitems[slotnum].add1 = intvalue;
+                                if(readXMLInteger(z2, "val1", intvalue))
+                                    thisnpc->shopitems[slotnum].val1 = intvalue;
+                                if(readXMLInteger(z2, "add2", intvalue))
+                                    thisnpc->shopitems[slotnum].add2 = intvalue;
+                                if(readXMLInteger(z2, "val2", intvalue))
+                                    thisnpc->shopitems[slotnum].val2 = intvalue;
+                                if(readXMLInteger(z2, "add3", intvalue))
+                                    thisnpc->shopitems[slotnum].add3 = intvalue;
+                                if(readXMLInteger(z2, "val3", intvalue))
+                                    thisnpc->shopitems[slotnum].val3 = intvalue;
+                            }
+                            z2 = z2->next;
+                        }
+                    }
+                    p2 = p2->next;
+                }
+                this->NPCList.push_back( thisnpc );
+            }
+            root2 = root2->next;
+        }
+        xmlFreeDoc(doc2);
+        return true;
+    }
+    else
+    {
         return false;
     }
 }
