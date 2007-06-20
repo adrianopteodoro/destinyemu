@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<npc name="Cargo_Guard" mobid="60" mobcode="2" level="2" str="2" dex="2" int="2" con="2">
+	<inventory>
+		<item slotnum="0" itemid="164" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="1" itemid="165" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="2" itemid="166" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="3" itemid="167" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="4" itemid="168" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	</inventory>
+</npc>

@@ -38,5 +38,9 @@ DESTINY EMULATOR SVN CHANGE-LOG
 23/05/2007
     - Added: GM Command /spawn <mobcode> <mobid> <mobname> for NPC/MONSTERS test. [Snaity]
 
-12/06/2007
+12/06/2007 - Revision 59:
     - Changed and Fix: Database fields to correctly, owner field in chars_items is now by character id not more by character name, removed storage_gold from character table and moved to account table. [Snaity]
+    - Added: Support of "StartChars.xml" u can configure here the start stats and items of new characters. [Snaity]
+
+20/07/2007 - Revision 60:
+    - Added: NPC Support, now can add NPC to game but its not complete, see ".\data\NpcList.xml" and ".\npcs\' Folder. [Snaity]

@@ -1,8 +1,8 @@
 /*
 SQLyog Community Edition- MySQL GUI v6.0 Beta 1
-Host - 5.0.37-community-nt-log : Database - destiny
+Host - 5.0.27-community-nt-log : Database - destiny
 *********************************************************************
-Server version : 5.0.37-community-nt-log
+Server version : 5.0.27-community-nt-log
 */
 
 /*!40101 SET NAMES utf8 */;
@@ -25,7 +25,7 @@ CREATE TABLE `accounts` (
   `acesslevel` int(10) default '1',
   `storage_gold` int(12) default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Table structure for table `char_items` */
 
@@ -43,7 +43,7 @@ CREATE TABLE `char_items` (
   `add3` int(10) default '0',
   `addval3` int(10) default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Table structure for table `characters` */
 
@@ -73,7 +73,7 @@ CREATE TABLE `characters` (
   `pos_x` int(10) default '2093',
   `pos_y` int(10) default '2097',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Table structure for table `online_count` */
 
@@ -81,9 +81,9 @@ DROP TABLE IF EXISTS `online_count`;
 
 CREATE TABLE `online_count` (
   `character` varchar(16) default NULL,
-  `canal` int(10) default NULL,
-  `conndate` int(10) default NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `channel` int(10) default NULL,
+  `connect_date` int(10) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Table structure for table `storage` */
 
@@ -101,6 +101,6 @@ CREATE TABLE `storage` (
   `add3` int(10) NOT NULL default '0',
   `addval3` int(10) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

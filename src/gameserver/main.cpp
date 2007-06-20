@@ -7,6 +7,9 @@ int main(int argc, char *argv[])
 {
     // Show Emulator Header
     ShowHeader();
+    Log( MSG_NOTICE, "SVN Nightly Build" );
+printf("\tYou AGREE with terms:\n\tThis is a Nightly Build Development version\n\tnot work with it on a full server,\n\tor other things this is for testings\n\tonly and help reporting bugs to team.\n\
+\t\n\tThis is a Alpha Development Version.\n\t\n\tPlease Report all bugs, to Tracker.\n\n");
     StartSignal( );
     // Initialize MySQL
     MYSQL mysql;

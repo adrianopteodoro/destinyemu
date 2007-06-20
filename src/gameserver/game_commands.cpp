@@ -122,8 +122,7 @@ bool CConnServer::pakGMSpawn( CConnClient* thisclient, unsigned char* P, int mob
 {
     packet->Free();
     packet->AddWord( 172, 0 );
-    packet->AddByte( 0x64, 4 );
-    packet->AddByte( 0x03, 5 );
+    packet->AddWord( 0x0364, 4 );
     packet->AddWord( 30000, 6 );
     // end header
 
@@ -133,26 +132,26 @@ bool CConnServer::pakGMSpawn( CConnClient* thisclient, unsigned char* P, int mob
     for (int i=0;i<12;i++)
         packet->AddByte( 0xcc, 18+i );
     packet->AddStr( name, 18 ); // char name
-    packet->AddWord( 75, 30 ); // chaos point
+    //packet->AddWord( 75, 30 ); // chaos point
     packet->AddByte( mobid, 34 ); // mob id
 
     //packet->AddWord( 705, 46 );
     //packet->AddWord( 2380, 62 );
-    packet->AddByte( 0, 66 );//0
-    packet->AddByte( 0, 67 );//34
+    packet->AddByte( 1, 66 );//0
+    packet->AddByte( 34, 67 );//34
     packet->AddWord( 0, 69 );//player effect
-    packet->AddWord( 43, 100 );// Level
+    packet->AddWord( 2, 100 );// Level
     packet->AddWord( 3, 102 );// Defesa
     packet->AddWord( 93, 104 );// Atack
     packet->AddByte( mobcode, 106 );// mobcode
     packet->AddByte( 1, 107 );//84
     //------------------------------------
     packet->AddWord( 800, 108 );//max hp
-    packet->AddWord( 0, 110 );//max mana
+    packet->AddWord( 100, 110 );//max mana
     packet->AddWord( 200, 112 );//current hp
-    packet->AddWord( 0, 114 );//current mana
+    packet->AddWord( 100, 114 );//current mana
     //-------------------------------------
-    packet->AddWord( 5, 116 );//str
+    packet->AddWord( 10, 116 );//str
     packet->AddWord( 70, 118 );//int
     packet->AddWord( 30, 120 );//dex
     packet->AddWord( 200, 122 );//con
@@ -164,7 +163,7 @@ bool CConnServer::pakGMSpawn( CConnClient* thisclient, unsigned char* P, int mob
     {
         packet->AddByte( 0xcc, 147+i );
     }
-    packet->AddByte( 0x00, 172 );
+    packet->AddByte( 0x01, 172 );
 
     SendToVisible( encdec, thisclient, packet, 172, true );
     npcid++;

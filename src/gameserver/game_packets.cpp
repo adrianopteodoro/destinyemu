@@ -64,12 +64,12 @@ bool CConnServer::CharDelete( CConnClient* thisclient, unsigned char* P )
     result = mysql_store_result( mysql );
     if (mysql_num_rows( result ) == 1)
     {
-        DoSQL("DELETE FROM characters WHERE name='%s'", delcharname);
         if(!DoSQL( "SELECT id FROM characters WHERE name='%s'", delcharname ))
             return false;
         result2 = mysql_store_result( mysql );
         row2 = mysql_fetch_row(result2);
         DoSQL("DELETE FROM char_items WHERE owner='%i'", row2[0]);
+        DoSQL("DELETE FROM characters WHERE name='%s'", delcharname);
         return ResendCharList( thisclient, P );
     }
     else
@@ -187,57 +187,6 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
 
     thisclient->PlayerSession->inGame = true;
     thisclient->ready = true;
-
-    packet->Free();
-    packet->AddWord( 172, 0 );
-    packet->AddByte( 0x64, 4 );
-    packet->AddByte( 0x03, 5 );
-    packet->AddWord( 30000, 6 );
-    // end header
-
-    packet->AddWord( 2104, 12 ); // pos x
-    packet->AddWord( 2116, 14 ); // pos y
-    packet->AddWord( 1390, 16 );
-    for (int i=0;i<12;i++)
-        packet->AddByte( 0xcc, 18+i );
-    packet->AddStr( "NPC_COBAIA", 18 ); // char name
-    packet->AddWord( 75, 30 ); // chaos point
-    packet->AddByte( 1, 34 ); // mob id
-
-    //packet->AddWord( 705, 46 );
-    //packet->AddWord( 2380, 62 );
-    packet->AddByte( 0, 66 );//0
-    packet->AddByte( 0, 67 );//34
-    packet->AddWord( 0, 69 );//player effect
-    packet->AddWord( 43, 100 );// Level
-    packet->AddWord( 3, 102 );// Defesa
-    packet->AddWord( 93, 104 );// Atack
-    packet->AddByte( 20, 106 );// mobcode
-    packet->AddByte( 1, 107 );//84
-    //------------------------------------
-    packet->AddWord( 800, 108 );//max hp
-    packet->AddWord( 0, 110 );//max mana
-    packet->AddWord( 200, 112 );//current hp
-    packet->AddWord( 0, 114 );//current mana
-    //-------------------------------------
-    packet->AddWord( 5, 116 );//str
-    packet->AddWord( 70, 118 );//int
-    packet->AddWord( 30, 120 );//dex
-    packet->AddWord( 200, 122 );//con
-    packet->AddWord( 2047, 124 );//5
-    packet->AddWord( 2047, 126 );//5
-    packet->AddWord( 0, 128 );//2
-    packet->AddByte( 0, 130 );//43
-    for (int i=0;i<29;i++)
-    {
-        packet->AddByte( 0xcc, 147+i );
-    }
-    packet->AddByte( 0x00, 172 );
-
-    this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
-    thisclient->SendPacket( this->encbuf, this->encsize );
-
 	return true;
 }
 
@@ -479,7 +428,7 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
     MYSQL_RES *result;
 	MYSQL_ROW row;
     bufwrite *packet = new bufwrite();
-    if(this->cliversion == cliver)
+    if(cliver >= this->cliversion)
     {
 	if(!DoSQL( "SELECT username,password,active,online FROM accounts WHERE username='%s'", thisclient->PlayerSession->username ))
         return false;
@@ -580,7 +529,7 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
 {
     packet->Free();
     packet->AddWord( 172, 0 );
-    packet->AddWord( 868, 4 );
+    packet->AddWord( 0x0364, 4 );
     packet->AddWord( 30000, 6 );
     // end header
 
@@ -594,13 +543,7 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     packet->AddByte( otherclient->PlayerInfo->mobid, 34 ); // mob id
     for (int i=0;i<15;i++)
     {
-        packet->AddWord( otherclient->items[i].itemid |
-        otherclient->items[i].add1 |
-        otherclient->items[i].add2 |
-        otherclient->items[i].add3 |
-        otherclient->items[i].val1 |
-        otherclient->items[i].val2 |
-        otherclient->items[i].val3, (2*i)+36 );
+        packet->AddWord( otherclient->items[i].itemid, (2*i)+36 );
     }
     packet->AddWord( otherclient->PlayerSession->clientid, 66 );
     packet->AddWord( 00, 69 );//Player Effect
@@ -661,5 +604,59 @@ bool CConnServer::SendNPCSellItems( CConnClient* thisclient, unsigned char* P )
     packet->AddByte( 14, 232 );
     this->curtime = clock();
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 236, this->CKeys, this->Hash1, this->curtime );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+}
+
+bool CConnServer::SpawnNPC( CConnClient* thisclient, CNPC* thisnpc )
+{
+    thisnpc->clientid = GetNewMobID();
+    packet->Free();
+    packet->AddWord( 172, 0 );
+    packet->AddWord( 0x0364, 4 );
+    packet->AddWord( 30000, 6 );
+    // end header
+
+    packet->AddWord( (int)thisnpc->pos.x, 12 ); // pos x
+    packet->AddWord( (int)thisnpc->pos.y, 14 ); // pos y
+    packet->AddWord( thisnpc->clientid, 16 );
+    for (int i=0;i<12;i++)
+        packet->AddByte( 0xcc, 18+i );
+    packet->AddStr( thisnpc->npcname, 18 ); // char name
+    if(thisnpc->mobcode == NPC_NORMAL)
+        packet->AddByte( 150, 30 ); // player karma
+    packet->AddByte( thisnpc->mobid, 34 ); // mob id
+    for (int i=0;i<15;i++)
+    {
+        packet->AddWord( thisnpc->inventory[i].itemid, (2*i)+36 );
+    }
+    packet->AddByte( 1, 66 );
+    packet->AddByte( 0, 67 );
+    packet->AddWord( 0, 69 );//Player Effect
+    packet->AddWord( thisnpc->level, 100 );// level
+    packet->AddWord( 3, 102 );
+    packet->AddWord( 93, 104 );
+    packet->AddByte( thisnpc->mobcode, 106 );
+    packet->AddByte( 1, 107 );// pet??
+    packet->AddWord( 800, 108 );//max hp
+    packet->AddWord( 0, 110 );//max mana
+    packet->AddWord( 800, 112 );//current hp
+    packet->AddWord( 0, 114 );//current mana
+    packet->AddWord( thisnpc->n_str, 116 );//str
+    packet->AddWord( thisnpc->n_int, 118 );//int
+    packet->AddWord( thisnpc->n_dex, 120 );//dex
+    packet->AddWord( thisnpc->n_con, 122 );//con
+    packet->AddWord( 2047, 124 );//5
+    packet->AddWord( 2047, 126 );//5
+    packet->AddWord( 0, 128 );
+    packet->AddWord( 0, 130 );
+
+    for (int i=0;i<29;i++)
+    {
+        packet->AddByte( 0xcc, 147+i );
+    }
+    packet->AddByte( 0x00, 172 );
+
+    this->curtime = clock();
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 }

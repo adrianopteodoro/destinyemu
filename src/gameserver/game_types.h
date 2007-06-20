@@ -1,6 +1,16 @@
 #ifndef _GAME_TYPES_H_
 #define _GAME_TYPES_H_
 
+#define NPC_NORMAL      0
+#define NPC_SHOP        1
+#define NPC_STORAGE     2
+#define MPC_SKILL        3
+#define NPC_CITYPAY     6
+#define NPC_SCRAPCHANGE 12
+#define NPC_STATRESET   31
+#define NPC_SKILLRESET  41
+#define NPC_GRIFFMASTER 151
+
 struct CLanguage
 {
     std::string id_invalid;
@@ -118,6 +128,22 @@ struct CCharacter {
 	unsigned int Con;
 	long int gold;
 	CItem eqitems[15];
+};
+
+struct CNPC {
+	unsigned short clientid;
+	fPoint pos;
+	float dir;
+    std::string npcname;
+    CItem inventory[15];
+    CItem shopitems[30];
+    unsigned int mobid;
+    unsigned int mobcode;
+    unsigned int level;
+    unsigned int n_str;
+    unsigned int n_dex;
+    unsigned int n_int;
+    unsigned int n_con;
 };
 
 #endif

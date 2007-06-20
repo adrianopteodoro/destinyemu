@@ -24,12 +24,16 @@ public:
 	// Functions
 	void SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwrite* pak, int size, bool dothisclient );
 	bool IsVisible( CConnClient* thisclient, CConnClient* otherclient );
+	bool IsVisible( CConnClient* thisclient, CNPC* thisnpc );
 	float distance( fPoint pos1, fPoint pos2 );
 	unsigned GetNewClientID( );
+	unsigned GetNewMobID( );
 	void SendToAll( CEncDec* encdec, bufwrite* pak, int size );
 	bool LoadConfigs();
 	bool LoadCreateChar( CConnClient* thisclient, int charclass, char* charname, int destpos );
 	bool LoadLanguage();
+	bool LoadNPCList();
+	bool LoadNPCFile( char* filename, int posx, int posy );
 
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
@@ -47,6 +51,7 @@ public:
 	bool ChangeInventory( CConnClient* thisclient, unsigned char* P );
 	bool packetCommand( CConnClient* thisclient, unsigned char* P );
 	bool SendNPCSellItems( CConnClient* thisclient, unsigned char* P );
+	bool SpawnNPC( CConnClient* thisclient, CNPC* thisnpc );
 
 	// GM Commands Functions
 	bool pakGMNotice( CConnClient* thisclient, unsigned char* P );
@@ -55,6 +60,7 @@ public:
 
 	// Lists
 	UINT ClientIDList[0x10000];	// Clients List
+	vector<CNPC*>   NPCList;
 
 	// configuration things
 	int myport;
