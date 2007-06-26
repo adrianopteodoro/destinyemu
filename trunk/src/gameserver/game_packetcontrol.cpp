@@ -22,6 +22,7 @@ bool CConnServer::PacketControl( CConnClient* thisclient, int size, unsigned cha
 
     switch ( opcode )
     {
+        case 0x4388: return true; // to remove the msg from console.
         case 0x020f: return CharCreate( thisclient, P );
         case 0x0211: return CharDelete( thisclient, P );
         case 0x0213: return SendToWorld( thisclient, P );
@@ -30,7 +31,7 @@ bool CConnServer::PacketControl( CConnClient* thisclient, int size, unsigned cha
         case 0x0333: return SendChat( thisclient, P );
         case 0x0334: return packetCommand( thisclient, P );
         case 0x0215: return SendServerMsg( thisclient, "Not implemented yet." ); // gametocharlist
-        case 0x0290: return true; // teleport
+        case 0x0290: return pakGMTele( thisclient, P, 1047, 1725 ); // teleport
         case 0x0376: return ChangeInventory( thisclient, P );
         case 0x03a0: return true;
         case 0x027b: return SendNPCSellItems( thisclient, P ); // NPC Shop Items

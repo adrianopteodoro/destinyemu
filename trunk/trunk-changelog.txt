@@ -44,3 +44,7 @@ DESTINY EMULATOR SVN CHANGE-LOG
 
 20/06/2007 - Revision 60:
     - Added: NPC Support, now can add NPC to game but its not complete, see ".\data\NpcList.xml" and ".\npcs\' Folder. [Snaity]
+
+26/06/07 - Revision 62:
+    - Added: GM Command /telexy <posx> <posy>, you need to put accesslevel above of 90. [Snaity]
+    - Added: Armia NPCs, but NPCs not working. [GateKiller]

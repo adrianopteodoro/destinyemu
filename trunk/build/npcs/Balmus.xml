@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<npc name="CargoGuard" mobid="130" mobcode="2" level="1" str="5" dex="0" int="100" con="0">
+<npc name="Balmus" mobid="130" mobcode="6" level="1" str="5" dex="0" int="100" con="0">
 	<inventory>
 		<item slotnum="0" itemid="130" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="1" itemid="126" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />

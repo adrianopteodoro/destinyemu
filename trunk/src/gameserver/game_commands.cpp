@@ -91,30 +91,19 @@ bool CConnServer::pakGMNotice( CConnClient* thisclient, unsigned char* P )
 bool CConnServer::pakGMTele( CConnClient* thisclient, unsigned char* P, int x, int y )
 {
     packet->Free();
-    packet->AddByte( 92, 0 );
-    packet->AddByte( 0x36, 4 );
-    packet->AddByte( 0x03, 5 );
+    packet->AddByte( 52, 0 );
+    packet->AddWord( 0x0366, 4 );
     packet->AddWord( thisclient->PlayerSession->clientid, 6 );
-    packet->AddWord( 27259, 12 );
-    packet->AddWord( 1942, 14 );
-    packet->AddWord( 124, 16 );
-    packet->AddWord( 2456, 20 );
-    packet->AddWord( 2001, 22 );
-    packet->AddWord( 2456, 24 );
-    packet->AddWord( 2001, 26 );
-    packet->AddWord( 44, 28 );
-    packet->AddWord( 1305, 30 );
-    packet->AddWord( 255, 32 );
-    packet->AddWord( 25000, 36 );
-    packet->AddWord( 5796, 40 );
-    packet->AddWord( 3145, 42 );
-    packet->AddWord( 1305, 44 );
-    packet->AddWord( 124, 48 );
-    packet->AddWord( 65535, 50 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 14 );
+    packet->AddWord( 2, 16 );
+    packet->AddWord( 1, 20 );
+    packet->AddWord( x, 24 );
+    packet->AddWord( y, 26 );
+    for(int i=0;i<23;i++)
+        packet->AddWord( 0xcc, 28+i );
 
-    this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 92, this->CKeys, this->Hash1, this->curtime );
-    thisclient->SendPacket( this->encbuf, this->encsize );
+    SendToVisible( encdec, thisclient, packet, 52, true );
     return true;
 }
 

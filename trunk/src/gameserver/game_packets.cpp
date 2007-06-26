@@ -629,7 +629,7 @@ bool CConnServer::SpawnNPC( CConnClient* thisclient, CNPC* thisnpc )
     {
         packet->AddWord( thisnpc->inventory[i].itemid, (2*i)+36 );
     }
-    packet->AddByte( 1, 66 );
+    packet->AddByte( 0, 66 );
     packet->AddByte( 0, 67 );
     packet->AddWord( 0, 69 );//Player Effect
     packet->AddWord( thisnpc->level, 100 );// level

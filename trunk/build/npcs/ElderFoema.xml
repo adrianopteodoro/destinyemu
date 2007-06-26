@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<npc name="ElderFoema" mobid="11" mobcode="3" level="1" str="5" dex="0" int="100" con="0">
+	<inventory>
+		<item slotnum="0" itemid="13" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="1" itemid="111" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="2" itemid="112" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="3" itemid="113" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="4" itemid="114" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="5" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	</inventory>
+	<shopitems>
+	</shopitems>
+</npc>
