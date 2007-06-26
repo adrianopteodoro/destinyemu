@@ -1,7 +1,44 @@
 <?xml version="1.0"?>
 <npclist>
-	<npc pos_x="2144" pos_y="2088" npcfile="Aki.xml" />
-	<npc pos_x="2146" pos_y="2080" npcfile="CargoGuard.xml" />
+
+	<!--NPC's de Armia/-->
+
+	<npc pos_x="2107" pos_y="2144" npcfile="Balmus.xml" />
+	<npc pos_x="2133" pos_y="2126" npcfile="ForeLearner.xml" />
+	<npc pos_x="2143" pos_y="2119" npcfile="KnightLeader.xml" />
+	<npc pos_x="2144" pos_y="2115" npcfile="Smith.xml" />
+	<npc pos_x="2134" pos_y="2105" npcfile="Delegate_Kibita.xml" />
+	<npc pos_x="2149" pos_y="2101" npcfile="Guard.xml" />
+	<npc pos_x="2149" pos_y="2103" npcfile="Guard.xml" />
+	<npc pos_x="2145" pos_y="2088" npcfile="Aki.xml" />
+	<npc pos_x="2145" pos_y="2080" npcfile="CargoGuard.xml" />
+	<npc pos_x="2152" pos_y="2068" npcfile="AbilityMaster.xml" />
+	<npc pos_x="2116" pos_y="2080" npcfile="Griphon_Master.xml" />
+	<npc pos_x="2109" pos_y="2072" npcfile="Guard.xml" />
+	<npc pos_x="2115" pos_y="2072" npcfile="Guard.xml" />
+	<npc pos_x="2108" pos_y="2081" npcfile="TrainerChief.xml" />
+	<npc pos_x="2068" pos_y="2068" npcfile="GoldDragon.xml" />
+	<npc pos_x="2077" pos_y="2099" npcfile="Galford.xml" />
+	<npc pos_x="2074" pos_y="2119" npcfile="Arnod.xml" />
+	<npc pos_x="2074" pos_y="2124" npcfile="ArchiMaster.xml" />
+	<npc pos_x="2093" pos_y="2126" npcfile="ElderFoema.xml" />
+	<npc pos_x="2117" pos_y="2135" npcfile="GateKeeper.xml" />
+	<npc pos_x="2111" pos_y="2135" npcfile="GateKeeper.xml" />
+	<npc pos_x="2114" pos_y="2152" npcfile="Martin.xml" />
 	<npc pos_x="2104" pos_y="2116" npcfile="CargoGuard.xml" />
-	<npc pos_x="2076" pos_y="2100" npcfile="Galford.xml" />
+	<npc pos_x="2145" pos_y="2077" npcfile="PremiumNeill.xml" />
+	<npc pos_x="2100" pos_y="2116" npcfile="PremiumNeill.xml" />
+
+	<!--NPC's de Erion/-->
+
+	<!--NPC's de Noaton/-->
+
+	<!--NPC's de Azram/-->
+
+	<!--NPC's de Kefra/-->
+
+	<!--NPC's do Gelo/-->
+	
+	<!--NPC's Reinos/-->
+
 </npclist>
