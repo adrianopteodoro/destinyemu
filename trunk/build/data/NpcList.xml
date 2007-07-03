@@ -26,19 +26,91 @@
 	<npc pos_x="2111" pos_y="2135" npcfile="GateKeeper.xml" />
 	<npc pos_x="2114" pos_y="2152" npcfile="Martin.xml" />
 	<npc pos_x="2104" pos_y="2116" npcfile="CargoGuard.xml" />
+	<npc pos_x="2130" pos_y="2035" npcfile="Cabuncle.xml" />
+	<npc pos_x="2085" pos_y="1998" npcfile="Cabuncle.xml" />
+	<npc pos_x="2080" pos_y="1945" npcfile="Cabuncle.xml" />
+	<npc pos_x="2209" pos_y="2105" npcfile="Cabuncle.xml" />
+	<npc pos_x="2278" pos_y="2117" npcfile="Cabuncle.xml" />
+	<npc pos_x="2368" pos_y="2105" npcfile="Cabuncle.xml" />
+	<npc pos_x="2602" pos_y="2081" npcfile="Cabuncle.xml" />
 	<npc pos_x="2145" pos_y="2077" npcfile="PremiumNeill.xml" />
 	<npc pos_x="2100" pos_y="2116" npcfile="PremiumNeill.xml" />
+	<npc pos_x="2110" pos_y="2101" npcfile="Arkanum.xml" />
 
 	<!--NPC's de Erion/-->
 
+	<npc pos_x="2458" pos_y="1996" npcfile="Perzen.xml" />
+	<npc pos_x="2466" pos_y="2017" npcfile="MountCaptor.xml" />
+	<npc pos_x="2456" pos_y="2009" npcfile="MountMaster.xml" />
+	<npc pos_x="2468" pos_y="2005" npcfile="Farche.xml" />
+	<npc pos_x="2468" pos_y="2002" npcfile="Reiners.xml" />
+	<npc pos_x="2468" pos_y="1998" npcfile="Neptus.xml" />
+	<npc pos_x="2469" pos_y="1996" npcfile="Reimers.xml" />
+	<npc pos_x="2469" pos_y="1992" npcfile="Luvian.xml" />
+	<npc pos_x="2469" pos_y="1993" npcfile="Ropelion.xml" />
+	<npc pos_x="2467" pos_y="1990" npcfile="CargoGuard.xml" />
+	<npc pos_x="2465" pos_y="1989" npcfile="PremiumNeill.xml" />
+	<npc pos_x="2457" pos_y="1986" npcfile="Empis.xml" />
+
 	<!--NPC's de Noaton/-->
+
+	<npc pos_x="1054" pos_y="1716" npcfile="GodGovernment.xml" />
+	<npc pos_x="1047" pos_y="1743" npcfile="Angela.xml" />
+	<npc pos_x="1050" pos_y="1743" npcfile="PremiumNeill.xml" />
+	<npc pos_x="1056" pos_y="1738" npcfile="Wielund.xml" />
+	<npc pos_x="1060" pos_y="1745" npcfile="Judith.xml" />
+	<npc pos_x="1063" pos_y="1738" npcfile="Hestia.xml" />
+	<npc pos_x="1069" pos_y="1743" npcfile="Believer_Prona.xml" />
 
 	<!--NPC's de Azram/-->
 
-	<!--NPC's de Kefra/-->
+	<npc pos_x="2441" pos_y="1718" npcfile="Soldier.xml" />
+	<npc pos_x="2441" pos_y="1719" npcfile="Soldier.xml" />
+	<npc pos_x="2441" pos_y="1717" npcfile="Soldier.xml" />
+	<npc pos_x="2442" pos_y="1718" npcfile="Soldier.xml" />
+	<npc pos_x="2440" pos_y="1718" npcfile="Soldier.xml" />
+	<npc pos_x="2596" pos_y="1726" npcfile="Hera.xml" />
+	<npc pos_x="2400" pos_y="1600" npcfile="ExploitLeader.xml" />
+	<npc pos_x="2551" pos_y="1716" npcfile="Rucy.xml" />
+	<npc pos_x="2535" pos_y="1734" npcfile="Akada.xml" />
+	<npc pos_x="2578" pos_y="1724" npcfile="TownWatcher.xml" />
+	<npc pos_x="2578" pos_y="1731" npcfile="TownWatcher.xml" />
+	<npc pos_x="2529" pos_y="1735" npcfile="Compounder.xml" />
+	<npc pos_x="2529" pos_y="1727" npcfile="Aline.xml" />
+	<npc pos_x="2537" pos_y="1714" npcfile="Kara.xml" />
+	<npc pos_x="2517" pos_y="1726" npcfile="Jeffi.xml" />
+	<npc pos_x="2506" pos_y="1726" npcfile="Shaman.xml" />
+	<npc pos_x="2492" pos_y="1732" npcfile="WildBoar.xml" />
+	<npc pos_x="2492" pos_y="1731" npcfile="WildBoar.xml" />
+	<npc pos_x="2491" pos_y="1732" npcfile="WildBoar.xml" />
+	<npc pos_x="2493" pos_y="1732" npcfile="WarBoar.xml" />
+	<npc pos_x="2494" pos_y="1732" npcfile="WarBoar.xml" />
+	<npc pos_x="2481" pos_y="1744" npcfile="TownWatcher.xml" />
+	<npc pos_x="2492" pos_y="1730" npcfile="TownWatcher.xml" />
+	<npc pos_x="2461" pos_y="1733" npcfile="Arnold.xml" />
+	<npc pos_x="2447" pos_y="1721" npcfile="KnightsLeader.xml" />
+	<npc pos_x="2440" pos_y="1721" npcfile="TownWatcher.xml" />
+	<npc pos_x="2440" pos_y="1715" npcfile="TownWatcher.xml" />
+	<npc pos_x="2487" pos_y="1702" npcfile="Ruty.xml" />
+	<npc pos_x="2440" pos_y="1721" npcfile="TownWatcher.xml" />
+	<npc pos_x="2473" pos_y="1688" npcfile="Tera.xml" />
+	<npc pos_x="2466" pos_y="1692" npcfile="Rapein.xml" />
+	<npc pos_x="2467" pos_y="1686" npcfile="Arnod_.xml" />
+	<npc pos_x="2491" pos_y="1688" npcfile="SilverDragon.xml" />
+	<npc pos_x="2500" pos_y="1691" npcfile="Lainy.xml" />
+	<npc pos_x="2500" pos_y="1683" npcfile="Smith_.xml" />
+	<npc pos_x="2480" pos_y="1646" npcfile="Julie.xml" />
+	<npc pos_x="2596" pos_y="1723" npcfile="PremiumNeill.xml" />
+	<npc pos_x="2474" pos_y="1686" npcfile="PremiumNeill.xml" />
 
-	<!--NPC's do Gelo/-->
-	
-	<!--NPC's Reinos/-->
+
+	<!--NPC's Quest/-->
+
+	<npc pos_x="2373" pos_y="2099" npcfile="Grave_Keeper.xml" />
+	<npc pos_x="2464" pos_y="2080" npcfile="Unicorn.xml" />
+	<npc pos_x="2390" pos_y="2139" npcfile="Unicorn.xml" />
+	<npc pos_x="2530" pos_y="2007" npcfile="Unicorn.xml" />
+	<npc pos_x="2627" pos_y="1986" npcfile="Priest_Jester.xml" />
+
 
 </npclist>

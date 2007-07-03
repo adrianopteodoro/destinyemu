@@ -48,3 +48,6 @@ DESTINY EMULATOR SVN CHANGE-LOG
 26/06/07 - Revision 62:
     - Added: GM Command /telexy <posx> <posy>, you need to put accesslevel above of 90. [Snaity]
     - Added: Armia NPCs, but NPCs not working. [GateKiller]
+
+03/07/07 - Revision 63:
+    - Added: More NPCs, and not 100% working. [GateKiller]
