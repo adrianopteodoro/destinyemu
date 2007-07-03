@@ -13,7 +13,7 @@
 	
 	<!-- MySQL Settings -->
 	<!-- MySQL Host, Adress IP or Hostname of machine with MySQL Server running -->
-	<mysql_host value="192.168.0.12" />
+	<mysql_host value="localhost" />
 	<!-- MySQL User, required to acess database. MySQL DEFAULT: root -->
 	<mysql_user value="destiny" />
 	<!-- MySQL Password, required too to acess database. MySQL DEFAULT: NULL -->

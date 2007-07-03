@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<npc name="Perzen" mobid="11" mobcode="3" level="1" str="5" dex="0" int="100" con="100">
+	<inventory>
+		<item slotnum="0" itemid="1341" add1="43" val1="255" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="1" itemid="1341" add1="43" val1="255" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="2" itemid="1341" add1="43" val1="255" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="3" itemid="1341" add1="43" val1="255" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="4" itemid="1341" add1="43" val1="255" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="5" itemid="900" add1="43" val1="255" add2="0" val2="0" add3="0" val3="0" />
+	</inventory>
+	<shopitems>
+	</shopitems>
+</npc>
