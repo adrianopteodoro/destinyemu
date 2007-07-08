@@ -92,3 +92,13 @@ bool CConnServer::IsVisible( CConnClient* thisclient, CNPC* thisnpc )
 	}
 	return false;
 }
+
+CNPC* CConnServer::GetNPCByID( unsigned int id )
+{
+    for(UINT i=0;i<NPCList.size();i++)
+    {
+        if(NPCList.at(i)->clientid == id )
+            return NPCList.at(i);
+    }
+    return NULL;
+}

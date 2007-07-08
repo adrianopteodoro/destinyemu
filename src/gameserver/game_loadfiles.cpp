@@ -132,6 +132,14 @@ bool CConnServer::LoadConfigs()
 
         while (p)
         {
+            if (xmlStrcmp(p->name, (const xmlChar*)"ipadress") == 0)
+            {
+                if(readXMLString(p, "value", strvalue))
+                {
+                    this->ipadress = strvalue;
+                    cfgcount++;
+                }
+            }
             if (xmlStrcmp(p->name, (const xmlChar*)"port") == 0)
             {
                 if(readXMLInteger(p, "value", intvalue))
@@ -504,3 +512,614 @@ bool CConnServer::LoadNPCFile( char* filename, int posx, int posy )
         return false;
     }
 }
+
+bool CConnServer::LoadItemList()
+{
+	int itemscount = 0;
+	Log( MSG_INFO, "Loading ItemList..." );
+	int intvalue;
+	std::string strvalue;
+	xmlDocPtr doc = xmlParseFile(".\\data\\ItemList.xml");
+
+	CEquip* newitem = new (nothrow) CEquip;
+
+	if (doc)
+	{
+		xmlNodePtr root, p, effect;
+		root = xmlDocGetRootElement(doc);
+		if(xmlStrcmp(root->name,(const xmlChar*)"itemlist") != 0){
+			xmlFreeDoc(doc);
+			Log( MSG_FATALERROR, "Error on Loading \".\\data\\ItemList.xml\"" );
+			return false;
+		}
+
+        p = root->children;
+		while (p)
+		{
+			if (xmlStrcmp(p->name, (const xmlChar*)"item") == 0)
+			{
+				if(readXMLInteger(p, "id", intvalue))
+				{
+					newitem->itemid = intvalue;
+					if(readXMLString(p, "name", strvalue))
+					{
+						newitem->name = strvalue;
+					}
+
+					effect = p->children;
+					while(effect)
+					{
+						if(readXMLString(effect, "type", strvalue))
+						{
+							if(strcasecmp(strvalue.c_str(), "name") == 0){
+								if(readXMLString(effect, "value", strvalue))
+								{
+									newitem->name = strvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "level") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->level = intvalue;
+								}
+							}
+
+							else if(strcasecmp(strvalue.c_str(), "damage") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->damage = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "defesa") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->defesa = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "hp") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->hp = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "mp") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->mp = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "exp") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->exp = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "str") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->i_str = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "int") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->i_int = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "dex") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->i_dex = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "con") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->i_con = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "special1") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->special1 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "special2") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->special2 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "special3") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->special3 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "special4") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->special4 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "score14") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->score14 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "score15") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->score15 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "pos") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->pos = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "class") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->i_class = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "r1sidc") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->r1sidc = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "r2sidc") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->r2sidc = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "wtype") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->wtype = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "req_str") == 0){
+								if(readXMLInteger(effect, "value", intvalue)){
+									newitem->req_str = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "req_int") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->req_int = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "req_dex") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->req_dex = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "req_con") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->req_con = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "attspeed") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->attspeed = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "range") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->range = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "price") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->price = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "runspeed") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->runspeed = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "spell") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->spell = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "duration") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->duration = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "parm") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->parm = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "grid") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->grid = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "ground") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->ground = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "clan") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->clan = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "hwordcoin") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->hwordcoin = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "lwordcoin") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->lwordcoin = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "volatile") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->i_volatile = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "keyid") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->keyid = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "parry") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->parry = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "hitrate") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->hitrate = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "critical") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->critical = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "sanc") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->sanc = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "savemana") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->savemana = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "hpadd") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->hpadd = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "mpadd") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->mpadd = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "regenhp") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->regenhp = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "regenmp") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->regenmp = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "resist1") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->resist1 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "resist2") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->resist2 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "resist3") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->resist3 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "resist4") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->resist4 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "acadd") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->acadd = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "resistall") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->resistall = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "bonus") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->bonus = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "hwordguild") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->hwordguild = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "lwoedguild") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->lwoedguild = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "quest") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->quest = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "unique") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->unique = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "magic") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->magic = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "quantidade") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->quantidade = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "hwordindex") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->hwordindex = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "lwordindex") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->lwordindex = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "init1") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->init1 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "init2") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->init2 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "init3") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->init3 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "damageadd") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->damageadd = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "magicadd") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->magicadd = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "hpadd2") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->hpadd2 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "mpadd2") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->mpadd2 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "critical2") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->critical2 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "acadd2") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->acadd2 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "damage2") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->damage2 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "specialall") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->specialall = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "curkill") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->curkill = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "ltokill") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->ltokill = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "htokill") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->htokill = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "incubate") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->incubate = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "mountlife") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->mountlife = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "mounthp") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->mounthp = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "mountsanc") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->mountsanc = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "mountfeed") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->mountfeed = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "mountkill") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->mountkill = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "incudelay") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->incudelay = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "subguild") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->subguild = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "grade0") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->grade0 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "grade1") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->grade1 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "grade2") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->grade2 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "grade3") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->grade3 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "grade4") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->grade4 = intvalue;
+								}
+							}
+							else if(strcasecmp(strvalue.c_str(), "grade5") == 0){
+								if(readXMLInteger(effect, "value", intvalue))
+								{
+									newitem->grade5 = intvalue;
+								}
+							}
+						}
+						effect = effect->next;
+					}
+					itemscount++;
+				}
+				this->EquipList.push_back( newitem );
+			}
+			p = p->next;
+		}
+		xmlFreeDoc(doc);
+		Log( MSG_INFO, "Loaded %i Items in \".\\data\\ItemList.xml\".", itemscount );
+		return true;
+	}
+	else
+	{
+		Log( MSG_FATALERROR, "Error on Loading \".\\data\\ItemList.xml\"" );
+		return false;
+	}
+}
+

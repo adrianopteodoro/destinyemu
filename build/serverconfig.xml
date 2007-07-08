@@ -8,6 +8,8 @@
 	******************************************************************************
 -->
 <wydserver>
+	<!-- Server Adress, use * to bind in all avaliable ips -->
+	<ipadress value="127.0.0.1" />
 	<!-- Server Port, use DEFAULT: 8281 -->
 	<port value="8281" />
 	
@@ -22,11 +24,19 @@
 	<mysql_db value="destiny" />
 	<!-- MySQL Port, leave it as DEFAULT 3306 -->
 	<mysql_port value="3306" />
+	<!-- Accounts Table (DONT CHANGE IF YOU DONT WANT ERRORS) -->
+	<accounts_table value="accounts" />
+	<!-- Characters Items Table (DONT CHANGE IF YOU DONT WANT ERRORS) -->
+	<char_items_table value="char_items" />
+	<!-- Characters Table (DONT CHANGE IF YOU DONT WANT ERRORS) -->
+	<characters_table value="characters" />
+	<!-- Storage Table (DONT CHANGE IF YOU DONT WANT ERRORS) -->
+	<storage_table value="storage" />
 	
 	<!-- Auto Create Account on first login with invalid account. 1=YES\0=NO -->
 	<autoacc value="0" />
 	<!-- Name of your Server -->
-	<servername value="Test Server" />
+	<servername value="Alpha Test Server" />
 	<!-- Client Version -->
 	<client_version value="748" />
 
