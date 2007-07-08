@@ -33,7 +33,9 @@ public:
 	bool LoadCreateChar( CConnClient* thisclient, int charclass, char* charname, int destpos );
 	bool LoadLanguage();
 	bool LoadNPCList();
+	bool LoadItemList();
 	bool LoadNPCFile( char* filename, int posx, int posy );
+	CNPC* GetNPCByID( unsigned int id );
 
 	// Packet control
 	bool OnReceivePacket( CClientSocket* thisclient, unsigned char* P );
@@ -52,6 +54,7 @@ public:
 	bool packetCommand( CConnClient* thisclient, unsigned char* P );
 	bool SendNPCSellItems( CConnClient* thisclient, unsigned char* P );
 	bool SpawnNPC( CConnClient* thisclient, CNPC* thisnpc );
+	bool PlayerAttack( CConnClient* thisclient, unsigned char* P );
 
 	// GM Commands Functions
 	bool pakGMNotice( CConnClient* thisclient, unsigned char* P );
@@ -61,6 +64,7 @@ public:
 	// Lists
 	UINT ClientIDList[0x10000];	// Clients List
 	vector<CNPC*>   NPCList;
+	vector<CEquip*>   EquipList;
 
 	// configuration things
 	int myport;
@@ -75,6 +79,7 @@ public:
 	std::string mydb;
 	std::string mypass;
 	std::string srvname;
+	std::string ipadress;
 	char* versionfile;
 	char* datfile;
 

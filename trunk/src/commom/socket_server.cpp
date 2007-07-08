@@ -19,9 +19,9 @@ CServerSocket::~CServerSocket( )
 // -----------------------------------------------------------------------------------------
 // Start up our server
 // -----------------------------------------------------------------------------------------
-bool CServerSocket::StartServer( )
+bool CServerSocket::StartServer( std::string serverip )
 {
-struct sockaddr_in ain;
+    struct sockaddr_in ain;
 
 	sock = socket( AF_INET, SOCK_STREAM, 0 );
 	if (sock == INVALID_SOCKET)
@@ -31,8 +31,17 @@ struct sockaddr_in ain;
 	}
 
 	ain.sin_family		= AF_INET;
-	ain.sin_addr.s_addr	= INADDR_ANY;
+	if(strncmp(serverip.c_str(), "*", 1)==0)
+	{
+        ain.sin_addr.s_addr	= INADDR_ANY;
+    }
+    else
+    {
+        ain.sin_addr.s_addr	= inet_addr(serverip.c_str());;
+    }
 	ain.sin_port		= htons( port );
+	memset(&(ain.sin_zero), '\0', 8);
+
 	if ( bind( sock, (const sockaddr*)&ain, sizeof( ain ) ) )
     {
 		Log( MSG_FATALERROR, "Could not bind socket" );
@@ -59,7 +68,14 @@ struct sockaddr_in ain;
 		isActive = false;
 		return false;
 	}
-	Log( MSG_INFO, "Server started on port %i and is listening.", port );
+	if(strncmp(serverip.c_str(), "*", 1)==0)
+	{
+	    Log( MSG_INFO, "Server is Listening on *.*.*.*:%i", port );
+    }
+    else
+    {
+        Log( MSG_INFO, "Server is Listening on %s:%i", serverip.c_str(), port );
+    }
 	ServerLoop( );
 	// Nothing past here is ever really called
 	OnServerDie( );
@@ -73,7 +89,7 @@ struct sockaddr_in ain;
 // -----------------------------------------------------------------------------------------
 void CServerSocket::ServerLoop( )
 {
-fd_set		fds;
+    fd_set		fds;
 	int			activity;
 	sockaddr_in	ClientInfo;
 	SOCKET		NewSocket;

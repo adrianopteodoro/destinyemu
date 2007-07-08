@@ -108,7 +108,7 @@ public:
 	CServerSocket( );									// Our server socket constructor
 	~CServerSocket( );									// Our server socket destructor
 
-	bool StartServer( );
+	bool StartServer( std::string serverip );
 	void ServerLoop( );
 	void FillFDS( fd_set* fds );
 	void HandleClients( fd_set* fds );

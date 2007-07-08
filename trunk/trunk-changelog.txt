@@ -51,3 +51,10 @@ DESTINY EMULATOR SVN CHANGE-LOG
 
 03/07/07 - Revision 63:
     - Added: More NPCs, and not 100% working. [GateKiller]
+
+08/07/07 - Revision 64:
+    - Fixed: Bugs on NPC Shop/SkillLearn Disconnecting client after click on it. [darcker]
+    - Fixed: Now u can view other players attack actions. [Snaity]
+    - Added: Option to define server IP Address on "serverconfig.xml" see the comments for more info. [Snaity]
+    - Added: Shop Editing on NpcFiles see "Aki.xml" for Example. [darcker & Snaity]
+    - Added: Reading of ItemList.xml but not now usable, this for future things. [darcker]

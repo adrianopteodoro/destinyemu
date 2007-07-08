@@ -56,7 +56,7 @@ printf("\tYou AGREE with terms:\n\tThis is a Nightly Build Development version\n
         Log(MSG_INFO, "Connected to MySQL server" );
     }
     server->mysql = &mysql;
-	server->StartServer();
+	server->StartServer(server->ipadress);
 
 	// Clean up everything
 	pthread_attr_destroy(&server->at);

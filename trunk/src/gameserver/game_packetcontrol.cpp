@@ -35,6 +35,7 @@ bool CConnServer::PacketControl( CConnClient* thisclient, int size, unsigned cha
         case 0x0376: return ChangeInventory( thisclient, P );
         case 0x03a0: return true;
         case 0x027b: return SendNPCSellItems( thisclient, P ); // NPC Shop Items
+        case 0x039d: return PlayerAttack( thisclient, P ); // Player Attack
         default:
             Log( MSG_WARNING, "Received Unknow OPCODE: 0x%04x", opcode );
         break;

@@ -3,6 +3,15 @@
 CEncDec* encdec = new CEncDec();
 bufwrite* packet = new bufwrite();
 
+bool CConnServer::PlayerAttack( CConnClient* thisclient, unsigned char* P )
+{
+    packet->Free();
+    for (int i=0;i<96;i++)
+        packet->AddByte( P[i], i );
+    SendToVisible( encdec, thisclient, packet, 96, false );
+    return true;
+}
+
 bool CConnServer::ChangeInventory( CConnClient* thisclient, unsigned char* P )
 {
     packet->Free();
@@ -576,35 +585,37 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
 
 bool CConnServer::SendNPCSellItems( CConnClient* thisclient, unsigned char* P )
 {
+    unsigned short tmpid;
+    memcpy( &tmpid, &P[12], 2 );
+    CNPC* thisnpc = GetNPCByID(tmpid);
     packet->Free();
-    packet->AddByte( 236, 0 );
-    packet->AddByte( 0x7C, 4 );
-    packet->AddByte( 0x01, 5 );
-    packet->AddWord( 30000, 6 );
-    packet->AddWord( 1, 12 );
-    packet->AddWord( 698, 16 );
-    packet->AddWord( 699, 22 );
-    packet->AddWord( 496, 28 );
-    packet->AddWord( 497, 34 );
-    packet->AddWord( 410, 48 );
-    packet->AddWord( 411, 54 );
-    packet->AddWord( 1764, 60 );
-    for(int i=0;i<9;i++)
+    packet->AddWord( 236, 0 );//packet size
+    packet->AddWord( 0x017C, 4 );//opcode
+    packet->AddWord( 30000, 6 );//???
+    switch(thisnpc->mobcode)
     {
-        packet->AddByte( 0xcc, 48+i );
+    case 1:
+        packet->AddWord( 1, 12 );//shop type?
+        for (int i=0;i<26;i++)
+        {
+            packet->AddWord( thisnpc->shopitems[i].itemid, (8*i)+16 );
+            packet->AddByte( thisnpc->shopitems[i].add1, (8*i)+18 );
+            packet->AddByte( thisnpc->shopitems[i].val1, (8*i)+19 );
+            packet->AddByte( thisnpc->shopitems[i].add2, (8*i)+20 );
+            packet->AddByte( thisnpc->shopitems[i].val2, (8*i)+21 );
+            packet->AddByte( thisnpc->shopitems[i].add3, (8*i)+22 );
+            packet->AddByte( thisnpc->shopitems[i].val3, (8*i)+23 );
+        }
+    break;
+    case 3:
+        packet->AddWord( 3, 12 );//shop type?
+    break;
     }
-    for(int i=0;i<17;i++)
-    {
-        packet->AddByte( 0xcc, 88+i );
-    }
-    for(int i=0;i<9;i++)
-    {
-        packet->AddByte( 0xcc, 160+i );
-    }
-    packet->AddByte( 14, 232 );
+    packet->AddByte( 10, 232 );
     this->curtime = clock();
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 236, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
+    return true;
 }
 
 bool CConnServer::SpawnNPC( CConnClient* thisclient, CNPC* thisnpc )

@@ -7,6 +7,7 @@ CConnServer::CConnServer( )
     LoadConfigs();
     LoadLanguage();
     LoadNPCList();
+    LoadItemList();
 }
 
 CConnServer::~CConnServer( )
