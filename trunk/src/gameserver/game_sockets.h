@@ -4,8 +4,8 @@
 #include "../commom/sockets.h"
 #include "game_player.h"
 #include "game_types.h"
-#define MAXVISUALRANGE 100
-#define MINVISUALRANGE 60
+#define MAXVISUALRANGE 50
+#define MINVISUALRANGE 30
 #define WORLD_THREAD 0
 #define VISUALITY_THREAD 1
 #define SHUTDOWN_THREAD 2

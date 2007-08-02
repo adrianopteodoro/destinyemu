@@ -17,6 +17,7 @@
 		<item slotnum="5" itemid="496" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="6" itemid="497" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="7" itemid="787" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="8" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="9" itemid="3322" add1="61" val1="120" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="10" itemid="3323" add1="61" val1="120" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="11" itemid="682" add1="61" val1="120" add2="0" val2="0" add3="0" val3="0" />
@@ -24,8 +25,17 @@
 		<item slotnum="13" itemid="1728" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="14" itemid="410" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="15" itemid="411" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="16" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="17" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="18" itemid="4038" add1="43" val1="9" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="19" itemid="4039" add1="43" val1="9" add2="0" val2="0" add3="0" val3="0" />
 		<item slotnum="20" itemid="4040" add1="43" val1="9" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="21" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="22" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="23" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="24" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="25" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="26" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="27" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	</shopitems>
 </npc>

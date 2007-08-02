@@ -134,6 +134,7 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 );
     packet->AddStr( thisclient->PlayerInfo->char_name, 16 ); // charname
+    packet->AddByte( 150, 28 );
     packet->AddDWord( thisclient->PlayerInfo->Gold, 40 ); // gold
     packet->AddDWord( thisclient->PlayerInfo->Exp, 44 ); // earned experience
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 48 );
