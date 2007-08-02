@@ -9,5 +9,33 @@
 		<item slotnum="5" itemid="0" add1="43" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	</inventory>
 	<shopitems>
+		<item slotnum="0" itemid="833" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="1" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="2" itemid="878" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="3" itemid="863" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="4" itemid="803" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="5" itemid="818" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="6" itemid="1703" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="7" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="8" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="9" itemid="834" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="10" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="11" itemid="879" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="12" itemid="864" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="13" itemid="804" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="14" itemid="819" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="15" itemid="1704" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="16" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="17" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="18" itemid="848" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="19" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="20" itemid="893" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="21" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="22" itemid="849" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="23" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="24" itemid="894" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="25" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="26" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="27" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	</shopitems>
 </npc>

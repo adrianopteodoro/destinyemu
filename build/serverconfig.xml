@@ -9,7 +9,7 @@
 -->
 <wydserver>
 	<!-- Server Adress, use * to bind in all avaliable ips -->
-	<ipadress value="127.0.0.1" />
+	<ipadress value="*" />
 	<!-- Server Port, use DEFAULT: 8281 -->
 	<port value="8281" />
 	
