@@ -67,6 +67,57 @@ bool CConnServer::packetCommand( CConnClient* thisclient, unsigned char* P )
         Log( MSG_GMACTION, "%s: /srv %s %s %s" , thisclient->PlayerInfo->char_name, va1, va2, va3 );
         return true;
     }
+    if (strcmp(command, "item")==0)
+    {
+        if(90 > thisclient->PlayerSession->accesslevel)
+            return true;
+        char* tmp = strtok( (char*)&P[28] , " ");
+        int slotnum = atoi(tmp);
+        if ((tmp = strtok(NULL, " "))==NULL)
+        {
+            SendServerMsg( thisclient, "Usage:_/item_<slotnum>_<itemid>_<add1>_<val1>_<add2>_<val2>_<add3>_<val3>" );
+            return true;
+        }
+        int itemid = atoi(tmp);
+        if ((tmp = strtok(NULL, " "))==NULL)
+        {
+            SendServerMsg( thisclient, "Usage:_/item_<slotnum>_<itemid>_<add1>_<val1>_<add2>_<val2>_<add3>_<val3>" );
+            return true;
+        }
+        int add1 = atoi(tmp);
+        if ((tmp = strtok(NULL, " "))==NULL)
+        {
+            SendServerMsg( thisclient, "Usage:_/item_<slotnum>_<itemid>_<add1>_<val1>_<add2>_<val2>_<add3>_<val3>" );
+            return true;
+        }
+		int val1 = atoi(tmp);
+		if ((tmp = strtok(NULL, " "))==NULL)
+        {
+            SendServerMsg( thisclient, "Usage:_/item_<slotnum>_<itemid>_<add1>_<val1>_<add2>_<val2>_<add3>_<val3>" );
+            return true;
+        }
+		int add2 = atoi(tmp);
+		if ((tmp = strtok(NULL, " "))==NULL)
+        {
+            SendServerMsg( thisclient, "Usage:_/item_<slotnum>_<itemid>_<add1>_<val1>_<add2>_<val2>_<add3>_<val3>" );
+            return true;
+        }
+		int val2 = atoi(tmp);
+		if ((tmp = strtok(NULL, " "))==NULL)
+        {
+            SendServerMsg( thisclient, "Usage:_/item_<slotnum>_<itemid>_<add1>_<val1>_<add2>_<val2>_<add3>_<val3>" );
+            return true;
+        }
+		int add3 = atoi(tmp);
+		if ((tmp = strtok(NULL, " "))==NULL)
+        {
+            SendServerMsg( thisclient, "Usage:_/item_<slotnum>_<itemid>_<add1>_<val1>_<add2>_<val2>_<add3>_<val3>" );
+            return true;
+        }
+		int val3 = atoi(tmp);
+        Log( MSG_GMACTION, "%s: /item %i %i %i %i %i %i %i %i" , thisclient->PlayerInfo->char_name, slotnum, itemid, add1, val1, add2, val2, add3, val3 );
+        return pakGMItem( thisclient, P, slotnum, itemid, add1, val1, add2, val2, add3, val3 );
+    }
     return true;
 }
 
@@ -156,5 +207,27 @@ bool CConnServer::pakGMSpawn( CConnClient* thisclient, unsigned char* P, int mob
 
     SendToVisible( encdec, thisclient, packet, 172, true );
     npcid++;
+    return true;
+}
+
+bool CConnServer::pakGMItem( CConnClient* thisclient, unsigned char* P, int slotnum, int itemid, int add1, int val1, int add2, int val2, int add3, int val3 )
+{
+    packet->Free();
+    packet->AddWord( 24, 0 );
+    packet->AddWord( 0x0182, 4 ); //opcode
+    packet->AddWord( thisclient->PlayerSession->clientid, 6 ); //clientid
+    // end header
+
+	packet->AddByte( 1, 12 );
+    packet->AddByte( slotnum, 14 ); //slotnum
+    packet->AddWord( itemid, 16 ); //itemid
+    packet->AddByte( add1, 18 ); //add1
+	packet->AddByte( val1, 19 ); //val1
+	packet->AddByte( add2, 20 ); //add2
+	packet->AddByte( val2, 21 ); //val2
+	packet->AddByte( add3, 22 ); //add3
+	packet->AddByte( val3, 23 ); //val3
+
+    SendToVisible( encdec, thisclient, packet, 24, true );
     return true;
 }

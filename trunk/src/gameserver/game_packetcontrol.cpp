@@ -30,12 +30,12 @@ bool CConnServer::PacketControl( CConnClient* thisclient, int size, unsigned cha
         case 0x0369: return true; // Unknow
         case 0x0333: return SendChat( thisclient, P );
         case 0x0334: return packetCommand( thisclient, P );
-        case 0x0215: return SendServerMsg( thisclient, "Not implemented yet." ); // gametocharlist
         case 0x0290: return pakGMTele( thisclient, P, 1047, 1725 ); // teleport
         case 0x0376: return ChangeInventory( thisclient, P );
-        case 0x03a0: return true;
+        case 0x03a0: return true; // Save Request
         case 0x027b: return SendNPCSellItems( thisclient, P ); // NPC Shop Items
         case 0x039d: return PlayerAttack( thisclient, P ); // Player Attack
+        case 0x0215: return GameToCharList( thisclient, P ); // gametocharlist
         default:
             Log( MSG_WARNING, "Received Unknow OPCODE: 0x%04x", opcode );
         break;

@@ -55,11 +55,13 @@ public:
 	bool SendNPCSellItems( CConnClient* thisclient, unsigned char* P );
 	bool SpawnNPC( CConnClient* thisclient, CNPC* thisnpc );
 	bool PlayerAttack( CConnClient* thisclient, unsigned char* P );
+	bool GameToCharList( CConnClient* thisclient, unsigned char* P );
 
 	// GM Commands Functions
 	bool pakGMNotice( CConnClient* thisclient, unsigned char* P );
 	bool pakGMTele( CConnClient* thisclient, unsigned char* P, int x, int y );
 	bool pakGMSpawn( CConnClient* thisclient, unsigned char* P, int mobcode, int mobid, char* name );
+	bool pakGMItem( CConnClient* thisclient, unsigned char* P, int slotnum, int itemid, int add1, int val1, int add2, int val2, int add3, int val3 );
 
 	// Lists
 	UINT ClientIDList[0x10000];	// Clients List

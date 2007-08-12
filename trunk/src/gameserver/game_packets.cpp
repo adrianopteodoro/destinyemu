@@ -134,15 +134,52 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 );
     packet->AddStr( thisclient->PlayerInfo->char_name, 16 ); // charname
-    packet->AddByte( 150, 28 );
+	packet->AddByte( 150, 28 );
     packet->AddDWord( thisclient->PlayerInfo->Gold, 40 ); // gold
     packet->AddDWord( thisclient->PlayerInfo->Exp, 44 ); // earned experience
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 48 );
     packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 50 );
     packet->AddByte( thisclient->PlayerInfo->classid, 36 ); // classindent
+
+    packet->AddWord( 1536, 38 ); //
+    packet->AddByte( 0x20, 52 ); //
+    packet->AddByte( 0x00, 53 ); //
+    packet->AddByte( 0x24, 54 ); //
+    packet->AddByte( 0x00, 55 ); //
+    packet->AddByte( 0x05, 56 ); //
+    packet->AddByte( 0x00, 57 ); //
+    packet->AddByte( 0x00, 58 ); //
+    packet->AddByte( 0x52, 59 ); //
+    packet->AddByte( 0x78, 60 ); //
+    packet->AddByte( 0x00, 61 ); //
+    packet->AddByte( 0xCF, 62 ); //
+    packet->AddByte( 0x00, 63 ); //
+    packet->AddByte( 0x46, 64 ); //
+    packet->AddByte( 0x00, 65 ); //
+    packet->AddByte( 0x37, 66 ); //
+    packet->AddByte( 0x00, 67 ); //
+    packet->AddByte( 0x3D, 68 ); //
+    packet->AddByte( 0x00, 69 ); //
+    packet->AddByte( 0x32, 70 ); //
+    packet->AddByte( 0x00, 71 ); //
+    packet->AddByte( 0x33, 72 ); //
+    packet->AddByte( 0x00, 73 ); //
+    packet->AddByte( 0x0E, 74 ); //
+    packet->AddByte( 0x00, 75 ); //
+    packet->AddByte( 0x0D, 76 ); //
+    packet->AddByte( 0x00, 77 ); //
+    packet->AddByte( 0x2C, 78 ); //
+    packet->AddByte( 0x01, 79 ); //
+
     packet->AddWord( thisclient->PlayerInfo->Level, 80 ); // lvl
     packet->AddWord( thisclient->PlayerStats->Defense, 82 ); // defense
     packet->AddWord( thisclient->PlayerStats->Attack_Power, 84 ); // ataque
+
+
+    //packet->AddByte( 0x80, 86 ); //00
+    //packet->AddByte( 0xF4, 87 ); // 72
+    packet->AddByte( 4, 87 ); //move speed?
+
     packet->AddWord( thisclient->PlayerStats->MaxHP, 88 ); // hp total
     packet->AddWord( thisclient->PlayerStats->MaxMP, 90 ); // mp total
     packet->AddWord( thisclient->PlayerStats->HP, 92 ); // hp
@@ -151,44 +188,109 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( thisclient->PlayerStats->Int, 98 ); // int
     packet->AddWord( thisclient->PlayerStats->Dex, 100 ); // dex
     packet->AddWord( thisclient->PlayerStats->Con, 102 ); // con
-    packet->AddByte( 200, 107 ); // skill master1
-    packet->AddByte( 200, 104 ); // skill master2
-    packet->AddByte( 200, 105 ); // skill master3
-    packet->AddByte( 200, 106 ); // skill master4
+    packet->AddByte( 1, 104 ); // skill master1
+    packet->AddByte( 2, 105 ); // skill master2
+    packet->AddByte( 3, 106 ); // skill master3
+    packet->AddByte( 4, 107 ); // skill master4
     packet->AddByte( thisclient->PlayerInfo->mobid, 108 ); // mobile id (if player class id)
     packet->AddByte( 43, 110 ); // Player Add1
     packet->AddByte( 0, 111 );
     packet->AddByte( 86, 112 ); // Player Add2
     packet->AddByte( 0, 113 );
     packet->AddByte( 28, 114 ); // Player Add3
-    packet->AddByte( 0, 115 );
-    packet->AddByte( 4, 768 ); // resist1
-    packet->AddByte( 4, 769 ); // resist2
-    packet->AddByte( 4, 770 ); // resist3
-    packet->AddByte( 4, 771 ); // resist4
+    //packet->AddByte( 0, 115 );
 
-    for (int a=0;a<5;a++)
-        packet->AddByte( 0xff, 760+a );
+    packet->AddByte( 1, 115 );//
 
-    for (int a=0;a<18;a++)
+    /* packet->AddByte( 0x23, 740 ); //
+    packet->AddByte( 0x02, 741 ); //
+    packet->AddByte( 0x96, 742 ); //
+    packet->AddByte( 0x00, 743 ); // */
+
+	//Skills?
+    packet->AddByte( 0x4D, 744 ); //00
+    packet->AddByte( 0x4D, 745 ); //07
+    packet->AddByte( 0x4D, 746 ); //4D
+    packet->AddByte( 0x00, 747 ); //00
+    packet->AddByte( 0x7F, 748 ); //20
+    packet->AddByte( 0x7F, 749 ); //7F
+    packet->AddByte( 0x7F, 750 ); //00
+    packet->AddByte( 0x00, 751 ); //00
+
+    packet->AddWord( 750, 752 ); //stpoints
+    packet->AddWord( 400, 754 ); //skmpoints
+    packet->AddWord( 290, 756 ); //skpoints
+
+    /* packet->AddByte( 0x48, 758 ); //
+    packet->AddByte( 0x0C, 759 ); // */
+    packet->AddByte( 0x0B, 760 ); //quick skill slot1
+    packet->AddByte( 0x0B, 761 ); //quick skill slot2
+    packet->AddByte( 0x0B, 762 ); //quick skill slot3
+    packet->AddByte( 0x0B, 763 ); //quick skill slot4
+    /* packet->AddByte( 0x00, 764 ); //
+    packet->AddByte( 0x02, 765 ); //
+    packet->AddByte( 0x32, 766 ); //
+    packet->AddByte( 0x32, 767 ); // */
+
+    packet->AddByte( 18, 768 ); // resist4
+    packet->AddByte( 18, 769 ); // resist3
+    packet->AddByte( 18, 770 ); // resist1
+    packet->AddByte( 18, 771 ); // resist2
+
+    /* for (int a=0;a<5;a++)
+        packet->AddByte( 0xff, 760+a ); */
+
+    for (int a=0;a<16;a++)
         packet->AddByte( 0xff, 778+a );
+
+    //quick slot(aba1)
+    packet->AddByte( 0x0B, 778 ); //quick skill slot5
+    packet->AddByte( 0x0B, 779 ); //quick skill slot6
+    packet->AddByte( 0x0B, 780 ); //quick skill slot7
+    packet->AddByte( 0x0B, 781 ); //quick skill slot8
+    packet->AddByte( 0x0B, 782 ); //quick skill slot9
+    packet->AddByte( 0x0B, 783 ); //quick skill slot10
+
+    //quick slot(aba2)
+    packet->AddByte( 0x05, 784 ); //quick skill slot1
+    packet->AddByte( 0x05, 785 ); //quick skill slot2
+    packet->AddByte( 0x05, 786 ); //quick skill slot3
+    packet->AddByte( 0x05, 787 ); //quick skill slot4
+    packet->AddByte( 0x05, 788 ); //quick skill slot5
+    packet->AddByte( 0x05, 789 ); //quick skill slot6
+    packet->AddByte( 0x05, 790 ); //quick skill slot7
+    packet->AddByte( 0x05, 791 ); //quick skill slot8
+    packet->AddByte( 0x05, 792 ); //quick skill slot9
+    packet->AddByte( 0x05, 793 ); //quick skill slot10
+
+    packet->AddByte( 0xCC, 794 ); //
+    packet->AddByte( 0xCC, 795 ); //
+    packet->AddByte( 0x22, 828 ); //
+    packet->AddByte( 0x00, 829 ); //
+    packet->AddByte( 0x06, 830 ); //
+    packet->AddByte( 0x00, 831 ); //
+    packet->AddByte( 0x51, 832 ); //
+    packet->AddByte( 0x4A, 833 ); //
+    packet->AddByte( 0x01, 834 ); //
+    packet->AddByte( 0x00, 835 ); //
+
 
     /*for (int a=0;a<200;a++)
         packet->AddByte( 150,600+a );*/
 
     //packet->AddWord( 150, 87 );
-    packet->AddByte( thisclient->PlayerSession->clientid, 774 ); // ClientID
+    packet->AddWord( thisclient->PlayerSession->clientid, 774 ); // ClientID
 
     // Load Inventory Items
     for (int i=0;i<78;i++)
     {
-        packet->AddWord( thisclient->items[i].itemid, (8*i)+116 );
-        packet->AddByte( thisclient->items[i].add1, (8*i)+118 );
-        packet->AddByte( thisclient->items[i].val1, (8*i)+119 );
-        packet->AddByte( thisclient->items[i].add2, (8*i)+120 );
-        packet->AddByte( thisclient->items[i].val2, (8*i)+121 );
-        packet->AddByte( thisclient->items[i].add3, (8*i)+122 );
-        packet->AddByte( thisclient->items[i].val3, (8*i)+123 );
+        packet->AddWord( thisclient->items[i].itemid, (8*i)+116 );//732
+        packet->AddByte( thisclient->items[i].add1, (8*i)+118 );//734
+        packet->AddByte( thisclient->items[i].val1, (8*i)+119 );//735
+        packet->AddByte( thisclient->items[i].add2, (8*i)+120 );//736
+        packet->AddByte( thisclient->items[i].val2, (8*i)+121 );//737
+        packet->AddByte( thisclient->items[i].add3, (8*i)+122 );//738
+        packet->AddByte( thisclient->items[i].val3, (8*i)+123 );//739
     }
 
     this->curtime = clock();
@@ -197,6 +299,71 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
 
     thisclient->PlayerSession->inGame = true;
     thisclient->ready = true;
+
+    packet->Free();
+    packet->AddWord( 172, 0 );
+    packet->AddWord( 0x0364, 4 );
+    packet->AddWord( 30000, 6 );
+    // end header
+
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 ); // pos x
+    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 ); // pos y
+    packet->AddWord( thisclient->PlayerSession->clientid, 16 );
+    for (int i=0;i<12;i++)
+        packet->AddByte( 0xcc, 18+i );
+    packet->AddStr( thisclient->PlayerInfo->char_name, 18 ); // char name
+    packet->AddByte( 150, 30 ); // player karma
+    packet->AddByte( thisclient->PlayerInfo->mobid, 34 ); // mob id
+    for (int i=0;i<15;i++)
+    {
+        packet->AddWord( thisclient->items[i].itemid, (2*i)+36 );
+    }
+    packet->AddWord( thisclient->PlayerSession->clientid, 66 );
+    packet->AddWord( 00, 69 );//Player Effect
+    packet->AddWord( thisclient->PlayerInfo->Level, 100 );
+    packet->AddWord( thisclient->PlayerStats->Attack_Power, 102 );
+    packet->AddWord( thisclient->PlayerStats->Defense, 104 );
+    packet->AddByte( 0, 106 );
+    packet->AddByte( 84, 107 );
+    packet->AddWord( thisclient->PlayerStats->MaxHP, 108 );//max hp
+    packet->AddWord( thisclient->PlayerStats->MaxMP, 110 );//max mana
+    packet->AddWord( thisclient->PlayerStats->HP, 112 );//current hp
+    packet->AddWord( thisclient->PlayerStats->MP, 114 );//current mana
+    packet->AddWord( thisclient->PlayerStats->Str, 116 );
+    packet->AddWord( thisclient->PlayerStats->Int, 118 );
+    packet->AddWord( thisclient->PlayerStats->Dex, 120 );
+    packet->AddWord( thisclient->PlayerStats->Con, 122 );
+    packet->AddWord( 2, 128 );
+    packet->AddWord( 0, 130 );
+
+    /* // test sanc?
+    packet->AddByte( 43, 130 ); // helm?
+    packet->AddByte( 43, 131 ); // armor?
+    packet->AddByte( 43, 132 ); // pants?
+    packet->AddByte( 43, 133 ); // gloves?
+    packet->AddByte( 43, 134 ); // boots?
+    packet->AddByte( 43, 135 ); // hand1?
+    packet->AddByte( 43, 136 ); // hand2?
+    packet->AddByte( 43, 137 ); // accessories?
+    packet->AddByte( 0, 138 ); // amuletos?
+    packet->AddByte( 43, 139 ); // pedras e rubis?
+    packet->AddByte( 0, 140 ); // medalhas?
+    packet->AddByte( 0, 141 ); //
+    packet->AddByte( 0, 142 ); //pet?
+    packet->AddByte( 0, 143 ); //cape?
+    packet->AddByte( 0, 144 ); //???
+    packet->AddByte( 43, 145 ); // 
+    // end test */
+
+    for (int i=0;i<29;i++)
+    {
+        packet->AddByte( 0xcc, 147+i );
+    }
+    packet->AddByte( 0x00, 172 );
+
+    this->curtime = clock();
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
+    thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
 
@@ -357,6 +524,27 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
     }
     mysql_free_result( result );
 
+	//test for load storageitems
+	if(!GServer->DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM storage WHERE owner='%s'", thisclient->PlayerSession->username))
+	   return false;
+	result = mysql_store_result(GServer->mysql);
+	CItem storageitems[126];
+	for(unsigned j=0; j<125; j++)
+            ClearItem( storageitems[j] );
+	while(row = mysql_fetch_row(result))
+    {
+		UINT itemnum = atoi(row[0]);
+		storageitems[itemnum].itemid = atoi(row[1]);
+		storageitems[itemnum].add1 = atoi(row[2]);
+		storageitems[itemnum].add2 = atoi(row[3]);
+		storageitems[itemnum].add3 = atoi(row[4]);
+		storageitems[itemnum].val1 = atoi(row[5]);
+		storageitems[itemnum].val2 = atoi(row[6]);
+		storageitems[itemnum].val3 = atoi(row[7]);
+    }
+	mysql_free_result(result);
+	//end
+
     unsigned charnum = 0;
     for (int k=0;k<posid;k++)
     {
@@ -394,6 +582,20 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
         }
         charnum++;
     }
+    // Load Storage Items
+    for (int i=0;i<126;i++)
+    {
+        packet->AddWord( storageitems[i].itemid, (8*i)+756 );//1756
+        packet->AddByte( storageitems[i].add1, (8*i)+758 );//1758
+        packet->AddByte( storageitems[i].val1, (8*i)+759 );//1759
+        packet->AddByte( storageitems[i].add2, (8*i)+760 );//1760
+        packet->AddByte( storageitems[i].val2, (8*i)+761 );//1761
+        packet->AddByte( storageitems[i].add3, (8*i)+762 );//1762
+        packet->AddByte( storageitems[i].val3, (8*i)+763 );//1763
+    }
+
+    packet->AddDWord( 1500000000, 1780 );//Storage Gold
+
 
     // Client Username
     packet->AddStr( thisclient->PlayerSession->username, 1784 );
@@ -533,6 +735,7 @@ bool CConnServer::SendServerMsg( CConnClient* thisclient ,char* Format, ...)
     this->curtime = clock();
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 108, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
+	return true;
 }
 
 bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
@@ -582,6 +785,7 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     this->curtime = clock();
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
+	return true;
 }
 
 bool CConnServer::SendNPCSellItems( CConnClient* thisclient, unsigned char* P )
@@ -595,8 +799,8 @@ bool CConnServer::SendNPCSellItems( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( 30000, 6 );//???
     switch(thisnpc->mobcode)
     {
-    case 1:
-        packet->AddWord( 1, 12 );//shop type?
+    case 1: //npcshop
+        packet->AddWord( 1, 12 );
         for (int i=0;i<26;i++)
         {
             packet->AddWord( thisnpc->shopitems[i].itemid, (8*i)+16 );
@@ -608,8 +812,18 @@ bool CConnServer::SendNPCSellItems( CConnClient* thisclient, unsigned char* P )
             packet->AddByte( thisnpc->shopitems[i].val3, (8*i)+23 );
         }
     break;
-    case 3:
-        packet->AddWord( 3, 12 );//shop type?
+    case 19: //npcskill
+        packet->AddWord( 3, 12 );
+        for (int i=0;i<26;i++)
+        {
+            packet->AddWord( thisnpc->shopitems[i].itemid, (8*i)+16 );
+            packet->AddByte( thisnpc->shopitems[i].add1, (8*i)+18 );
+            packet->AddByte( thisnpc->shopitems[i].val1, (8*i)+19 );
+            packet->AddByte( thisnpc->shopitems[i].add2, (8*i)+20 );
+            packet->AddByte( thisnpc->shopitems[i].val2, (8*i)+21 );
+            packet->AddByte( thisnpc->shopitems[i].add3, (8*i)+22 );
+            packet->AddByte( thisnpc->shopitems[i].val3, (8*i)+23 );
+        }
     break;
     }
     packet->AddByte( 10, 232 );
@@ -636,7 +850,7 @@ bool CConnServer::SpawnNPC( CConnClient* thisclient, CNPC* thisnpc )
     packet->AddStr( thisnpc->npcname, 18 ); // char name
     if(thisnpc->mobcode == NPC_NORMAL)
         packet->AddByte( 150, 30 ); // player karma
-    packet->AddByte( thisnpc->mobid, 34 ); // mob id
+    packet->AddWord( thisnpc->mobid, 34 ); // mob id
     for (int i=0;i<15;i++)
     {
         packet->AddWord( thisnpc->inventory[i].itemid, (2*i)+36 );
@@ -671,4 +885,19 @@ bool CConnServer::SpawnNPC( CConnClient* thisclient, CNPC* thisnpc )
     this->curtime = clock();
     this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
+	return true;
+}
+
+bool CConnServer::GameToCharList( CConnClient* thisclient, unsigned char* P )
+{
+
+    packet->AddWord( 12, 0 ); // packet size
+    packet->AddWord( 0x0116, 4 ); // packet id
+    packet->AddWord( thisclient->PlayerSession->clientid, 6 ); // Player ID
+
+    this->curtime = clock();
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 12, this->CKeys, this->Hash1, this->curtime );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+	return true;
+
 }
