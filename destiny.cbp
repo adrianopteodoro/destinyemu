@@ -18,13 +18,10 @@
 		</Compiler>
 		<Linker>
 			<Add option="lib/libxml2.a" />
-			<Add option="lib/libcharset.a" />
-			<Add option="lib/libiconv.a" />
 			<Add option="lib/libmysql.a" />
-			<Add option="lib/libpthreadGC.a" />
+			<Add option="lib/libpthreadGCE2.a" />
 			<Add library="ws2_32" />
 		</Linker>
-		<Unit filename="src\commom\sockets.h" />
 		<Unit filename="src\commom\config.cpp" />
 		<Unit filename="src\commom\config.h" />
 		<Unit filename="src\commom\encdec.cpp" />
@@ -36,7 +33,7 @@
 		<Unit filename="src\commom\socket_base.cpp" />
 		<Unit filename="src\commom\socket_client.cpp" />
 		<Unit filename="src\commom\socket_server.cpp" />
-		<Unit filename="src\gameserver\main.cpp" />
+		<Unit filename="src\commom\sockets.h" />
 		<Unit filename="src\gameserver\game_client.cpp" />
 		<Unit filename="src\gameserver\game_clientfunctions.cpp" />
 		<Unit filename="src\gameserver\game_commands.cpp" />
@@ -53,6 +50,7 @@
 		<Unit filename="src\gameserver\game_signal.cpp" />
 		<Unit filename="src\gameserver\game_sockets.h" />
 		<Unit filename="src\gameserver\game_types.h" />
+		<Unit filename="src\gameserver\main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
