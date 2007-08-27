@@ -63,3 +63,6 @@ DESTINY EMULATOR SVN CHANGE-LOG
     - Fixed: Player CP on entering on world. Now CP Status is Write. [GateKiller]
     - Added: All Shops Items to Respectives NPCs. [GateKiller]
     - Fixed: Visibilty Range, Range is Lowered to Prevent Lag. [Snaity]
+
+27/08/07 - Revision 68:
+    - Upgrade: some libs, and directory formation.

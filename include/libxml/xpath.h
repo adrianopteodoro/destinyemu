@@ -35,6 +35,7 @@ extern "C" {
 #endif /* LIBXML_XPATH_ENABLED or LIBXML_SCHEMAS_ENABLED */
 	
 #ifdef LIBXML_XPATH_ENABLED
+
 typedef struct _xmlXPathContext xmlXPathContext;
 typedef xmlXPathContext *xmlXPathContextPtr;
 typedef struct _xmlXPathParserContext xmlXPathParserContext;
@@ -309,7 +310,7 @@ struct _xmlXPathContext {
     int proximityPosition;		/* the proximity position */
 
     /* extra stuff for XPointer */
-    int xptr;				/* it this an XPointer context */
+    int xptr;				/* is this an XPointer context? */
     xmlNodePtr here;			/* for here() */
     xmlNodePtr origin;			/* for origin() */
 
@@ -331,7 +332,7 @@ struct _xmlXPathContext {
 
     /* temporary namespace lists kept for walking the namespace axis */
     xmlNsPtr *tmpNsList;		/* Array of namespaces */
-    int tmpNsNr;			/* number of namespace in scope */
+    int tmpNsNr;			/* number of namespaces in scope */
 
     /* error reporting mechanism */
     void *userData;                     /* user specific data block */
@@ -339,10 +340,13 @@ struct _xmlXPathContext {
     xmlError lastError;			/* the last error */
     xmlNodePtr debugNode;		/* the source node XSLT */
 
-    /* dictionnary */
-    xmlDictPtr dict;			/* dictionnary if any */
+    /* dictionary */
+    xmlDictPtr dict;			/* dictionary if any */
 
     int flags;				/* flags to control compilation */
+
+    /* Cache for reusal of XPath objects */
+    void *cache;
 };
 
 /*
@@ -485,9 +489,13 @@ XMLPUBFUN xmlXPathObjectPtr XMLCALL
  */
 XMLPUBFUN xmlXPathContextPtr XMLCALL 
 		    xmlXPathNewContext		(xmlDocPtr doc);
-XMLPUBFUN void XMLCALL		   
+XMLPUBFUN void XMLCALL
 		    xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
-
+XMLPUBFUN int XMLCALL
+		    xmlXPathContextSetCache(xmlXPathContextPtr ctxt,
+				            int active,
+					    int value,
+					    int options);
 /**
  * Evaluation functions.
  */
@@ -513,6 +521,9 @@ XMLPUBFUN xmlXPathCompExprPtr XMLCALL
 XMLPUBFUN xmlXPathObjectPtr XMLCALL   
 		    xmlXPathCompiledEval	(xmlXPathCompExprPtr comp,
 						 xmlXPathContextPtr ctx);
+XMLPUBFUN int XMLCALL   
+		    xmlXPathCompiledEvalToBoolean(xmlXPathCompExprPtr comp,
+						 xmlXPathContextPtr ctxt);
 XMLPUBFUN void XMLCALL                
 		    xmlXPathFreeCompExpr	(xmlXPathCompExprPtr comp);
 #endif /* LIBXML_XPATH_ENABLED */

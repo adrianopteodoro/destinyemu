@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="destiny" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="default">
+				<Option output=".\build\server" prefix_auto="1" extension_auto="1" />
+				<Option object_output=".\objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add directory=".\include" />
+		</Compiler>
+		<Linker>
+			<Add option="lib/libxml2.a" />
+			<Add option="lib/libcharset.a" />
+			<Add option="lib/libiconv.a" />
+			<Add option="lib/libmysql.a" />
+			<Add option="lib/libpthreadGC.a" />
+			<Add library="ws2_32" />
+		</Linker>
+		<Unit filename="src\commom\sockets.h" />
+		<Unit filename="src\commom\config.cpp" />
+		<Unit filename="src\commom\config.h" />
+		<Unit filename="src\commom\encdec.cpp" />
+		<Unit filename="src\commom\encdec.h" />
+		<Unit filename="src\commom\log.cpp" />
+		<Unit filename="src\commom\log.h" />
+		<Unit filename="src\commom\packetwriter.cpp" />
+		<Unit filename="src\commom\packetwriter.h" />
+		<Unit filename="src\commom\socket_base.cpp" />
+		<Unit filename="src\commom\socket_client.cpp" />
+		<Unit filename="src\commom\socket_server.cpp" />
+		<Unit filename="src\gameserver\main.cpp" />
+		<Unit filename="src\gameserver\game_client.cpp" />
+		<Unit filename="src\gameserver\game_clientfunctions.cpp" />
+		<Unit filename="src\gameserver\game_commands.cpp" />
+		<Unit filename="src\gameserver\game_extrafunctions.cpp" />
+		<Unit filename="src\gameserver\game_functions.cpp" />
+		<Unit filename="src\gameserver\game_loadfiles.cpp" />
+		<Unit filename="src\gameserver\game_mainprocess.cpp" />
+		<Unit filename="src\gameserver\game_monster.cpp" />
+		<Unit filename="src\gameserver\game_packetcontrol.cpp" />
+		<Unit filename="src\gameserver\game_packets.cpp" />
+		<Unit filename="src\gameserver\game_player.cpp" />
+		<Unit filename="src\gameserver\game_player.h" />
+		<Unit filename="src\gameserver\game_server.cpp" />
+		<Unit filename="src\gameserver\game_signal.cpp" />
+		<Unit filename="src\gameserver\game_sockets.h" />
+		<Unit filename="src\gameserver\game_types.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
