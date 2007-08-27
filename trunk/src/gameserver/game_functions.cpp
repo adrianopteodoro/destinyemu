@@ -7,7 +7,7 @@ bool readXMLInteger(xmlNodePtr node, const char* tag, int& value)
 	char* nodeValue = (char*)xmlGetProp(node, (xmlChar*)tag);
 	if(nodeValue){
 		value = atoi(nodeValue);
-		xmlFree(nodeValue);
+		//xmlFree(nodeValue);
 		return true;
 	}
 
@@ -19,7 +19,7 @@ bool readXMLString(xmlNodePtr node, const char* tag, std::string& value)
 	char* nodeValue = (char*)xmlGetProp(node, (xmlChar*)tag);
 	if(nodeValue){
 		value = nodeValue;
-		xmlFree(nodeValue);
+		//xmlFree(nodeValue);
 		return true;
 	}
 
