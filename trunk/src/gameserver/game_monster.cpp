@@ -1,1 +1,5 @@
-#include "game_sockets.h"
+#include "game_monster.h"
+
+CMonster::CMonster( fPoint position, unsigned int spawnid )
+{
+}

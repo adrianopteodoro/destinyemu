@@ -40,4 +40,5 @@ bool CConnServer::PacketControl( CConnClient* thisclient, int size, unsigned cha
             Log( MSG_WARNING, "Received Unknow OPCODE: 0x%04x", opcode );
         break;
     }
+	return true;
 }
