@@ -17,7 +17,7 @@ CEncDec::~CEncDec()
 
 bool CEncDec::LoadLib()
 {
-    HMODULE hDLL = LoadLibrary( ".\\libencdec.dll" );
+    HMODULE hDLL = LoadLibrary( L".\\libencdec.dll" );
     PDecrypt = (_PDecrypt)GetProcAddress( hDLL, "WYD2_Decrypt" );
     PEncrypt = (_PEncrypt)GetProcAddress( hDLL, "WYD2_Encrypt" );
     PGetHash = (_PGetHash)GetProcAddress( hDLL, "WYD2_GetHash1" );

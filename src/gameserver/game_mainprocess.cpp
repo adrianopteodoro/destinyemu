@@ -27,6 +27,7 @@ PVOID MapProcess( PVOID TS )
         usleep(10);
         #endif
     }
+	return NULL;
 }
 
 // Visibility Process
@@ -58,6 +59,7 @@ PVOID VisibilityProcess(PVOID TS)
         #endif
     }
     pthread_exit(NULL);
+	return NULL;
 }
 
 // World Process
@@ -81,6 +83,7 @@ PVOID WorldProcess( PVOID TS )
         #endif
     }
     pthread_exit(NULL);
+	return NULL;
 }
 
 // Shutdown Server Process
@@ -129,4 +132,5 @@ PVOID ShutdownServer(PVOID TS)
     Log( MSG_INFO, "Closing Server." );
     GServer->isActive = false;
     pthread_exit(NULL);
+	return NULL;
 }

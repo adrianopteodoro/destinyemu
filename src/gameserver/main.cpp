@@ -12,7 +12,7 @@ printf("\tYou AGREE with terms:\n\tThis is a Nightly Build Development version\n
 \t\n\tThis is a Alpha Development Version.\n\t\n\tPlease Report all bugs, to Tracker.\n\n");
     Log( MSG_INFO, "libXML2 Version: 2.6.30" );
     Log( MSG_INFO, "pThreads Version: 2.8.0" );
-    Log( MSG_INFO, "libMySQL Version: 4.1.13a" );
+    Log( MSG_INFO, "libMySQL Version: 6.0.2 alpha" );
     printf("\n");
     StartSignal( );
     // Initialize MySQL

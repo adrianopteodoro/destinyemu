@@ -11,9 +11,6 @@
 	<inventory slot="3" itemid="1137" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="4" itemid="1149" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="5" itemid="861" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
-	<inventory slot="13" itemid="3986" add1="0" val1="36" add2="0" val2="36" add3="100" val3="1" />
-	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
-	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 </transknight>
 
 <foema mobid="11" level="0" str="5" int="8" dex="5" con="5" skpts="0" stpts="0" skmpts="0">
@@ -23,9 +20,6 @@
 	<inventory slot="3" itemid="1290" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="4" itemid="1302" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="5" itemid="891" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
-	<inventory slot="13" itemid="3986" add1="0" val1="36" add2="0" val2="36" add3="100" val3="1" />
-	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
-	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 </foema>
 
 <bestmaster mobid="21" level="0" str="6" int="6" dex="9" con="5" skpts="0" stpts="0" skmpts="0">
@@ -35,9 +29,6 @@
 	<inventory slot="3" itemid="1425" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="4" itemid="1428" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="5" itemid="861" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
-	<inventory slot="13" itemid="3986" add1="0" val1="36" add2="0" val2="36" add3="100" val3="1" />
-	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
-	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 </bestmaster>
 
 <hunter mobid="31" level="0" str="8" int="9" dex="13" con="6" skpts="0" stpts="0" skmpts="0">
@@ -47,8 +38,5 @@
 	<inventory slot="3" itemid="1575" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="4" itemid="1578" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
 	<inventory slot="5" itemid="816" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
-	<inventory slot="13" itemid="3986" add1="0" val1="36" add2="0" val2="36" add3="100" val3="1" />
-	<inventory slot="15" itemid="400" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
-	<inventory slot="16" itemid="405" add1="61" val1="10" add2="0" val2="0" add3="0" val3="0" />
 </hunter>
 </startitems>

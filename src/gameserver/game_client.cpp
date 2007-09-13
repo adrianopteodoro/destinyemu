@@ -128,4 +128,5 @@ bool CConnClient::savedata()
 {
     MYSQL_RES *result;
 	MYSQL_ROW row;
+	return true;
 }

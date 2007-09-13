@@ -2,8 +2,7 @@
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
+   the Free Software Foundation; version 2 of the License.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,6 +17,14 @@
 
 #ifndef _config_netware_h
 #define _config_netware_h
+
+#define __event_h__
+#define _EVENT_H_
+/* 
+  These two #define(s) are needed as both libc of NetWare and MySQL have 
+  files named event.h which causes compilation errors.
+*/
+
 
 /* required headers */
 #include <unistd.h>
@@ -35,6 +42,12 @@
 #include <pthread.h>
 #include <termios.h>
 
+#undef _EVENT_H_
+/* 
+  This #undef exists here because both libc of NetWare and MySQL have 
+  files named event.h which causes compilation errors.
+*/
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -45,10 +58,32 @@ extern "C" {
 #undef HAVE_SCHED_H
 #undef HAVE_SYS_MMAN_H
 #undef HAVE_SYNCH_H
+#undef HAVE_MMAP
+#undef HAVE_RINT
+
 #define HAVE_PTHREAD_ATTR_SETSTACKSIZE 1
 #define HAVE_PTHREAD_SIGMASK 1
 #define HAVE_PTHREAD_YIELD_ZERO_ARG 1
 #define HAVE_BROKEN_REALPATH 1
+
+/* changes made to make use of LibC-June-2004 for building purpose */
+#undef HAVE_POSIX_SIGNALS
+#undef HAVE_PTHREAD_ATTR_SETSCOPE
+#undef HAVE_ALLOC_A
+#undef HAVE_FINITE
+#undef HAVE_GETPWNAM
+#undef HAVE_GETPWUID
+#undef HAVE_PTHREAD_SETSCHEDPARAM
+#undef HAVE_READLINK
+#undef HAVE_STPCPY
+/* changes  end  */
+
+/* Changes made to make use of LibC-June-2005 for building purpose */
+#undef HAVE_GETPASS
+#undef HAVE_GETRLIMIT
+#undef HAVE_GETRUSAGE
+#undef HAVE_INITGROUPS
+/* Changes  end  - LibC-June-2005 */
 
 /* no libc crypt() function */
 #ifdef HAVE_OPENSSL
@@ -57,9 +92,10 @@ extern "C" {
   #undef HAVE_CRYPT
 #endif /* HAVE_OPENSSL */
 
-/* Configure can't detect this because it uses AC_TRY_RUN */
+/* Netware has an ancient zlib */
 #undef HAVE_COMPRESS
 #define HAVE_COMPRESS
+#undef HAVE_ARCHIVE_DB
 
 /* include the old function apis */
 #define USE_OLD_FUNCTIONS 1
@@ -79,8 +115,15 @@ extern "C" {
 /* On NetWare, stack grows towards lower address*/
 #define STACK_DIRECTION -1
 
+/* On NetWare, we need to set stack size for threads, otherwise default 16K is used */
+#define NW_THD_STACKSIZE 65536
+
 /* On NetWare, to fix the problem with the deletion of open files */
 #define CANT_DELETE_OPEN_FILES 1
+
+#define FN_LIBCHAR '\\'
+#define FN_ROOTDIR "\\"
+#define FN_DEVCHAR ':'
 
 /* default directory information */
 #define	DEFAULT_MYSQL_HOME    "sys:/mysql"
@@ -103,15 +146,12 @@ extern "C" {
 /* do not use the extended time in LibC sys\stat.h */
 #define _POSIX_SOURCE
 
-/* Kernel call on NetWare that will only yield if our time slice is up */
-void kYieldIfTimeSliceUp(void);
-
 /* Some macros for portability */
 
 #define set_timespec(ABSTIME,SEC) { (ABSTIME).tv_sec=time(NULL)+(SEC); (ABSTIME).tv_nsec=0; }
 
 /* extra protection against CPU Hogs on NetWare */
-#define NETWARE_YIELD kYieldIfTimeSliceUp()
+#define NETWARE_YIELD pthread_yield()
 /* Screen mode for help texts */
 #define NETWARE_SET_SCREEN_MODE(A) setscreenmode(A)
 
