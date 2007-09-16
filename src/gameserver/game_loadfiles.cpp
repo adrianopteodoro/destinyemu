@@ -261,7 +261,7 @@ bool CConnServer::LoadLanguage()
 {
     int strcount = 0;
     Log( MSG_INFO, "Loading Language File..." );
-    int intvalue;
+//    int intvalue;
     std::string strvalue;
     lang = new CLanguage;
     assert(lang);
@@ -398,8 +398,8 @@ bool CConnServer::LoadNPCFile( char* filename, int posx, int posy )
     CNPC* thisnpc = new (nothrow) CNPC;
     for(unsigned j=0; j<15; j++)
         ClearItem( thisnpc->inventory[j] );
-    thisnpc->pos.x = posx;
-    thisnpc->pos.y = posy;
+    thisnpc->pos.x = (float)posx;
+    thisnpc->pos.y = (float)posy;
 
     if (doc2)
     {

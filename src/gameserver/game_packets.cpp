@@ -3,6 +3,57 @@
 CEncDec* encdec = new CEncDec();
 bufwrite* packet = new bufwrite();
 
+bool CConnServer::ShopItemBuy( CConnClient* thisclient, unsigned char* P )
+{
+	if(thisclient->PlayerInfo->Gold<66000)
+	{
+		this->SendServerMsg(thisclient, "You need more gold");
+		return true;
+	}
+	// Start Send Item Price to Client
+	packet->Free();
+	for (int i=0;i<24;i++)
+		packet->AddByte(P[i], i);
+	packet->AddWord(30000, 6);
+	packet->AddDWord(66000, 20);
+	this->curtime = clock();
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 24, this->CKeys, this->Hash1, this->curtime );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+	// End Send Item Price to Client
+	// Start Update Gold
+	thisclient->PlayerInfo->Gold = thisclient->PlayerInfo->Gold-66000;
+	packet->Free();
+	packet->AddWord(16, 0);
+	packet->AddWord(0x03af, 4);
+	packet->AddWord(thisclient->PlayerSession->clientid, 6);
+	packet->AddDWord(thisclient->PlayerInfo->Gold, 12);
+	this->curtime = clock();
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 16, this->CKeys, this->Hash1, this->curtime );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+	// End Update Gold
+	// Start Add Item to Inventory
+	unsigned short itemid;
+	memcpy(&itemid, &P[12], 2);
+	packet->Free();
+    packet->AddWord( 24, 0 );
+    packet->AddWord( 0x0182, 4 ); //opcode
+    packet->AddWord( thisclient->PlayerSession->clientid, 6 ); //clientid
+	packet->AddByte( 1, 12 );
+    packet->AddByte( 2, 14 ); //slotnum
+    packet->AddWord( itemid, 16 ); //itemid
+    packet->AddByte( P[14], 18 ); //add1
+	packet->AddByte( P[15], 19 ); //val1
+	packet->AddByte( P[16], 20 ); //add2
+	packet->AddByte( P[17], 21 ); //val2
+	packet->AddByte( P[18], 22 ); //add3
+	packet->AddByte( P[19], 23 ); //val3
+	this->curtime = clock();
+    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 24, this->CKeys, this->Hash1, this->curtime );
+    thisclient->SendPacket( this->encbuf, this->encsize );
+	// End Add Item to Inventory
+	return true;
+}
+
 bool CConnServer::PlayerAttack( CConnClient* thisclient, unsigned char* P )
 {
     packet->Free();
@@ -60,7 +111,7 @@ bool CConnServer::ObjectMove( CConnClient* thisclient, unsigned char* P )
 bool CConnServer::CharDelete( CConnClient* thisclient, unsigned char* P )
 {
     MYSQL_RES *result;
-	MYSQL_ROW row;
+//	MYSQL_ROW row;
 	MYSQL_RES *result2;
 	MYSQL_ROW row2;
     char delcharname[15];
@@ -90,9 +141,9 @@ bool CConnServer::CharDelete( CConnClient* thisclient, unsigned char* P )
 bool CConnServer::CharCreate( CConnClient* thisclient, unsigned char* P )
 {
     MYSQL_RES *result;
-	MYSQL_ROW row;
-	MYSQL_RES *result2;
-	MYSQL_ROW row2;
+//	MYSQL_ROW row;
+//	MYSQL_RES *result2;
+//	MYSQL_ROW row2;
     char newcharname[15];
     memcpy( newcharname, &P[16], 15 );
     if(!DoSQL( "SELECT name FROM characters WHERE name='%s'", newcharname ))
@@ -126,7 +177,7 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     while ( row = mysql_fetch_row( result ) )
     {
         Log( MSG_INFO, "Account \"%s\" has selected the character \"%s\"", thisclient->PlayerSession->username, row[0] );
-        strcpy( thisclient->PlayerInfo->char_name, row[0] );
+        strcpy_s( thisclient->PlayerInfo->char_name, row[0] );
     }
     // Load Char data
     thisclient->loaddata();
@@ -223,10 +274,10 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
 
     /* packet->AddByte( 0x48, 758 ); //
     packet->AddByte( 0x0C, 759 ); // */
-    packet->AddByte( 0x0B, 760 ); //quick skill slot1
-    packet->AddByte( 0x0B, 761 ); //quick skill slot2
-    packet->AddByte( 0x0B, 762 ); //quick skill slot3
-    packet->AddByte( 0x0B, 763 ); //quick skill slot4
+    packet->AddByte( 0xFF, 760 ); //quick skill slot1
+    packet->AddByte( 0xFF, 761 ); //quick skill slot2
+    packet->AddByte( 0xFF, 762 ); //quick skill slot3
+    packet->AddByte( 0xFF, 763 ); //quick skill slot4
     /* packet->AddByte( 0x00, 764 ); //
     packet->AddByte( 0x02, 765 ); //
     packet->AddByte( 0x32, 766 ); //
@@ -237,31 +288,25 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddByte( 18, 770 ); // resist1
     packet->AddByte( 18, 771 ); // resist2
 
-    /* for (int a=0;a<5;a++)
-        packet->AddByte( 0xff, 760+a ); */
-
-    for (int a=0;a<16;a++)
-        packet->AddByte( 0xff, 778+a );
-
     //quick slot(aba1)
-    packet->AddByte( 0x0B, 778 ); //quick skill slot5
-    packet->AddByte( 0x0B, 779 ); //quick skill slot6
-    packet->AddByte( 0x0B, 780 ); //quick skill slot7
-    packet->AddByte( 0x0B, 781 ); //quick skill slot8
-    packet->AddByte( 0x0B, 782 ); //quick skill slot9
-    packet->AddByte( 0x0B, 783 ); //quick skill slot10
+    packet->AddByte( 0xFF, 778 ); //quick skill slot5
+    packet->AddByte( 0xFF, 779 ); //quick skill slot6
+    packet->AddByte( 0xFF, 780 ); //quick skill slot7
+    packet->AddByte( 0xFF, 781 ); //quick skill slot8
+    packet->AddByte( 0xFF, 782 ); //quick skill slot9
+    packet->AddByte( 0xFF, 783 ); //quick skill slot10
 
     //quick slot(aba2)
-    packet->AddByte( 0x05, 784 ); //quick skill slot1
-    packet->AddByte( 0x05, 785 ); //quick skill slot2
-    packet->AddByte( 0x05, 786 ); //quick skill slot3
-    packet->AddByte( 0x05, 787 ); //quick skill slot4
-    packet->AddByte( 0x05, 788 ); //quick skill slot5
-    packet->AddByte( 0x05, 789 ); //quick skill slot6
-    packet->AddByte( 0x05, 790 ); //quick skill slot7
-    packet->AddByte( 0x05, 791 ); //quick skill slot8
-    packet->AddByte( 0x05, 792 ); //quick skill slot9
-    packet->AddByte( 0x05, 793 ); //quick skill slot10
+    packet->AddByte( 0xFF, 784 ); //quick skill slot1
+    packet->AddByte( 0xFF, 785 ); //quick skill slot2
+    packet->AddByte( 0xFF, 786 ); //quick skill slot3
+    packet->AddByte( 0xFF, 787 ); //quick skill slot4
+    packet->AddByte( 0xFF, 788 ); //quick skill slot5
+    packet->AddByte( 0xFF, 789 ); //quick skill slot6
+    packet->AddByte( 0xFF, 790 ); //quick skill slot7
+    packet->AddByte( 0xFF, 791 ); //quick skill slot8
+    packet->AddByte( 0xFF, 792 ); //quick skill slot9
+    packet->AddByte( 0xFF, 793 ); //quick skill slot10
 
     packet->AddByte( 0xCC, 794 ); //
     packet->AddByte( 0xCC, 795 ); //
@@ -396,7 +441,7 @@ bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
     }
     while (row = mysql_fetch_row( result ))
     {
-        strcpy( chars[posid].char_name, row[1] );
+        strcpy_s( chars[posid].char_name, row[1] );
         chars[posid].Exp = atoi(row[2]);
         chars[posid].Level = atoi(row[3]);
         chars[posid].gold = atoi(row[4]);
@@ -424,7 +469,7 @@ bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
     mysql_free_result( result );
 
     unsigned charnum = 0;
-    for (int k=0;k<posid;k++)
+    for (unsigned int k=0;k<posid;k++)
     {
         int charpos;
         if(!DoSQL("SELECT posid FROM characters WHERE name='%s'", chars[k].char_name ))
@@ -497,7 +542,7 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
     }
     while (row = mysql_fetch_row( result ))
     {
-        strcpy( chars[posid].char_name, row[1] );
+        strcpy_s( chars[posid].char_name, row[1] );
         chars[posid].Exp = atoi(row[2]);
         chars[posid].Level = atoi(row[3]);
         chars[posid].gold = atoi(row[4]);
@@ -546,7 +591,7 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
 	//end
 
     unsigned charnum = 0;
-    for (int k=0;k<posid;k++)
+    for (unsigned int k=0;k<posid;k++)
     {
         int charpos;
         if(!DoSQL("SELECT posid FROM characters WHERE name='%s'", chars[k].char_name ))
@@ -617,8 +662,8 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
 {
     unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     unsigned short cliver;
-    unsigned short opcode;
-    time_t rtime;
+//    unsigned short opcode;
+//    time_t rtime;
     if ( P[0] + P[1] == 0x74 )
     {
         encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 116, (unsigned char*)this->CKeys );
@@ -725,7 +770,7 @@ bool CConnServer::SendServerMsg( CConnClient* thisclient ,char* Format, ...)
 {
     char Buffer[2000];
 	va_list ap; va_start( ap, Format );
-	vsprintf( Buffer, Format, ap );
+	vsprintf_s( Buffer, Format, ap );
 	va_end  ( ap );
 	packet->Free();
     packet->AddWord( 108, 0 );

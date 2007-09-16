@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <windows.h>
 #include <stdio.h>
+#include <time.h>
 #include "log.h"
 
 // -----------------------------------------------------------------------------------------
@@ -51,6 +52,18 @@ void Log( enum msg_type flag, char *Format, ... )
 {
 	va_list ap;	      // For arguments
 	va_start( ap, Format );
+
+	// Timestamp
+    time_t rtime;
+    time(&rtime);
+    char *timestamp = ctime(&rtime);
+    timestamp[ strlen(timestamp)-1 ] = ' ';
+
+    if(flag!=MSG_SQL)
+    {
+        textcolor(WHITE);
+        printf("%s", timestamp );
+    }
 
 	switch (flag) {
 		case MSG_NONE: // direct printf replacement

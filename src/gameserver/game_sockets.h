@@ -56,6 +56,7 @@ public:
 	bool SpawnNPC( CConnClient* thisclient, CNPC* thisnpc );
 	bool PlayerAttack( CConnClient* thisclient, unsigned char* P );
 	bool GameToCharList( CConnClient* thisclient, unsigned char* P );
+	bool ShopItemBuy( CConnClient* thisclient, unsigned char* P );
 
 	// GM Commands Functions
 	bool pakGMNotice( CConnClient* thisclient, unsigned char* P );

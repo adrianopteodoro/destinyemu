@@ -16,7 +16,7 @@ bool CConnClient::PlayerMovement()
 	dy = PlayerPosition->Dpos.y - PlayerPosition->Cpos.y;
 	distance = sqrt( (dx*dx) + (dy*dy) );
 	clock_t etime = clock() - PlayerTime->lastMoveTime;
-	float speed = PlayerStats->Move_Speed * 0.01;
+	float speed = (float)(PlayerStats->Move_Speed * 0.01);
 	float ntime = ( distance / speed * 1000 );
 	PlayerTime->lastMoveTime = clock();
 	if( ntime<=etime || distance==0 )
