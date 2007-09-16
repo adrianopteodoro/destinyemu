@@ -39,16 +39,17 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="2"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
+				MinimalRebuild="false"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -61,10 +62,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/LTCG"
 				AdditionalDependencies="libxml2_a.lib pthreadVCE2.lib ws2_32.lib libmysql.lib"
 				OutputFile="$(OutDir)\server_d.exe"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\lib"
 				IgnoreDefaultLibraryNames="MSVCRT"
 				GenerateDebugInformation="true"
@@ -73,7 +73,7 @@
 				OptimizeReferences="0"
 				EnableCOMDATFolding="0"
 				OptimizeForWindows98="0"
-				LinkTimeCodeGeneration="0"
+				LinkTimeCodeGeneration="1"
 				ProfileGuidedDatabase=""
 				TargetMachine="1"
 			/>
@@ -341,6 +341,14 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\destiny.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\resource.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

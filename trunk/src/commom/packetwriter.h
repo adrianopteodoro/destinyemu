@@ -8,7 +8,7 @@ typedef unsigned char uchar;
 class bufwrite
 {
     protected:
-        int S;          // size of packet
+        unsigned int S;          // size of packet
         uchar D[65355];   // packet data
     public:
         bufwrite();
@@ -17,12 +17,12 @@ class bufwrite
         int psize();
         unsigned char* buff();
         void SetPSize(int i);
-        void AddByte(uchar h, int offset);
-        void AddChar(uchar h, int ile, int offset);
-        void AddStr(std::string co, int gdzie);
-        void AddWord( unsigned short h, int offset );
-        void AddDWord( unsigned long h, int offset );
-        int GetWord( unsigned char* src, int offset );
+        void AddByte(uchar h, unsigned int offset);
+        void AddChar(uchar h, unsigned int ile, unsigned int offset);
+        void AddStr(std::string co, unsigned int gdzie);
+        void AddWord( unsigned short h, unsigned int offset );
+        void AddDWord( unsigned long h, unsigned int offset );
+        int GetWord( unsigned char* src, unsigned int offset );
         void Free( );
 };
 

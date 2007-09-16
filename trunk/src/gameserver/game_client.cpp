@@ -98,8 +98,8 @@ bool CConnClient::loaddata()
     PlayerStats->Dex = atoi(row[10]);
     PlayerStats->Con = atoi(row[11]);
     PlayerInfo->mobid = atoi(row[12]);
-    PlayerPosition->Cpos.x = atoi(row[13]);
-    PlayerPosition->Cpos.y = atoi(row[14]);
+    PlayerPosition->Cpos.x = (float)atoi(row[13]);
+    PlayerPosition->Cpos.y = (float)atoi(row[14]);
     PlayerInfo->classid = atoi(row[15]);
     //mysql_free_result(result);
     if(!GServer->DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", row[0]))
@@ -126,7 +126,7 @@ bool CConnClient::loaddata()
 
 bool CConnClient::savedata()
 {
-    MYSQL_RES *result;
-	MYSQL_ROW row;
+//    MYSQL_RES *result;
+//	MYSQL_ROW row;
 	return true;
 }

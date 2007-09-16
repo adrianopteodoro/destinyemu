@@ -22,7 +22,6 @@ CClientSocket::~CClientSocket( )
 bool CClientSocket::ReceiveData( )
 {
 	int   ReceivedBytes;
-	short BytesToRead;
 
 	ZeroMemory( &Buffer, 65355 );
 

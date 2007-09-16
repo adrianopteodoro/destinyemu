@@ -58,18 +58,18 @@ struct CAccount
 struct CStats
 {
     //
-    unsigned int MaxHP;
-    unsigned int MaxMP;
-    long int HP;
-    long int MP;
+    unsigned short MaxHP;
+    unsigned short MaxMP;
+    unsigned short HP;
+    unsigned short MP;
     unsigned int MaxWeight;
     unsigned int Weight;
 
     // Stats
-    unsigned int Str;
-    unsigned int Dex;
-    unsigned int Int;
-    unsigned int Con;
+    unsigned short Str;
+    unsigned short Dex;
+    unsigned short Int;
+    unsigned short Con;
 
     // Attr
     unsigned int Attack_Power;
