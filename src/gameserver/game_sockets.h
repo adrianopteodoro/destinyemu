@@ -1,5 +1,5 @@
-#ifndef __WYDEMU_SERVERS__
-#define __WYDEMU_SERVERS__
+#ifndef _SERVERS_
+#define _SERVERS_
 
 #include "../commom/sockets.h"
 #include "game_player.h"
@@ -102,6 +102,7 @@ extern class CConnServer* GServer;
 extern class CEncDec* encdec;
 extern class bufwrite* packet;
 extern pthread_mutex_t MainMutex, PlayerMutex, MonsterMutex, DropMutex;
+extern void LogFunc( char* Format );
 
 PVOID VisibilityProcess( PVOID TS );
 PVOID MapProcess( PVOID TS );

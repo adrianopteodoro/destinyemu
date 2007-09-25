@@ -101,10 +101,10 @@ bool CConnServer::ObjectMove( CConnClient* thisclient, unsigned char* P )
     for (int i=0;i<53;i++)
         packet->AddByte( P[i], i );
     SendToVisible( encdec, thisclient, packet, 52, false );
-    thisclient->PlayerPosition->Cpos.x = dx;
-    thisclient->PlayerPosition->Cpos.y = dy;
-    thisclient->PlayerPosition->Dpos.x = dx;
-    thisclient->PlayerPosition->Dpos.y = dy;
+    thisclient->PlayerPosition->current.x = dx;
+    thisclient->PlayerPosition->current.y = dy;
+    thisclient->PlayerPosition->destiny.x = dx;
+    thisclient->PlayerPosition->destiny.y = dy;
 	return true;
 }
 
@@ -182,14 +182,14 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     // Load Char data
     thisclient->loaddata();
 
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 );
+    packet->AddWord( (int)thisclient->PlayerPosition->current.x, 12 );
+    packet->AddWord( (int)thisclient->PlayerPosition->current.y, 14 );
     packet->AddStr( thisclient->PlayerInfo->char_name, 16 ); // charname
 	packet->AddByte( 150, 28 );
     packet->AddDWord( thisclient->PlayerInfo->Gold, 40 ); // gold
     packet->AddDWord( thisclient->PlayerInfo->Exp, 44 ); // earned experience
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 48 );
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 50 );
+    packet->AddWord( (int)thisclient->PlayerPosition->current.x, 48 );
+    packet->AddWord( (int)thisclient->PlayerPosition->current.y, 50 );
     packet->AddByte( thisclient->PlayerInfo->classid, 36 ); // classindent
 
     packet->AddWord( 1536, 38 ); //
@@ -351,8 +351,8 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( 30000, 6 );
     // end header
 
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 ); // pos x
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 ); // pos y
+    packet->AddWord( (int)thisclient->PlayerPosition->current.x, 12 ); // pos x
+    packet->AddWord( (int)thisclient->PlayerPosition->current.y, 14 ); // pos y
     packet->AddWord( thisclient->PlayerSession->clientid, 16 );
     for (int i=0;i<12;i++)
         packet->AddByte( 0xcc, 18+i );
@@ -791,8 +791,8 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     packet->AddWord( 30000, 6 );
     // end header
 
-    packet->AddWord( (int)otherclient->PlayerPosition->Cpos.x, 12 ); // pos x
-    packet->AddWord( (int)otherclient->PlayerPosition->Cpos.y, 14 ); // pos y
+    packet->AddWord( (int)otherclient->PlayerPosition->current.x, 12 ); // pos x
+    packet->AddWord( (int)otherclient->PlayerPosition->current.y, 14 ); // pos y
     packet->AddWord( otherclient->PlayerSession->clientid, 16 );
     for (int i=0;i<12;i++)
         packet->AddByte( 0xcc, 18+i );

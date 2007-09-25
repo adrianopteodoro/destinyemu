@@ -17,7 +17,7 @@ public:
     CAccount* PlayerSession; // Account information
     CStats* PlayerStats; // Player Stats
     CInfo* PlayerInfo; // Player information (classid, mobid, gold, exp, ...)
-    CPosition* PlayerPosition; // Player Position
+    currentition* PlayerPosition; // Player Position
     CTime* PlayerTime; // Player Time  (lastmove, lastattack ... )
 
     bool VisiblityList( );

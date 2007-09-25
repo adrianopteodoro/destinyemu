@@ -11,6 +11,18 @@
 //
 IDI_ICON1           ICON          ".\\destiny.ico"
 
+IDC_DESTINY MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "E&xit",                IDM_EXIT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About",           IDM_ABOUT
+    END
+END
+
 
 //
 // Version Information resources

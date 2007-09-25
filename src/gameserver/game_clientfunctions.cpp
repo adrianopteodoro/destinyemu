@@ -10,7 +10,7 @@ bool CConnClient::VisiblityList( )
         CConnClient* otherclient = (CConnClient*)GServer->ClientList.at(i);
 		if ( this==otherclient || !otherclient->PlayerSession->inGame )
             continue;
-        float distance = GServer->distance( this->PlayerPosition->Cpos, otherclient->PlayerPosition->Cpos );
+        float distance = GServer->distance( this->PlayerPosition->current, otherclient->PlayerPosition->current );
         if ( GServer->IsVisible( this, otherclient ) )
         {
             if ( distance < MAXVISUALRANGE && !otherclient->isInvisibleMode )
@@ -35,7 +35,7 @@ bool CConnClient::VisiblityList( )
 	for(unsigned i=0; i< GServer->NPCList.size(); i++)
     {
 		CNPC* thisnpc = GServer->NPCList.at(i);
-		float distance = GServer->distance( this->PlayerPosition->Cpos, thisnpc->pos );
+		float distance = GServer->distance( this->PlayerPosition->current, thisnpc->pos );
 		if ( GServer->IsVisible( this, thisnpc ) )
         {
 			if ( distance < MAXVISUALRANGE )

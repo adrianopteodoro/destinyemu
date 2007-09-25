@@ -1,6 +1,8 @@
 #ifndef _GAME_TYPES_H_
 #define _GAME_TYPES_H_
 
+#include "game_itemeffect.h"
+
 #define NPC_NORMAL      0
 #define NPC_SHOP        1
 #define NPC_STORAGE     2
@@ -37,8 +39,6 @@ struct CTime
 struct fPoint {
 	float x;
 	float y;
-	float z; // Unused?
-	unsigned short RespawnID;
 };
 
 // Account
@@ -95,11 +95,14 @@ struct CItem
 };
 
 // Position (include respawnid and save town map)
-struct CPosition
+struct currentition
 {
-    UINT RespawnID;
-    fPoint Cpos; // Current Position
-    fPoint Dpos; // Destine Position
+	fPoint source;          // source position
+    fPoint current;         // current position    
+    fPoint destiny;         // destiny  position
+    unsigned int respawn;   // respawn id [player = respawnid | monster = spawnid]
+    unsigned int saved;     // saved id [player town | monster = 0]
+    clock_t lastMoveTime;
 };
 
 // Player information
@@ -146,101 +149,26 @@ struct CNPC {
     unsigned int n_con;
 };
 
+struct CEffect
+{
+	unsigned int effectid;
+	unsigned int value;
+};
+
 struct CEquip
 {
 	unsigned int itemid;
 	std::string name;
-	unsigned int level;
-	unsigned int damage;
-	unsigned int defesa;
-	unsigned int hp;
-	unsigned int mp;
-	unsigned int exp;
-	unsigned int i_str;
-	unsigned int i_int;
-	unsigned int i_dex;
-	unsigned int i_con;
-	unsigned int special1;
-	unsigned int special2;
-	unsigned int special3;
-	unsigned int special4;
-	unsigned int score14;
-	unsigned int score15;
+	unsigned int rlvl;
 	unsigned int pos;
-	unsigned int i_class;
-	unsigned int r1sidc;
-	unsigned int r2sidc;
+	unsigned int mesh;
 	unsigned int wtype;
 	unsigned int req_str;
 	unsigned int req_int;
 	unsigned int req_dex;
 	unsigned int req_con;
-	unsigned int attspeed;
-	unsigned int range;
 	unsigned int price;
-	unsigned int runspeed;
-	unsigned int spell;
-	unsigned int duration;
-	unsigned int parm;
-	unsigned int grid;
-	unsigned int ground;
-	unsigned int clan;
-	unsigned int hwordcoin;
-	unsigned int lwordcoin;
-	unsigned int i_volatile;
-	unsigned int keyid;
-	unsigned int parry;
-	unsigned int hitrate;
-	unsigned int critical;
-	unsigned int sanc;
-	unsigned int savemana;
-	unsigned int hpadd;
-	unsigned int mpadd;
-	unsigned int regenhp;
-	unsigned int regenmp;
-	unsigned int resist1;
-	unsigned int resist2;
-	unsigned int resist3;
-	unsigned int resist4;
-	unsigned int acadd;
-	unsigned int resistall;
-	unsigned int bonus;
-	unsigned int hwordguild;
-	unsigned int lwoedguild;
-	unsigned int quest;
-	unsigned int unique;
-	unsigned int magic;
-	unsigned int quantidade;
-	unsigned int hwordindex;
-	unsigned int lwordindex;
-	unsigned int init1;
-	unsigned int init2;
-	unsigned int init3;
-	unsigned int damageadd;
-	unsigned int magicadd;
-	unsigned int hpadd2;
-	unsigned int mpadd2;
-	unsigned int critical2;
-	unsigned int acadd2;
-	unsigned int damage2;
-	unsigned int specialall;
-	unsigned int curkill;
-	unsigned int ltokill;
-	unsigned int htokill;
-	unsigned int incubate;
-	unsigned int mountlife;
-	unsigned int mounthp;
-	unsigned int mountsanc;
-	unsigned int mountfeed;
-	unsigned int mountkill;
-	unsigned int incudelay;
-	unsigned int subguild;
-	unsigned int grade0;
-	unsigned int grade1;
-	unsigned int grade2;
-	unsigned int grade3;
-	unsigned int grade4;
-	unsigned int grade5;
+	CEffect effects[11];
 };
 
 // ITEMS
