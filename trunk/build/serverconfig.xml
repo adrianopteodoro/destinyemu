@@ -19,7 +19,7 @@
 	<!-- MySQL User, required to acess database. MySQL DEFAULT: root -->
 	<mysql_user value="root" />
 	<!-- MySQL Password, required too to acess database. MySQL DEFAULT: NULL -->
-	<mysql_pass value="" />
+	<mysql_pass value="adr2007" />
 	<!-- MySQL Database, your creted and restored database from .sql file. -->
 	<mysql_db value="destiny" />
 	<!-- MySQL Port, leave it as DEFAULT 3306 -->
