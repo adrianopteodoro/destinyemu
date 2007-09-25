@@ -34,13 +34,13 @@ CConnClient::CConnClient( )
 	PlayerStats->Attack_Speed = 0;
 	PlayerStats->Move_Speed = 0;
 	//Position
-	PlayerPosition = new CPosition;
+	PlayerPosition = new currentition;
 	assert(PlayerPosition);
-	PlayerPosition->RespawnID = 0;
-	PlayerPosition->Cpos.x = 0;
-	PlayerPosition->Cpos.y = 0;
-	PlayerPosition->Dpos.x = 0;
-	PlayerPosition->Dpos.y = 0;
+	//PlayerPosition->RespawnID = 0;
+	PlayerPosition->current.x = 0;
+	PlayerPosition->current.y = 0;
+	PlayerPosition->destiny.x = 0;
+	PlayerPosition->destiny.y = 0;
 	// Player Info
 	PlayerInfo = new CInfo;
 	assert(PlayerInfo);
@@ -98,8 +98,8 @@ bool CConnClient::loaddata()
     PlayerStats->Dex = atoi(row[10]);
     PlayerStats->Con = atoi(row[11]);
     PlayerInfo->mobid = atoi(row[12]);
-    PlayerPosition->Cpos.x = (float)atoi(row[13]);
-    PlayerPosition->Cpos.y = (float)atoi(row[14]);
+    PlayerPosition->current.x = (float)atoi(row[13]);
+    PlayerPosition->current.y = (float)atoi(row[14]);
     PlayerInfo->classid = atoi(row[15]);
     //mysql_free_result(result);
     if(!GServer->DoSQL("SELECT slotnum,itemid,add1,add2,add3,addval1,addval2,addval3 FROM char_items WHERE owner='%s'", row[0]))

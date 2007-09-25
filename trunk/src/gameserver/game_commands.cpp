@@ -145,8 +145,8 @@ bool CConnServer::pakGMTele( CConnClient* thisclient, unsigned char* P, int x, i
     packet->AddByte( 52, 0 );
     packet->AddWord( 0x0366, 4 );
     packet->AddWord( thisclient->PlayerSession->clientid, 6 );
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 );
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 14 );
+    packet->AddWord( (int)thisclient->PlayerPosition->current.x, 12 );
+    packet->AddWord( (int)thisclient->PlayerPosition->current.x, 14 );
     packet->AddWord( 2, 16 );
     packet->AddWord( 1, 20 );
     packet->AddWord( x, 24 );
@@ -166,8 +166,8 @@ bool CConnServer::pakGMSpawn( CConnClient* thisclient, unsigned char* P, int mob
     packet->AddWord( 30000, 6 );
     // end header
 
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.x, 12 ); // pos x
-    packet->AddWord( (int)thisclient->PlayerPosition->Cpos.y, 14 ); // pos y
+    packet->AddWord( (int)thisclient->PlayerPosition->current.x, 12 ); // pos x
+    packet->AddWord( (int)thisclient->PlayerPosition->current.y, 14 ); // pos y
     packet->AddWord( npcid, 16 );
     for (int i=0;i<12;i++)
         packet->AddByte( 0xcc, 18+i );
