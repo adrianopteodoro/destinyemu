@@ -9,7 +9,7 @@
 //
 // Icon resources
 //
-IDI_ICON1           ICON          ".\\destiny.ico"
+IDI_ICON1           ICON          "./src/destiny.ico"
 
 IDC_DESTINY MENU 
 BEGIN
