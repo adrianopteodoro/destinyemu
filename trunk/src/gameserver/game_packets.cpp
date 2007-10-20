@@ -177,7 +177,7 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     while ( row = mysql_fetch_row( result ) )
     {
         Log( MSG_INFO, "Account \"%s\" has selected the character \"%s\"", thisclient->PlayerSession->username, row[0] );
-        strcpy_s( thisclient->PlayerInfo->char_name, row[0] );
+        strcpy( thisclient->PlayerInfo->char_name, row[0] );
     }
     // Load Char data
     thisclient->loaddata();
@@ -397,7 +397,7 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddByte( 0, 142 ); //pet?
     packet->AddByte( 0, 143 ); //cape?
     packet->AddByte( 0, 144 ); //???
-    packet->AddByte( 43, 145 ); // 
+    packet->AddByte( 43, 145 ); //
     // end test */
 
     for (int i=0;i<29;i++)
@@ -441,7 +441,7 @@ bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
     }
     while (row = mysql_fetch_row( result ))
     {
-        strcpy_s( chars[posid].char_name, row[1] );
+        strcpy( chars[posid].char_name, row[1] );
         chars[posid].Exp = atoi(row[2]);
         chars[posid].Level = atoi(row[3]);
         chars[posid].gold = atoi(row[4]);
@@ -542,7 +542,7 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
     }
     while (row = mysql_fetch_row( result ))
     {
-        strcpy_s( chars[posid].char_name, row[1] );
+        strcpy( chars[posid].char_name, row[1] );
         chars[posid].Exp = atoi(row[2]);
         chars[posid].Level = atoi(row[3]);
         chars[posid].gold = atoi(row[4]);
@@ -770,7 +770,7 @@ bool CConnServer::SendServerMsg( CConnClient* thisclient ,char* Format, ...)
 {
     char Buffer[2000];
 	va_list ap; va_start( ap, Format );
-	vsprintf_s( Buffer, Format, ap );
+	vsprintf( Buffer, Format, ap );
 	va_end  ( ap );
 	packet->Free();
     packet->AddWord( 108, 0 );

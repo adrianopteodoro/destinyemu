@@ -70,15 +70,15 @@ void CConnServer::DisconnectAll()
 
 bool CConnServer::OnReceivePacket( CClientSocket* thisclient, unsigned char* P )
 {
-    switch( P[0] + P[1] )
+    if(P[0] + P[1] == 0x74)
 	{
-        case 0x74: return CheckLogin    ( (CConnClient*)thisclient, P );
+		return CheckLogin    ( (CConnClient*)thisclient, P );
     }
-    switch( P[4] + P[5] )
+	else if(P[4] + P[5] == 0x74)
 	{
-	    case 0x74: return CheckLogin    ( (CConnClient*)thisclient, P );
+	    return CheckLogin    ( (CConnClient*)thisclient, P );
     }
-    if ( P[0] != 0x74 || P[4] != 0x74 )
+	else
     {
         int packet_size = 0;
         int lastbyte = 0;

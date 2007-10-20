@@ -292,7 +292,7 @@ bool CServerSocket::DoSQL(char *Format, ...)
 {
 	char Buffer[2000];
 	va_list ap; va_start( ap, Format );
-	vsprintf_s( Buffer, Format, ap );
+	vsprintf( Buffer, Format, ap );
 	va_end  ( ap );
     int mres = mysql_query( mysql, Buffer );
     if (mres!=0)
