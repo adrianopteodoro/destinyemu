@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<language>
-	<id_invalid value="ID %s is Invalid, please ckeck your ID." />
-	<id_online value="ID %s is already online." />
-	<id_notactive value="ID % is not active. Please check it on website." />
-	<pwd_invalid value="Password is invalid, please check your Password." />
-	<name_alreadyexist value="Character name %s, already in use." />
-	<wrong_cliver value="You Client Version is Wrong, please download correct client version." />
-</language>
