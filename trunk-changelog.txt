@@ -1,0 +1,9 @@
+== Start New Core Revision 80 ==
+
+10/11/2007 - Revision 80:
+	* New Core using the power of C#.NET.
+	* Redesigning all old source to new one.
+	* And Start to Add Game Play things.
+
+10/11/2007 - Revision 81:
+	* Rewrited Change-log old one has been deleted.
