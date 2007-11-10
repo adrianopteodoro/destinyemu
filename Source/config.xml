@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<port>8281</port>
+	<DSN>Destiny</DSN>
+	<ClientVersion>748</ClientVersion>
+</config>
