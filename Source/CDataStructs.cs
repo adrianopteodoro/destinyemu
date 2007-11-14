@@ -21,14 +21,18 @@ namespace server
     };
     public struct CStats
     {
-        public ushort mHP;
-        public ushort mMP;
-        public ushort aHP;
-        public ushort aMP;
-        public ushort STR;
-        public ushort INT;
-        public ushort DEX;
-        public ushort CON;
+        public int mHP;
+        public int mMP;
+        public int cHP;
+        public int cMP;
+        public int STR;
+        public int INT;
+        public int DEX;
+        public int CON;
+        public int wMaster;
+        public int fMaster;
+        public int sMaster;
+        public int tMaster;
     };
     public struct CPosition
     {
@@ -45,5 +49,20 @@ namespace server
         public int EFV2;
         public int EF3;
         public int EFV3;
+    };
+    public struct CInfo
+    {
+        public int CharID;
+        public string CharName;
+        public int ChaosPts;
+        public int cLevel;
+        public int BodyID;
+        public int cExp;
+        public int Class;
+        public int cGold;
+        public int sGold;
+        public int StatPts;
+        public int SkillPts;
+        public int MasterPts;
     };
 }

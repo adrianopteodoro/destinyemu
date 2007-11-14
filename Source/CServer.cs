@@ -20,11 +20,17 @@ namespace server
         public CPacketBuilder m_Packet;
         public CServerPackets Packets;
         public CDatabase DB;
-        public byte[] ClientIDList;
+        public int[] ClientIDList;
+        public Thread MapThread;
+        public Thread WorldThread;
+        public Thread VisionThread;
+        public CProcess Process;
 
         public CServer()
         {
-            ClientIDList = new byte[65535];
+            ClientIDList = new int[65535];
+            for (int i = 0; i < 65535; i++)
+                ClientIDList[i] = 0;    
             m_ClientList = ArrayList.Synchronized(new ArrayList());
             m_ClientCount = 0;
             m_Packet = new CPacketBuilder();
@@ -33,6 +39,13 @@ namespace server
             m_Port = config.Port;
             DB = new CDatabase(config.DSN);
             Packets = new CServerPackets(this);
+            Process = new CProcess(this);
+            MapThread = new Thread(Process.MapProcess);
+            WorldThread = new Thread(Process.WorldProcess);
+            VisionThread = new Thread(Process.VisionProcess);
+            MapThread.Start();
+            WorldThread.Start();
+            VisionThread.Start();
         }
 
         public void Start()
@@ -63,7 +76,7 @@ namespace server
 
         public void OnClientConnect(IAsyncResult asyn)
         {
-            CClient thisclient = new CClient();
+            CClient thisclient = new CClient(this);
             CPlayer player;
             try
             {
@@ -185,7 +198,7 @@ namespace server
 
         public int GetClientID()
         {
-            for (int i = 0; i < 65535; i++)
+            for (int i = 1; i < 65535; i++)
             {
                 if (ClientIDList[i] != 1)
                 {

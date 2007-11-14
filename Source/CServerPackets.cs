@@ -22,7 +22,21 @@ namespace server
             int opcode = BitConverter.ToInt16(topcode, 0);
             switch (opcode)
             {
-                default: Core.CLog(String.Format("Received OPCODE: 0x{0:X4}", opcode)); break;
+                case 0x020F: /* Create Char */ break;
+                case 0x0211: /* Delete Char */ break;
+                case 0x0366: /* Char Move */ break;
+                case 0x0333: /* Chat Normal */ break;
+                case 0x0334: /* Chat Whisper/Cmds */ break;
+                case 0x0290: /* Request Teleport */ break;
+                case 0x0376: /* Inevtory Change */ break;
+                case 0x027B: /* Request NPC Shops */ break;
+                case 0x039B: /* Char Attack */ break;
+                case 0x0215: /* Back to Char List */ break;
+                case 0x0379: /* Buy Item from Shop */ break;
+                case 0x03A0: /* Unknow */ break;
+                case 0x03AE: /* Client Logout from Game */ break;
+                case 0x0213: pak_SendCharToGame(pak, thisclient); break;
+                default: Core.CLog(String.Format("Unknow Opcode Received [0x{0:X4}]", opcode)); break;
             }
         }
 
@@ -58,7 +72,7 @@ namespace server
                 mServer.DB.result.Read();
                 if (mServer.DB.result.GetInt32(0) == 0)
                 {
-                    pak_SendServerMsg("Account Name is Invalid", thisclient);
+                    pak_SendServerMsg("The account does not exist.", thisclient);
                     mServer.DB.FreeQuery();
                     thisclient.Client.sock.Close();
                 }
@@ -69,18 +83,20 @@ namespace server
                     mServer.DB.result.Read();
                     if (mServer.DB.result.GetInt32(0) == 0)
                     {
-                        pak_SendServerMsg("Password is Invalid", thisclient);
+                        pak_SendServerMsg("Wrong password.", thisclient);
                         mServer.DB.FreeQuery();
                         thisclient.Client.sock.Close();
                     }
                     else
                     {
                         mServer.DB.FreeQuery();
-                        mServer.DB.QStore(String.Format("CALL sp_GetAccountID('{0}');", thisclient.Session.username));
+                        mServer.DB.QStore(String.Format("CALL sp_GetAccountInfo('{0}');", thisclient.Session.username));
                         mServer.DB.result.Read();
                         thisclient.Session.AccountID = mServer.DB.result.GetInt32(0);
+                        thisclient.CharInfo.sGold = mServer.DB.result.GetInt32(5);
                         mServer.DB.FreeQuery();
                         thisclient.Session.ClientID = mServer.GetClientID();
+                        Core.CLog(String.Format("Assigned ClientID: {0}", thisclient.Session.ClientID));
                         thisclient.Session.isLoggedIn = true;
                         pak_SendCharList(pak, thisclient);
                     }
@@ -137,7 +153,6 @@ namespace server
                             OutPak.SetByte(mServer.DB.extresult.GetInt32(5), (8 * itemslot) + (128 * charslot) + 217); // EFV2
                             OutPak.SetByte(mServer.DB.extresult.GetInt32(6), (8 * itemslot) + (128 * charslot) + 218); // EF3
                             OutPak.SetByte(mServer.DB.extresult.GetInt32(7), (8 * itemslot) + (128 * charslot) + 219); // EFV3
-                            mServer.DB.extresult.NextResult();
                         }
                     }
                     mServer.DB.result.NextResult();
@@ -148,6 +163,84 @@ namespace server
             OutPak.SetString(clkeys, 1800);
             thisclient.Client.encdec.Encrypt(OutPak, OutPak.dataBuffer, 1824, thisclient.Client.Hash);
             thisclient.Client.SendPacket(OutPak, 1824);
+        }
+
+        public void pak_SendCharToGame(byte[] pak, CPlayer thisclient)
+        {
+            int CharPos = Convert.ToInt32(pak[12]);
+            thisclient.LoadCharData(CharPos);
+            OutPak.Clear();
+            OutPak.SetShort(1244, 0);
+            OutPak.SetShort(0x0114, 4);
+            OutPak.SetShort(thisclient.Session.ClientID, 6);
+            OutPak.SetShort(thisclient.Position.pCurrent.x, 12);
+            OutPak.SetShort(thisclient.Position.pCurrent.y, 14);
+            OutPak.SetString(thisclient.CharInfo.CharName, 16);
+            OutPak.SetByte(thisclient.CharInfo.Class, 36);
+            OutPak.SetLong(thisclient.CharInfo.cGold, 40);
+            OutPak.SetLong(thisclient.CharInfo.cExp, 44);
+            OutPak.SetShort(thisclient.Position.pCurrent.x, 48);
+            OutPak.SetShort(thisclient.Position.pCurrent.y, 50);
+            OutPak.SetShort(thisclient.CharInfo.cLevel, 80);
+            OutPak.SetShort(thisclient.Stats.mHP, 88);
+            OutPak.SetShort(thisclient.Stats.mMP, 90);
+            OutPak.SetShort(thisclient.Stats.cHP, 92);
+            OutPak.SetShort(thisclient.Stats.cMP, 94);
+            OutPak.SetShort(thisclient.Stats.STR, 96);
+            OutPak.SetShort(thisclient.Stats.INT, 98);
+            OutPak.SetShort(thisclient.Stats.DEX, 100);
+            OutPak.SetShort(thisclient.Stats.CON, 102);
+            OutPak.SetShort(thisclient.CharInfo.BodyID, 108);
+            for (int i = 0; i < 78; i++)
+            {
+                OutPak.SetShort(thisclient.Inventory[i].ItemID, (8 * i) + 116);
+                OutPak.SetByte(thisclient.Inventory[i].EF1, (8 * i) + 118);
+                OutPak.SetByte(thisclient.Inventory[i].EFV1, (8 * i) + 119);
+                OutPak.SetByte(thisclient.Inventory[i].EF2, (8 * i) + 120);
+                OutPak.SetByte(thisclient.Inventory[i].EFV2, (8 * i) + 121);
+                OutPak.SetByte(thisclient.Inventory[i].EF3, (8 * i) + 122);
+                OutPak.SetByte(thisclient.Inventory[i].EFV3, (8 * i) + 123);
+            }
+            OutPak.SetShort(thisclient.CharInfo.StatPts, 752);
+            OutPak.SetShort(thisclient.CharInfo.SkillPts, 754);
+            OutPak.SetShort(thisclient.CharInfo.MasterPts, 756);
+            OutPak.SetShort(thisclient.Session.ClientID, 774);
+            thisclient.Client.encdec.Encrypt(OutPak, OutPak.dataBuffer, 1244, thisclient.Client.Hash);
+            thisclient.Client.SendPacket(OutPak, 1244);
+            thisclient.Session.isInGame = true;
+            pak_SendCharToGameSpawn(pak, thisclient);
+        }
+
+        public void pak_SendCharToGameSpawn(byte[] pak, CPlayer thisclient)
+        {
+            OutPak.Clear();
+            OutPak.SetShort(172, 0);
+            OutPak.SetShort(0x0364, 4);
+            OutPak.SetShort(30000, 6);
+            OutPak.SetShort(thisclient.Position.pCurrent.x, 12);
+            OutPak.SetShort(thisclient.Position.pCurrent.y, 14);
+            OutPak.SetShort(thisclient.Session.ClientID, 16);
+            OutPak.SetString(thisclient.CharInfo.CharName, 18);
+            OutPak.SetShort(thisclient.CharInfo.ChaosPts, 30);
+            OutPak.SetShort(thisclient.CharInfo.BodyID, 34);
+            for (int i = 0; i < 15; i++)
+            {
+                OutPak.SetShort(thisclient.GetItemIDwRefine(thisclient.Inventory[i]), (2 * i) + 36);
+            }
+            OutPak.SetShort(thisclient.Session.ClientID, 66);
+            OutPak.SetShort(thisclient.CharInfo.cLevel, 100);
+            OutPak.SetShort(2, 107); // Move Speedy?
+            OutPak.SetShort(thisclient.Stats.mHP, 108);
+            OutPak.SetShort(thisclient.Stats.mMP, 110);
+            OutPak.SetShort(thisclient.Stats.cHP, 112);
+            OutPak.SetShort(thisclient.Stats.cMP, 114);
+            OutPak.SetShort(thisclient.Stats.STR, 116);
+            OutPak.SetShort(thisclient.Stats.INT, 118);
+            OutPak.SetShort(thisclient.Stats.DEX, 120);
+            OutPak.SetShort(thisclient.Stats.CON, 122);
+            OutPak.SetShort(2, 128); // Spawn Effect 2=tele effect
+            thisclient.Client.encdec.Encrypt(OutPak, OutPak.dataBuffer, 172, thisclient.Client.Hash);
+            thisclient.Client.SendPacket(OutPak, 172);
         }
     }
 }
