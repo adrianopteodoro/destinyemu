@@ -25,6 +25,10 @@ namespace server
             // Wait Infinitely
             Thread.CurrentThread.Join();
 
+            // Close Server
+            thisserver.MapThread.Join();
+            thisserver.WorldThread.Join();
+            thisserver.VisionThread.Join();
             Environment.Exit(0);
         }
 

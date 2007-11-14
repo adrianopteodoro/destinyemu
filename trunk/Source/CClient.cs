@@ -11,12 +11,14 @@ namespace server
         public Socket sock;
         public CEncryption encdec;
         public CPlayer Player;
+        public CServer Server;
         public int PacketSize;
         public ulong Hash;
         public byte[] lkeys;
 
-        public CClient()
+        public CClient(CServer sServer)
         {
+            Server = sServer;
             lkeys = new byte[16];
             this.encdec = new CEncryption();
         }

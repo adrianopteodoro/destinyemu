@@ -3,4 +3,8 @@
 	<port>8281</port>
 	<DSN>Destiny</DSN>
 	<ClientVersion>748</ClientVersion>
+	<ConHPMulti>2</ConHPMulti>
+	<IntMPMulti>2</IntMPMulti>
+	<LvlHPMulti>2</LvlHPMulti>
+	<LvlMPMulti>1</LvlMPMulti>
 </config>
