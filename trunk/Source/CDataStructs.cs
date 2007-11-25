@@ -65,4 +65,26 @@ namespace server
         public int SkillPts;
         public int MasterPts;
     };
+    public struct CEffect
+    {
+        public int Effect;
+        public int Value;
+    };
+    public struct CItemList
+    {
+        public int ItemID;
+        public string Name;
+        public int Mesh;
+        public int Type;
+        public int ReqLvl;
+        public int ReqStr;
+        public int ReqInt;
+        public int ReqDex;
+        public int ReqCon;
+        public int Price;
+        public int Pos;
+        public int Extreme;
+        public int Grade;
+        public CEffect[] Effects;
+    };
 }

@@ -7,7 +7,7 @@ namespace server
 {
     public class CEncryption
     {
-        private byte[] EncDecKeys = {
+        public byte[] EncDecKeys = {
             0x84, 0x87, 0x37, 0xD7, 0xEA, 0x79, 0x91, 0x7D, 0x4B, 0x4B, 0x85, 0x7D, 0x87, 0x81, 0x91, 0x7C, 
             0x0F, 0x73, 0x91, 0x91, 0x87, 0x7D, 0x0D, 0x7D, 0x86, 0x8F, 0x73, 0x0F, 0xE1, 0xDD, 0x85, 0x7D, 
             0x05, 0x7D, 0x85, 0x83, 0x87, 0x9C, 0x85, 0x33, 0x0D, 0xE2, 0x87, 0x19, 0x0F, 0x79, 0x85, 0x86, 
@@ -42,24 +42,24 @@ namespace server
             0x8A, 0xC3, 0xE7, 0xA5, 0xE8, 0x6B, 0x0D, 0x74, 0x10, 0x73, 0x33, 0x17, 0x0D, 0x37, 0x21, 0x19, 
         };
 
-        [DllImport("encryption.dll")]
+        [DllImport("encryption.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         static extern int WYD2_Decrypt(byte[] dest,byte[]src,int len,byte[] deckeys);
-        [DllImport("encryption.dll")]
-        static extern int WYD2_Encrypt(byte[] dest, byte[] src, int len, byte[] enckeys, ulong hash,ulong time);
-        [DllImport("encryption.dll")]
-        static extern ulong WYD2_GetHash1(byte[] loginkeys, ulong pakCounter);
+        [DllImport("encryption.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        static extern int WYD2_Encrypt(byte[] dest, byte[] src, int len, byte[] enckeys, int hash, int time);
+        [DllImport("encryption.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        static extern int WYD2_GetHash1(byte[] loginkeys, int pakCounter);
 
         public int Decrypt(byte[] dest, byte[] src, int len)
         {
             return WYD2_Decrypt(dest, src, len, this.EncDecKeys);
         }
 
-        public int Encrypt(CPacketBuilder dest, byte[] src, int len, ulong hash)
+        public int Encrypt(CPacketBuilder dest, byte[] src, int len, int hash)
         {
-            return WYD2_Encrypt(dest.dataBuffer, src, len, this.EncDecKeys, hash, 0);
+            return WYD2_Encrypt(dest.dataBuffer, src, len, EncDecKeys, hash, 0);
         }
 
-        public ulong GetHash(byte[] loginkeys)
+        public int GetHash(byte[] loginkeys)
         {
             return WYD2_GetHash1(loginkeys, 0);
         }

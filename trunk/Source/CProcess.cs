@@ -15,17 +15,36 @@ namespace server
 
         public void MapProcess()
         {
-            Thread.Sleep(10);
+            while (true)
+            {
+                Thread.Sleep(10);
+            }
         }
 
         public void WorldProcess()
         {
-            Thread.Sleep(700);
+            while (true)
+            {
+                Thread.Sleep(700);
+            }
         }
 
         public void VisionProcess()
         {
-            Thread.Sleep(200);
+            while (true)
+            {
+                CClient lastclient = null;
+                foreach(object client in Server.m_ClientList)
+                {
+                    CClient thisclient = (CClient)client;
+                    if (!client.Equals(lastclient))
+                    {
+                        Server.VisionList(thisclient.Player);
+                    }
+                    lastclient = thisclient;
+                }
+                Thread.Sleep(200);
+            }
         }
     }
 }
