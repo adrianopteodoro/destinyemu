@@ -25,9 +25,12 @@ namespace server
         public Thread WorldThread;
         public Thread VisionThread;
         public CProcess Process;
+        public CItemList[] ItemList;
+        public int NumLoadedItems;
 
         public CServer()
         {
+            ItemList = new CItemList[5338];
             ClientIDList = new int[65535];
             for (int i = 0; i < 65535; i++)
                 ClientIDList[i] = 0;    
@@ -44,8 +47,12 @@ namespace server
             WorldThread = new Thread(Process.WorldProcess);
             VisionThread = new Thread(Process.VisionProcess);
             MapThread.Start();
+            Core.CLog("Started Map Thread");
             WorldThread.Start();
+            Core.CLog("Started World Thread");
             VisionThread.Start();
+            Core.CLog("Started Vision Thread");
+            CLoadData.LoadItemList(this);
         }
 
         public void Start()
@@ -114,11 +121,12 @@ namespace server
 
         public void OnDataReceived(IAsyncResult asyn)
         {
+            CClient thisclient = null;
             CPacket thispacket = (CPacket)asyn.AsyncState;
             try
             {
                 m_PacketSize = thispacket.m_thisClient.sock.EndReceive(asyn);
-                CClient thisclient = thispacket.m_thisClient;
+                thisclient = thispacket.m_thisClient;
                 thisclient.PacketSize = m_PacketSize;
                 // Packets
                 if (m_PacketSize > 0)
@@ -127,7 +135,7 @@ namespace server
                 }
                 else
                 {
-                    thisclient.sock.Disconnect(true);
+                    thisclient.sock.Disconnect(false);
                 }
 
                 if(thispacket.m_thisClient.sock.Connected)
@@ -138,6 +146,7 @@ namespace server
                 if (se.ErrorCode == 10054)
                 {
                     // Client Disconnect
+                    //Packets.pak_PlayerDisconnect(thispacket.dataBuffer, thisclient.Player);
                     Core.CLog(String.Format("Client Disconnected {0}", thispacket.m_thisClient.sock.RemoteEndPoint.ToString()));
                 }
                 else
@@ -207,6 +216,45 @@ namespace server
                 }
             }
             return 0;
+        }
+
+        public int Distance(fPoint p1, fPoint p2)
+        {
+            int distance = 0;
+            int dx = p1.x - p2.x;
+            int dy = p1.y - p2.y;
+            distance = Convert.ToInt32(Math.Sqrt((dx * dx) + (dy * dy)));
+            return distance;
+        }
+
+        public bool VisionList(CPlayer thisclient)
+        {
+            foreach (object client in m_ClientList)
+            {
+                CClient otherclient = (CClient)client;
+                int distance = Distance(thisclient.Position.pCurrent, otherclient.Player.Position.pCurrent);
+                if (CVisionFunc.isVisible(thisclient, otherclient.Player))
+                {
+                    if (distance < 25)
+                    {
+                        thisclient.vPlayers.Add(otherclient.Player);
+                    }
+                    else
+                    {
+                        thisclient.vPlayers.Remove(otherclient.Player);
+                        Packets.pak_DeleteCharSpawn(thisclient, otherclient.Player);
+                    }
+                }
+                else
+                {
+                    if (distance < 5)
+                    {
+                        thisclient.vPlayers.Add(otherclient.Player);
+                        Packets.pak_SpawnChar(thisclient, otherclient.Player);
+                    }
+                }
+            }
+            return true;
         }
     }
 }

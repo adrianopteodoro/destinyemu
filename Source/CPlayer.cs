@@ -94,12 +94,134 @@ namespace server
 
         public int GetMaxHP()
         {
-            return (Stats.CON * Client.Server.config.ConHPMulti) + (CharInfo.cLevel * Client.Server.config.LvlHPMulti) + 71;
+            int value = (Stats.CON * Client.Server.config.ConHPMulti) + (CharInfo.cLevel * Client.Server.config.LvlHPMulti);
+            switch (CharInfo.Class)
+            {
+                case 0: // TK
+                    value = value + 68;
+                    break;
+                case 1: // FM
+                    value = value + 50;
+                    break;
+                case 2: // BM
+                    value = value + 60;
+                    break;
+                case 3: // HT
+                    value = value + 63;
+                    break;
+            }
+            for (int i = 0; i < 78; i++)
+            {
+                int itemid = Inventory[i].ItemID;
+                for (int x = 0; x < Client.Server.NumLoadedItems; x++)
+                {
+                    if (Client.Server.ItemList[x].ItemID.Equals(itemid))
+                    {
+                        for (int a = 0; a < 11; a++)
+                        {
+                            if (Client.Server.ItemList[x].Effects[a].Effect.Equals(4))
+                            {
+                                value += Client.Server.ItemList[x].Effects[a].Value;
+                            }
+                            if (Client.Server.ItemList[x].Effects[a].Effect.Equals(45))
+                            {
+                                value += (value * Client.Server.ItemList[x].Effects[a].Value) / 100;
+                            }
+                        }
+                    }
+                }
+                if (Inventory[i].EF1.Equals(4))
+                {
+                    value += Inventory[i].EFV1;
+                }
+                if (Inventory[i].EF1.Equals(45))
+                {
+                        value += (value * Inventory[i].EFV1) / 100;
+                }
+                if (Inventory[i].EF2.Equals(4))
+                {
+                    value += Inventory[i].EFV2;
+                }
+                if (Inventory[i].EF2.Equals(45))
+                {
+                    value += (value * Inventory[i].EFV2) / 100;
+                }
+                if (Inventory[i].EF3.Equals(4))
+                {
+                    value += Inventory[i].EFV3;
+                }
+                if (Inventory[i].EF3.Equals(45))
+                {
+                    value += (value * Inventory[i].EFV3) / 100;
+                }
+            }
+            return value;
         }
 
         public int GetMaxMP()
         {
-            return (Stats.INT * Client.Server.config.IntMPMulti) + (CharInfo.cLevel * Client.Server.config.LvlMPMulti) + 37;
+            int value = (Stats.INT * Client.Server.config.IntMPMulti) + (CharInfo.cLevel * Client.Server.config.LvlMPMulti);
+            switch (CharInfo.Class)
+            {
+                case 0: // TK
+                    value = value + 37;
+                    break;
+                case 1: // FM
+                    value = value + 49;
+                    break;
+                case 2: // BM
+                    value = value + 43;
+                    break;
+                case 3: // HT
+                    value = value + 42;
+                    break;
+            }
+            for (int i = 0; i < 78; i++)
+            {
+                int itemid = Inventory[i].ItemID;
+                for (int x = 0; x < Client.Server.NumLoadedItems; x++)
+                {
+                    if (Client.Server.ItemList[x].ItemID.Equals(itemid))
+                    {
+                        for (int a = 0; a < 11; a++)
+                        {
+                            if (Client.Server.ItemList[x].Effects[a].Effect.Equals(5))
+                            {
+                                value += Client.Server.ItemList[x].Effects[a].Value;
+                            }
+                            if (Client.Server.ItemList[x].Effects[a].Effect.Equals(46))
+                            {
+                                value += (value * Client.Server.ItemList[x].Effects[a].Value) / 100;
+                            }
+                        }
+                    }
+                }
+                if (Inventory[i].EF1.Equals(5))
+                {
+                    value += Inventory[i].EFV1;
+                }
+                if (Inventory[i].EF1.Equals(46))
+                {
+                    value += (value * Inventory[i].EFV1) / 100;
+                }
+                if (Inventory[i].EF2.Equals(5))
+                {
+                    value += Inventory[i].EFV2;
+                }
+                if (Inventory[i].EF2.Equals(46))
+                {
+                    value += (value * Inventory[i].EFV2) / 100;
+                }
+                if (Inventory[i].EF3.Equals(5))
+                {
+                    value += Inventory[i].EFV3;
+                }
+                if (Inventory[i].EF3.Equals(46))
+                {
+                    value += (value * Inventory[i].EFV3) / 100;
+                }
+            }
+            return value;
         }
     }
 }

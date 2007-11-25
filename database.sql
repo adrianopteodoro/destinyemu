@@ -25,7 +25,7 @@ CREATE TABLE `t_characters` (
   `cName` varchar(16) DEFAULT NULL,
   `AccountID` int(10) DEFAULT NULL,
   `BodyID` int(10) DEFAULT '0',
-  `ChaosPts` int(10) DEFAULT '0',
+  `ChaosPts` int(10) DEFAULT '70',
   `cLevel` int(10) DEFAULT '0',
   `SkillPts` int(10) NOT NULL DEFAULT '0',
   `StatsPts` int(10) NOT NULL DEFAULT '0',
@@ -47,7 +47,7 @@ CREATE TABLE `t_characters` (
 
 /*Data for the table `t_characters` */
 
-insert  into `t_characters`(`Id`,`cName`,`AccountID`,`BodyID`,`ChaosPts`,`cLevel`,`SkillPts`,`StatsPts`,`MasterPts`,`cStr`,`cInt`,`cDex`,`cCon`,`Gold`,`cExp`,`CharListPos`,`Class`,`wMaster`,`fMaster`,`sMaster`,`tMaster`) values (1,'TestTK',1,1,100,0,0,0,0,8,4,7,6,0,0,0,0,0,0,0,0);
+insert  into `t_characters`(`Id`,`cName`,`AccountID`,`BodyID`,`ChaosPts`,`cLevel`,`SkillPts`,`StatsPts`,`MasterPts`,`cStr`,`cInt`,`cDex`,`cCon`,`Gold`,`cExp`,`CharListPos`,`Class`,`wMaster`,`fMaster`,`sMaster`,`tMaster`) values (1,'TestTK',1,1,70,0,0,0,0,8,4,7,6,0,0,0,0,0,0,0,0);
 
 /*Table structure for table `t_inventory` */
 

@@ -13,7 +13,7 @@ namespace server
         public CPlayer Player;
         public CServer Server;
         public int PacketSize;
-        public ulong Hash;
+        public int Hash;
         public byte[] lkeys;
 
         public CClient(CServer sServer)
@@ -25,7 +25,12 @@ namespace server
 
         public void SendPacket(CPacketBuilder thispacket, int size)
         {
-            this.sock.Send(thispacket.dataBuffer, size, SocketFlags.None);
+            if (this.sock.Connected)
+            {
+                byte[] SendData = new byte[size];
+                Buffer.BlockCopy(thispacket.dataBuffer, 0, SendData, 0, size);
+                this.sock.Send(SendData, size, SocketFlags.None);
+            }
         }
     }
 }

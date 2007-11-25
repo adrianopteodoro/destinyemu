@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,9 +9,11 @@ namespace server
     {
         public CStats Stats;
         public CPosition Position;
+        public ArrayList vPlayers;
 
         public CCharacter()
         {
+            vPlayers = ArrayList.Synchronized(new ArrayList());
             Stats = new CStats();
             Stats.cHP = 0;
             Stats.cMP = 0;

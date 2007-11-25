@@ -49,12 +49,14 @@
     <Compile Include="CDatabase.cs" />
     <Compile Include="CDataStructs.cs" />
     <Compile Include="CEncryption.cs" />
+    <Compile Include="CLoadData.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="CPacket.cs" />
     <Compile Include="CPlayer.cs" />
     <Compile Include="CProcess.cs" />
     <Compile Include="CServer.cs" />
     <Compile Include="CServerPackets.cs" />
+    <Compile Include="CVisionFunc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

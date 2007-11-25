@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<teleports>
+	<!-- Armia to Noatum -->
+	<teleport sx1="2115" sx2="2120" sy1="2105" sy2="2099" dx1="1044" dx2="1047" dy1="1724" dy2="1727" price="700" />
+	<!-- Erion to Noatum -->
+	<teleport sx1="2455" sx2="2460" sy1="2020" sy2="2015" dx1="1044" dx2="1047" dy1="1708" dy2="1711" price="700" />
+	<!-- Azran to Noatum -->
+	<teleport sx1="2479" sx2="2484" sy1="1720" sy2="1715" dx1="1044" dx2="1047" dy1="1716" dy2="1719" price="700" />
+	<!-- Noatum to Armia -->
+	<teleport sx1="1043" sx2="1048" sy1="1728" sy2="1723" dx1="2116" dx2="2119" dy1="2100" dy2="2103" price="700" />
+	<!-- Noatum to Erion -->
+	<teleport sx1="1044" sx2="1047" sy1="1711" sy2="1708" dx1="2456" dx2="2459" dy1="2016" dy2="2019" price="700" />
+	<!-- Noatum to Azran -->
+	<teleport sx1="1043" sx2="1048" sy1="1720" sy2="1715" dx1="2480" dx2="2483" dy1="1716" dy2="1719" price="700" />
+	<!-- Desert to Kefra -->
+	<teleport sx1="1310" sx2="1316" sy1="1904" sy2="1899" dx1="2364" dx2="2367" dy1="4072" dy2="4075" price="700" />
+	<!-- Kefra to Desert -->
+	<teleport sx1="2363" sx2="2368" sy1="4076" sy2="4071" dx1="1312" dx2="1315" dy1="1900" dy2="1903" price="700" />
+	<!-- Castle to PVP Zone -->
+	<teleport sx1="1047" sx2="1052" sy1="1768" sy2="1763" dx1="1102" dx2="1105" dy1="1708" dy2="1711" price="700" />
+	<!-- Armia to Armia Field -->
+	<teleport sx1="2139" sx2="2144" sy1="2072" sy2="2067" dx1="2587" dx2="2590" dy1="2095" dy2="2098" price="700" />
+	<!-- Azran to Azran Field[Quest 101] -->
+	<teleport sx1="2467" sx2="2472" sy1="1720" sy2="1715" dx1="2248" dx2="2251" dy1="1556" dy2="1559" price="700" />
+	<!-- Azran to Azran Field[Element Zone] -->
+	<teleport sx1="2451" sx2="2456" sy1="1720" sy2="1715" dx1="1967" dx2="1970" dy1="1707" dy2="1710" price="700" />
+	<!-- Armia Field to Dugeon 1 -->
+	<teleport sx1="2363" sx2="2368" sy1="2287" sy2="2282" dx1="145" dx2="148" dy1="3788" dy2="3791" price="700" />
+	<!-- Erion Field to Dugeon 1 -->
+	<teleport sx1="2667" sx2="2672" sy1="2160" sy2="2155" dx1="146" dx2="149" dy1="3772" dy2="3775" price="700" />
+	<!-- Dugeon 1 to Azran Field -->
+	<teleport sx1="143" sx2="148" sy1="3792" sy2="3787" dx1="2364" dx2="2367" dy1="2281" dy2="2284" price="700" />
+	<!-- Dugeon 1 to Erion Field -->
+	<teleport sx1="143" sx2="148" sy1="3776" sy2="3771" dx1="2668" dx2="2671" dy1="2155" dy2="2157" price="700" />
+	<!-- Dugeon 1 to Dugeon 2 -->
+	<teleport sx1="146" sx2="152" sy1="3784" sy2="3779" dx1="1006" dx2="1006" dy1="4030" dy2="4030" price="700" />
+	<!-- Dugeon 2 to Dugeon 1 -->
+	<teleport sx1="1003" sx2="1007" sy1="4032" sy2="4028" dx1="147" dx2="147" dy1="3781" dy2="3781" price="700" />
+	<!-- Erion to Azran Field -->
+	<teleport sx1="2451" sx2="2456" sy1="1992" sy2="1987" dx1="2049" dx2="2052" dy1="1605" dy2="1608" price="700" />
+	<!-- Azran Field to UnderWorld 1 -->
+	<teleport sx1="1823" sx2="1828" sy1="1776" sy2="1771" dx1="1172" dx2="1174" dy1="4079" dy2="4081" price="700" />
+	<!-- UnderWorld 1 to Azran Field -->
+	<teleport sx1="1171" sx2="1175" sy1="4084" sy2="4079" dx1="1824" dx2="1827" dy1="1772" dy2="1775" price="700" />
+	<!-- UnderWorld 1 to UnderWorld 2 -->
+	<teleport sx1="1515" sx2="1519" sy1="4000" sy2="3995" dx1="1304" dx2="1307" dy1="3816" dy2="3819" price="700" />
+	<!-- UnderWorld 2 to UnderWorld 1 -->
+	<teleport sx1="1303" sx2="1308" sy1="3820" sy2="3815" dx1="1518" dx2="1518" dy1="3997" dy2="3997" price="700" />
+	<!-- Dugeon 2 to Dugeon 1 -->
+	<teleport sx1="1003" sx2="1007" sy1="4068" sy2="4063" dx1="408" dx2="411" dy1="4072" dy2="4073" price="700" />
+	<!-- Dugeon 1 to Dugeon 2 -->
+	<teleport sx1="407" sx2="412" sy1="4074" sy2="4071" dx1="1004" dx2="1007" dy1="4064" dy2="4067" price="700" />
+	<!-- Dugeon 2 to Dugeon 1 -->
+	<teleport sx1="1003" sx2="1008" sy1="3996" sy2="3991" dx1="744" dx2="747" dy1="3816" dy2="3819" price="700" />
+	<!-- Dugeon 1 to Dugeon 2 -->
+	<teleport sx1="473" sx2="748" sy1="3820" sy2="3815" dx1="1004" dx2="1007" dy1="3992" dy2="3995" price="700" />
+	<!-- Dugeon 2 to Dugeon 3 -->
+	<teleport sx1="679" sx2="684" sy1="4078" sy2="4075" dx1="916" dx2="919" dy1="3820" dy2="3822" price="700" />
+	<!-- Dugeon 3 to Dugeon 2 -->
+	<teleport sx1="915" sx2="920" sy1="3823" sy2="3819" dx1="1004" dx2="1007" dy1="4064" dy2="4067" price="700" />
+	<!-- Dugeon 1 to Dugeon 3 -->
+	<teleport sx1="743" sx2="748" sy1="3808" sy2="3803" dx1="912" dx2="915" dy1="3808" dy2="3812" price="700" />
+	<!-- Dugeon 3 to Dugeon 1 -->
+	<teleport sx1="912" sx2="915" sy1="3812" sy2="3808" dx1="743" dx2="748" dy1="3803" dy2="3808" price="700" />
+	<!-- Dugeon 3 to Dugeon 2 -->
+	<teleport sx1="915" sx2="919" sy1="3822" sy2="3820" dx1="680" dx2="683" dy1="4075" dy2="4077" price="700" />
+	<!-- Dugeon 2 to Dugeon 3 -->
+	<teleport sx1="680" sx2="683" sy1="4077" sy2="4075" dx1="915" dx2="919" dy1="3820" dy2="3822" price="700" />
+	<!-- Dugeon 3 to Dugeon 2 -->
+	<teleport sx1="932" sx2="935" sy1="3822" sy2="3820" dx1="876" dx2="877" dy1="3873" dy2="3875" price="700" />
+	<!-- Dugeon 2 to Dugeon 3 -->
+	<teleport sx1="876" sx2="877" sy1="3875" sy2="3873" dx1="932" dx2="935" dy1="3820" dy2="3822" price="700" />
+</teleports>
