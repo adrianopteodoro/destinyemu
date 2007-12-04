@@ -50,6 +50,7 @@
     <Compile Include="CDataStructs.cs" />
     <Compile Include="CEncryption.cs" />
     <Compile Include="CLoadData.cs" />
+    <Compile Include="CNpc.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="CPacket.cs" />
     <Compile Include="CPlayer.cs" />

@@ -223,5 +223,15 @@ namespace server
             }
             return value;
         }
+
+        public bool PlayerMovement()
+        {
+            if (Position.pCurrent.x.Equals(Position.pDestiny.x) && Position.pCurrent.y.Equals(Position.pDestiny.y))
+                return true;
+            int distance = Client.Server.Distance(Position.pCurrent, Position.pDestiny);
+            int ntime = (distance / 4 * 1000);
+            Position.pCurrent = Position.pDestiny;
+            return true;
+        }
     }
 }

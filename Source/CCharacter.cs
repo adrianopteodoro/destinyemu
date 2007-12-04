@@ -10,10 +10,12 @@ namespace server
         public CStats Stats;
         public CPosition Position;
         public ArrayList vPlayers;
+        public ArrayList vNpcs;
 
         public CCharacter()
         {
             vPlayers = ArrayList.Synchronized(new ArrayList());
+            vNpcs = ArrayList.Synchronized(new ArrayList());
             Stats = new CStats();
             Stats.cHP = 0;
             Stats.cMP = 0;

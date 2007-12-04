@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<npc name="KnightLeader" mobid="60" mobcode="19" level="0" str="5" dex="0" int="100" con="0">
+	<inventory>
+		<item slotnum="0" itemid="125" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="1" itemid="131" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="2" itemid="127" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="3" itemid="128" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="4" itemid="129" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="6" itemid="864" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	</inventory>
+	<shopitems>
+		<item slotnum="0" itemid="5000" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="1" itemid="5001" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="2" itemid="5002" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="3" itemid="5003" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="4" itemid="5004" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="5" itemid="5005" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="6" itemid="5006" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="7" itemid="5007" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="8" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />		
+		<item slotnum="9" itemid="5008" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="10" itemid="5009" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="11" itemid="5010" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="12" itemid="5011" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="13" itemid="5012" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="14" itemid="5013" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="15" itemid="5014" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="16" itemid="5015" add1="0" val1="9" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="17" itemid="0" add1="0" val1="9" add2="0" val2="0" add3="0" val3="0" />		
+		<item slotnum="18" itemid="5016" add1="0" val1="9" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="19" itemid="5017" add1="0" val1="9" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="20" itemid="5018" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="21" itemid="5019" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="22" itemid="5020" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="23" itemid="5021" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="24" itemid="5022" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="25" itemid="5023" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="26" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="27" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	</shopitems>
+</npc>

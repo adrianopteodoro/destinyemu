@@ -15,5 +15,15 @@ namespace server
             }
             return false;
         }
+
+        public static bool isNpcVisible(CPlayer thisclient, CNpc thisnpc)
+        {
+            foreach (object npc in thisclient.vNpcs)
+            {
+                if (npc.Equals(thisnpc))
+                    return true;
+            }
+            return false;
+        }
     }
 }

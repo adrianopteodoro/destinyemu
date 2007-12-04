@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!-- Monster and NPC converter    by Mr-LoGaN   Destiny EMU Team 2007 /-->
+<npc name="Bolldy_Cyclops"
+     mobid="234"
+     mobcode="0"
+     level="136"
+     str="3"
+     dex="50"
+     int="30"
+     con="950"
+     class="1"
+     reghp="0"
+     regmp="0"
+     resist1 ="0"
+     resist2 ="0"
+     resist3 ="-30"
+     resist4 ="0"
+     skill1="-1"
+     skill2="-1"
+     skill3="-1"
+     skill4="-1"
+     hp="6500"
+     maxhp="6500"
+     mp="0"
+     maxmp="0"
+     ac="1090"
+     dam="395"
+     regen="1"
+     near="255"
+     motion1="7"
+     fear="255"
+     motion2="7"
+     gold="200"
+     exp="225"
+     posx="2113"
+     posy="2096">
+	<inventory>
+                <item slotnum="0" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="1" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="2" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="3" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="4" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="5" itemid="702" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="6" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="7" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="8" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="9" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="10" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="11" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="12" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="13" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="14" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	</inventory>
+	<DropItem>
+                <item slotnum="0" itemid="898" add1="100" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="1" itemid="838" add1="100" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="2" itemid="901" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="3" itemid="807" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="4" itemid="1185" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="5" itemid="1188" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="6" itemid="1136" add1="102" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="7" itemid="1124" add1="102" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="8" itemid="1316" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="9" itemid="1466" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="10" itemid="1616" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="11" itemid="1262" add1="102" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="12" itemid="1274" add1="102" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="13" itemid="1286" add1="102" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="14" itemid="1448" add1="102" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="15" itemid="1604" add1="102" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="16" itemid="1601" add1="102" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="17" itemid="1197" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="18" itemid="1204" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="19" itemid="1328" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="20" itemid="1478" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="21" itemid="1628" add1="101" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="22" itemid="751" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="23" itemid="425" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+                <item slotnum="24" itemid="412" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	</DropItem>
+</npc>

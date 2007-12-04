@@ -305,12 +305,78 @@ namespace server
             thisclient.Client.SendPacket(OutPak, 172);
         }
 
+        public void pak_SpawnNpc(CPlayer thisclient, CNpc thisnpc)
+        {
+            thisnpc.NpcInfo.CharID = mServer.GetMobID();
+            OutPak.Clear();
+            OutPak.SetShort(172, 0);
+            OutPak.SetShort(0x0364, 4);
+            OutPak.SetShort(30000, 6);
+            OutPak.SetShort(thisnpc.Position.pCurrent.x, 12);
+            OutPak.SetShort(thisnpc.Position.pCurrent.y, 14);
+            OutPak.SetShort(thisnpc.NpcInfo.CharID, 16);
+            XmlDocument doc = new XmlDocument();
+            try
+            {
+                doc.Load(String.Format("./Data/Npc/{0}", thisnpc.NpcFile));
+            }
+            catch (Exception ex)
+            {
+                Core.CLog(String.Format("Error: {0}", ex.Message));
+            }
+            XmlNode root = doc.DocumentElement;
+            XmlNodeList list = root.SelectNodes("/npc/inventory/item");
+            OutPak.SetString(root.Attributes.Item(0).Value, 18);
+            if (int.Parse(root.Attributes.Item(2).Value).Equals(0))
+                OutPak.SetShort(120, 30);
+            OutPak.SetShort(int.Parse(root.Attributes.Item(1).Value), 34);
+            for (int i = 0; i < list.Count; i++)
+            {
+                int slotnum = int.Parse(list.Item(i).Attributes.Item(0).Value);
+                CItem thisitem = new CItem();
+                thisitem.ItemID = int.Parse(list.Item(i).Attributes.Item(1).Value);
+                thisitem.EF1 = int.Parse(list.Item(i).Attributes.Item(2).Value);
+                thisitem.EFV1 = int.Parse(list.Item(i).Attributes.Item(3).Value);
+                thisitem.EF2 = int.Parse(list.Item(i).Attributes.Item(4).Value);
+                thisitem.EFV2 = int.Parse(list.Item(i).Attributes.Item(5).Value);
+                thisitem.EF3 = int.Parse(list.Item(i).Attributes.Item(6).Value);
+                thisitem.EFV3 = int.Parse(list.Item(i).Attributes.Item(7).Value);
+                OutPak.SetShort(thisclient.GetItemIDwRefine(thisitem), (2 * slotnum) + 36);
+            }
+            OutPak.SetShort(thisnpc.NpcInfo.CharID, 66);
+            OutPak.SetShort(int.Parse(root.Attributes.Item(3).Value), 100);
+            OutPak.SetByte(1, 102);
+            OutPak.SetByte(int.Parse(root.Attributes.Item(2).Value), 106);
+            OutPak.SetShort(4, 107); // Move Speed
+            OutPak.SetShort(100, 108);
+            OutPak.SetShort(100, 110);
+            OutPak.SetShort(100, 112);
+            OutPak.SetShort(100, 114);
+            OutPak.SetShort(int.Parse(root.Attributes.Item(4).Value), 116);
+            OutPak.SetShort(int.Parse(root.Attributes.Item(5).Value), 118);
+            OutPak.SetShort(int.Parse(root.Attributes.Item(6).Value), 120);
+            OutPak.SetShort(int.Parse(root.Attributes.Item(7).Value), 122);
+            OutPak.SetShort(0, 128); // Spawn Effect 2=tele effect
+            thisclient.Client.encdec.Encrypt(OutPak, OutPak.dataBuffer, 172, thisclient.Client.Hash);
+            thisclient.Client.SendPacket(OutPak, 172);
+        }
+
         public void pak_DeleteCharSpawn(CPlayer thisclient, CPlayer otherclient)
         {
             OutPak.Clear();
             OutPak.SetShort(16, 0);
             OutPak.SetShort(0x0165, 4);
             OutPak.SetShort(otherclient.Session.ClientID, 6);
+            thisclient.Client.encdec.Encrypt(OutPak, OutPak.dataBuffer, 16, thisclient.Client.Hash);
+            thisclient.Client.SendPacket(OutPak, 16);
+        }
+
+        public void pak_DeleteNpcSpawn(CPlayer thisclient, CNpc thisnpc)
+        {
+            OutPak.Clear();
+            OutPak.SetShort(16, 0);
+            OutPak.SetShort(0x0165, 4);
+            OutPak.SetShort(thisnpc.NpcInfo.CharID, 6);
             thisclient.Client.encdec.Encrypt(OutPak, OutPak.dataBuffer, 16, thisclient.Client.Hash);
             thisclient.Client.SendPacket(OutPak, 16);
         }
@@ -367,14 +433,6 @@ namespace server
                 }
             }
 
-            OutPak.Clear();
-            OutPak.SetShort(16, 0);
-            OutPak.SetShort(0x03af, 4);
-            OutPak.SetShort(thisclient.Session.ClientID, 6);
-            OutPak.SetLong(thisclient.CharInfo.cGold, 12);
-            thisclient.Client.encdec.Encrypt(OutPak, OutPak.dataBuffer, 16, thisclient.Client.Hash);
-            thisclient.Client.SendPacket(OutPak, 16);
-
             if (dest.x > 0 && dest.y > 0)
             {
                 if (thisclient.CharInfo.cGold < price)
@@ -384,6 +442,13 @@ namespace server
                 else
                 {
                     thisclient.CharInfo.cGold = thisclient.CharInfo.cGold - price;
+                    OutPak.Clear();
+                    OutPak.SetShort(16, 0);
+                    OutPak.SetShort(0x03af, 4);
+                    OutPak.SetShort(thisclient.Session.ClientID, 6);
+                    OutPak.SetLong(thisclient.CharInfo.cGold, 12);
+                    thisclient.Client.encdec.Encrypt(OutPak, OutPak.dataBuffer, 16, thisclient.Client.Hash);
+                    thisclient.Client.SendPacket(OutPak, 16);
                     pak_TeleportTo(thisclient, dest);
                 }
             }

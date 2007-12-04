@@ -11,6 +11,7 @@ namespace server
     public class CServer
     {
         private Socket m_Socket;
+        public ManualResetEvent allDone;
         public AsyncCallback pfnWorkerCallBack;
         public CConfig config;
         public int m_Port;
@@ -27,10 +28,14 @@ namespace server
         public CProcess Process;
         public CItemList[] ItemList;
         public int NumLoadedItems;
+        public ArrayList NpcList;
+        public int NumLoadedNpcs;
 
         public CServer()
         {
+            allDone = new ManualResetEvent(true);
             ItemList = new CItemList[5338];
+            NpcList = ArrayList.Synchronized(new ArrayList());
             ClientIDList = new int[65535];
             for (int i = 0; i < 65535; i++)
                 ClientIDList[i] = 0;    
@@ -53,17 +58,18 @@ namespace server
             VisionThread.Start();
             Core.CLog("Started Vision Thread");
             CLoadData.LoadItemList(this);
+            CLoadData.LoadNpcList(this);
         }
 
         public void Start()
         {
-            try
-            {
-                m_Socket = new Socket(AddressFamily.InterNetwork,
+            m_Socket = new Socket(AddressFamily.InterNetwork,
                     SocketType.Stream,
                     ProtocolType.Tcp);
-                IPEndPoint ipLocal = new IPEndPoint(IPAddress.Any, m_Port);
+            IPEndPoint ipLocal = new IPEndPoint(IPAddress.Any, m_Port);
 
+            try
+            {
                 m_Socket.Bind(ipLocal);
                 m_Socket.Listen(100);
 
@@ -73,7 +79,12 @@ namespace server
                 for (int i = 0; i < ip.Length; ++i)
                     Core.CLog(String.Format("Listening on Address: {0}:{1}", ip[i], m_Port));
 
-                m_Socket.BeginAccept(new AsyncCallback(OnClientConnect), null);
+                while (true)
+                {
+                    allDone.Reset();
+                    m_Socket.BeginAccept(new AsyncCallback(OnClientConnect), null);
+                    allDone.WaitOne();
+                }
             }
             catch (SocketException se)
             {
@@ -85,13 +96,16 @@ namespace server
         {
             CClient thisclient = new CClient(this);
             CPlayer player;
+
+            allDone.Set();
+
             try
             {
                 thisclient.sock = m_Socket.EndAccept(asyn);
                 m_ClientCount++;
-                m_ClientList.Add(thisclient);
                 player = new CPlayer(thisclient);
                 thisclient.Player = player;
+                m_ClientList.Add(thisclient);
                 WaitForData(thisclient);
                 Core.CLog(String.Format("Client Connected {0}", thisclient.sock.RemoteEndPoint.ToString()));
                 m_Socket.BeginAccept(new AsyncCallback(OnClientConnect), null);
@@ -207,7 +221,20 @@ namespace server
 
         public int GetClientID()
         {
-            for (int i = 1; i < 65535; i++)
+            for (int i = 1; i < 2000; i++)
+            {
+                if (ClientIDList[i] != 1)
+                {
+                    ClientIDList[i] = 1;
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        public int GetMobID()
+        {
+            for (int i = 2000; i < 65535; i++)
             {
                 if (ClientIDList[i] != 1)
                 {
@@ -235,7 +262,7 @@ namespace server
                 int distance = Distance(thisclient.Position.pCurrent, otherclient.Player.Position.pCurrent);
                 if (CVisionFunc.isVisible(thisclient, otherclient.Player))
                 {
-                    if (distance < 25)
+                    if (distance < 50)
                     {
                         thisclient.vPlayers.Add(otherclient.Player);
                     }
@@ -247,10 +274,35 @@ namespace server
                 }
                 else
                 {
-                    if (distance < 5)
+                    if (distance < 20)
                     {
                         thisclient.vPlayers.Add(otherclient.Player);
                         Packets.pak_SpawnChar(thisclient, otherclient.Player);
+                    }
+                }
+            }
+            foreach (object npc in NpcList)
+            {
+                CNpc thisnpc = (CNpc)npc;
+                int distance = Distance(thisclient.Position.pCurrent, thisnpc.Position.pCurrent);
+                if (CVisionFunc.isNpcVisible(thisclient, thisnpc))
+                {
+                    if (distance < 50)
+                    {
+                        thisclient.vNpcs.Add(thisnpc);
+                    }
+                    else
+                    {
+                        thisclient.vNpcs.Remove(thisnpc);
+                        Packets.pak_DeleteNpcSpawn(thisclient, thisnpc);
+                    }
+                }
+                else
+                {
+                    if (distance < 20)
+                    {
+                        thisclient.vNpcs.Add(thisnpc);
+                        Packets.pak_SpawnNpc(thisclient, thisnpc);
                     }
                 }
             }
