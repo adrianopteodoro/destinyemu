@@ -255,6 +255,7 @@ namespace server
             for (int i = 0; i < 15; i++)
             {
                 OutPak.SetShort(thisclient.GetItemIDwRefine(thisclient.Inventory[i]), (2 * i) + 36);
+                OutPak.SetByte(thisclient.GetAnctCode(thisclient.Inventory[i]), i + 131);
             }
             OutPak.SetShort(thisclient.Session.ClientID, 66);
             OutPak.SetShort(thisclient.CharInfo.cLevel, 100);
@@ -288,6 +289,7 @@ namespace server
             for (int i = 0; i < 15; i++)
             {
                 OutPak.SetShort(thisclient.GetItemIDwRefine(otherclient.Inventory[i]), (2 * i) + 36);
+                OutPak.SetByte(thisclient.GetAnctCode(otherclient.Inventory[i]), i + 131);
             }
             OutPak.SetShort(otherclient.Session.ClientID, 66);
             OutPak.SetShort(otherclient.CharInfo.cLevel, 100);
@@ -342,6 +344,7 @@ namespace server
                 thisitem.EF3 = int.Parse(list.Item(i).Attributes.Item(6).Value);
                 thisitem.EFV3 = int.Parse(list.Item(i).Attributes.Item(7).Value);
                 OutPak.SetShort(thisclient.GetItemIDwRefine(thisitem), (2 * slotnum) + 36);
+                OutPak.SetByte(thisclient.GetAnctCode(thisitem), slotnum + 131);
             }
             OutPak.SetShort(thisnpc.NpcInfo.CharID, 66);
             OutPak.SetShort(int.Parse(root.Attributes.Item(3).Value), 100);
