@@ -1,8 +1,7 @@
 /*
-SQLyog Community Edition- MySQL GUI v6.07
-Host - 6.0.2-alpha-community-nt-debug : Database - destiny
+SQLyog Community Edition- MySQL GUI v6.13
+MySQL - 6.0.2-alpha-community-nt-debug : Database - destiny
 *********************************************************************
-Server version : 6.0.2-alpha-community-nt-debug
 */
 
 /*!40101 SET NAMES utf8 */;
@@ -43,11 +42,11 @@ CREATE TABLE `t_characters` (
   `sMaster` int(10) DEFAULT '0',
   `tMaster` int(10) DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `t_characters` */
 
-insert  into `t_characters`(`Id`,`cName`,`AccountID`,`BodyID`,`ChaosPts`,`cLevel`,`SkillPts`,`StatsPts`,`MasterPts`,`cStr`,`cInt`,`cDex`,`cCon`,`Gold`,`cExp`,`CharListPos`,`Class`,`wMaster`,`fMaster`,`sMaster`,`tMaster`) values (1,'TestTK',1,1,70,0,0,0,0,8,4,7,6,0,0,0,0,0,0,0,0);
+insert  into `t_characters`(`Id`,`cName`,`AccountID`,`BodyID`,`ChaosPts`,`cLevel`,`SkillPts`,`StatsPts`,`MasterPts`,`cStr`,`cInt`,`cDex`,`cCon`,`Gold`,`cExp`,`CharListPos`,`Class`,`wMaster`,`fMaster`,`sMaster`,`tMaster`) values (1,'TestTK',1,6,70,399,0,0,0,32000,12000,32000,12000,2000000000,0,0,0,200,200,200,200),(2,'TestFM',1,16,70,399,0,0,0,32000,12000,32000,12000,2000000000,0,1,1,200,200,200,200),(3,'TestBM',1,26,70,399,0,0,0,32000,12000,32000,12000,2000000000,0,2,2,200,200,200,200),(4,'TestHT',1,36,70,399,0,0,0,32000,12000,32000,12000,2000000000,0,3,3,200,200,200,200),(5,'TestTK2',2,6,70,449,0,0,0,32000,12000,32000,12000,2000000000,0,0,0,200,200,200,200);
 
 /*Table structure for table `t_inventory` */
 
@@ -65,11 +64,11 @@ CREATE TABLE `t_inventory` (
   `EF3` int(10) DEFAULT '0',
   `EFV3` int(10) DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `t_inventory` */
 
-insert  into `t_inventory`(`Id`,`CharID`,`Slot`,`ItemID`,`EF1`,`EFV1`,`EF2`,`EFV2`,`EF3`,`EFV3`) values (1,1,5,871,43,255,0,0,0,0);
+insert  into `t_inventory`(`Id`,`CharID`,`Slot`,`ItemID`,`EF1`,`EFV1`,`EF2`,`EFV2`,`EF3`,`EFV3`) values (1,1,5,871,43,230,0,0,0,0),(2,1,6,871,43,230,0,0,0,0),(3,4,5,871,43,230,0,0,0,0),(4,4,6,871,43,230,0,0,0,0),(5,2,5,2866,43,230,0,0,0,0),(6,3,5,2938,43,230,0,0,0,0),(8,2,1,1346,43,230,0,0,0,0),(9,2,2,1349,43,230,0,0,0,0),(10,2,3,1352,43,230,0,0,0,0),(11,2,4,1355,43,230,0,0,0,0),(12,5,1,1211,43,220,0,0,0,0),(13,5,2,1214,43,220,0,0,0,0),(14,5,3,1217,43,220,0,0,0,0),(15,5,4,1220,43,220,0,0,0,0),(16,5,5,2734,43,220,0,0,0,0),(17,5,6,2734,43,220,0,0,0,0);
 
 /*Table structure for table `t_storage` */
 
@@ -87,9 +86,11 @@ CREATE TABLE `t_storage` (
   `EF3` int(10) NOT NULL DEFAULT '0',
   `EFV3` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `t_storage` */
+
+insert  into `t_storage`(`Id`,`UserID`,`Slot`,`ItemID`,`EF1`,`EFV1`,`EF2`,`EFV2`,`EF3`,`EFV3`) values (1,1,0,4011,0,0,0,0,0,0),(2,1,1,4011,0,0,0,0,0,0),(3,1,2,4011,0,0,0,0,0,0),(4,1,3,4011,0,0,0,0,0,0),(5,1,4,4011,0,0,0,0,0,0),(6,1,5,4011,0,0,0,0,0,0),(7,1,6,4011,0,0,0,0,0,0),(8,1,7,4011,0,0,0,0,0,0),(9,1,8,4011,0,0,0,0,0,0),(10,1,9,4011,0,0,0,0,0,0),(11,1,10,4011,0,0,0,0,0,0),(12,1,11,4011,0,0,0,0,0,0),(13,1,12,4011,0,0,0,0,0,0);
 
 /*Table structure for table `t_user` */
 
@@ -103,11 +104,11 @@ CREATE TABLE `t_user` (
   `CtlCode` int(10) DEFAULT '1',
   `Gold` int(12) DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `t_user` */
 
-insert  into `t_user`(`Id`,`UserID`,`UserPWD`,`Email`,`CtlCode`,`Gold`) values (1,'test','test',NULL,1,0);
+insert  into `t_user`(`Id`,`UserID`,`UserPWD`,`Email`,`CtlCode`,`Gold`) values (1,'test','test',NULL,1,0),(2,'test2','test',NULL,1,0);
 
 /*Table structure for table `t_user_stats` */
 
@@ -123,6 +124,18 @@ CREATE TABLE `t_user_stats` (
 
 /*Data for the table `t_user_stats` */
 
+/* Procedure structure for procedure `sp_CheckAccStatus` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `sp_CheckAccStatus` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_CheckAccStatus`(IN AID int)
+BEGIN
+	SELECT count(*) FROM t_user_stats WHERE UserID=AID;
+    END */$$
+DELIMITER ;
+
 /* Procedure structure for procedure `sp_CheckUserAndPWD` */
 
 /*!50003 DROP PROCEDURE IF EXISTS  `sp_CheckUserAndPWD` */;
@@ -131,7 +144,8 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_CheckUserAndPWD`(IN UID varchar(12), IN PWD varchar(12))
 BEGIN
-	SELECT count(*) FROM t_user WHERE UserID=UID AND UserPWD=PWD;
+
+	SELECT count(*) FROM t_user WHERE UserID=UID AND UserPWD=PWD;
     END */$$
 DELIMITER ;
 
@@ -143,7 +157,20 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_CheckUserID`(IN UID varchar(12))
 BEGIN
-	SELECT count(*) FROM t_user WHERE UserID=UID;
+
+	SELECT count(*) FROM t_user WHERE UserID=UID;
+    END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `sp_DeleteAccStatus` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `sp_DeleteAccStatus` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteAccStatus`(IN AID int)
+BEGIN
+	DELETE FROM t_user_stats WHERE UserID=AID;
     END */$$
 DELIMITER ;
 
@@ -155,7 +182,9 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAccountID`(IN UID varchar(12))
 BEGIN
+
 	SELECT Id FROM t_user WHERE UserID=UID;
+
     END */$$
 DELIMITER ;
 
@@ -167,7 +196,9 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAccountInfo`(IN UID varchar(12))
 BEGIN
+
 	SELECT * FROM t_user WHERE UserID=UID;
+
     END */$$
 DELIMITER ;
 
@@ -179,7 +210,8 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetCharInfo`(IN AID int, IN PID int)
 BEGIN
-	SELECT Id, cName, BodyID, cLevel, cStr, cInt, cDex, cCon, Gold, cExp, Class, wMaster, fMaster, sMaster, tMaster, SkillPts, StatsPts, MasterPts, ChaosPts FROM t_characters WHERE AccountID=AID AND CharListPos=PID;
+
+	SELECT Id, cName, BodyID, cLevel, cStr, cInt, cDex, cCon, Gold, cExp, Class, wMaster, fMaster, sMaster, tMaster, SkillPts, StatsPts, MasterPts, ChaosPts FROM t_characters WHERE AccountID=AID AND CharListPos=PID;
     END */$$
 DELIMITER ;
 
@@ -191,7 +223,8 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetCharInfoforCList`(IN AccID int)
 BEGIN
-	SELECT Id, cName, BodyID, cLevel, cStr, cInt, cDex, cCon, Gold, cExp, CharListPos, Class, wMaster, fMaster, sMaster, tMaster FROM t_characters WHERE AccountID=AccID;
+
+	SELECT Id, cName, BodyID, cLevel, cStr, cInt, cDex, cCon, Gold, cExp, CharListPos, Class, wMaster, fMaster, sMaster, tMaster FROM t_characters WHERE AccountID=AccID;
     END */$$
 DELIMITER ;
 
@@ -203,7 +236,20 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetInventaryItems`(IN CID int)
 BEGIN
-	SELECT Slot,ItemID,EF1,EFV1,EF2,EFV2,EF3,EFV3 FROM t_inventory WHERE CharID=CID;
+
+	SELECT Slot,ItemID,EF1,EFV1,EF2,EFV2,EF3,EFV3 FROM t_inventory WHERE CharID=CID;
+    END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `sp_InsertAccStatus` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `sp_InsertAccStatus` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertAccStatus`(IN AID int, IN Address varchar(60))
+BEGIN
+	insert into t_user_stats (UserID, CharID, ChannelID, IPAddress, ConnDate) values (AID, 0, 0, Address, CURRENT_TIMESTAMP);
     END */$$
 DELIMITER ;
 

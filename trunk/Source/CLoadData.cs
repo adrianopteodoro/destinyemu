@@ -46,5 +46,31 @@ namespace server
             }
             Core.CLog(String.Format("Loaded {0} Items from Database.", server.NumLoadedItems));
         }
+
+        public static void LoadNpcList(CServer server)
+        {
+            server.NumLoadedNpcs = 0;
+            XmlDocument doc = new XmlDocument();
+            try
+            {
+                doc.Load("./Data/NpcList.xml");
+            }
+            catch (Exception ex)
+            {
+                Core.CLog(String.Format("Error: {0}", ex.Message));
+            }
+            XmlNode root = doc.DocumentElement;
+            XmlNodeList list = root.SelectNodes("/npclist/npc");
+            for (int i = 0; i < list.Count; i++)
+            {
+                CNpc thisnpc = new CNpc();
+                thisnpc.Position.pCurrent.x = int.Parse(list.Item(i).Attributes.Item(0).Value);
+                thisnpc.Position.pCurrent.y = int.Parse(list.Item(i).Attributes.Item(1).Value);
+                thisnpc.NpcFile = list.Item(i).Attributes.Item(2).Value;
+                server.NpcList.Add(thisnpc);
+                server.NumLoadedNpcs++;
+            }
+            Core.CLog(String.Format("Loaded {0} NPC's from Database.", server.NumLoadedNpcs));
+        }
     }
 }

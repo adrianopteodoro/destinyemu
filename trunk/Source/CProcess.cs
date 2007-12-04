@@ -17,6 +17,16 @@ namespace server
         {
             while (true)
             {
+                CClient lastclient = null;
+                foreach (object client in Server.m_ClientList)
+                {
+                    CClient thisclient = (CClient)client;
+                    if (!client.Equals(lastclient))
+                    {
+                        //thisclient.Player.PlayerMovement();
+                    }
+                    lastclient = thisclient;
+                }
                 Thread.Sleep(10);
             }
         }

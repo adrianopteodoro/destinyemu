@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<npc name="Shany" mobid="67" mobcode="8" level="1" str="5" dex="0" int="100" con="0">
+	<inventory>
+		<item slotnum="0" itemid="0" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="1" itemid="176" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="5" itemid="3581" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="6" itemid="3581" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+		<item slotnum="14" itemid="3196" add1="0" val1="0" add2="0" val2="0" add3="0" val3="0" />
+	</inventory>
+	<shopitems>
+	</shopitems>
+</npc>
