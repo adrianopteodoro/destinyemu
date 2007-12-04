@@ -167,5 +167,49 @@ namespace server
             resultid = BitConverter.ToInt16(outitemid, 0);
             return resultid;
         }
+
+        public int GetAnctCode(CItem item)
+        {
+            if (item.EF1.Equals(43))
+            {
+                if (item.EFV1.Equals(230) || item.EFV1.Equals(234) || item.EFV1.Equals(238) || item.EFV1.Equals(242) || item.EFV1.Equals(246) || item.EFV1.Equals(250) || item.EFV1.Equals(254))
+                    return 0x10;
+                else if (item.EFV1.Equals(231) || item.EFV1.Equals(235) || item.EFV1.Equals(239) || item.EFV1.Equals(243) || item.EFV1.Equals(247) || item.EFV1.Equals(251) || item.EFV1.Equals(255))
+                    return 0x20;
+                else if (item.EFV1.Equals(232) || item.EFV1.Equals(236) || item.EFV1.Equals(240) || item.EFV1.Equals(244) || item.EFV1.Equals(248) || item.EFV1.Equals(252))
+                    return 0x30;
+                else if (item.EFV1.Equals(233) || item.EFV1.Equals(237) || item.EFV1.Equals(241) || item.EFV1.Equals(245) || item.EFV1.Equals(249) || item.EFV1.Equals(253))
+                    return 0x40;
+                else
+                    return 0x2b;
+            }
+            if (item.EF2.Equals(43))
+            {
+                if (item.EFV2.Equals(230) || item.EFV2.Equals(234) || item.EFV2.Equals(238) || item.EFV2.Equals(242) || item.EFV2.Equals(246) || item.EFV2.Equals(250) || item.EFV2.Equals(254))
+                    return 0x10;
+                else if (item.EFV2.Equals(231) || item.EFV2.Equals(235) || item.EFV2.Equals(239) || item.EFV2.Equals(243) || item.EFV2.Equals(247) || item.EFV2.Equals(251) || item.EFV2.Equals(255))
+                    return 0x20;
+                else if (item.EFV2.Equals(232) || item.EFV2.Equals(236) || item.EFV2.Equals(240) || item.EFV2.Equals(244) || item.EFV2.Equals(248) || item.EFV2.Equals(252))
+                    return 0x30;
+                else if (item.EFV2.Equals(233) || item.EFV2.Equals(237) || item.EFV2.Equals(241) || item.EFV2.Equals(245) || item.EFV2.Equals(249) || item.EFV2.Equals(253))
+                    return 0x30;
+                else
+                    return 0x2b;
+            }
+            if (item.EF3.Equals(43))
+            {
+                if (item.EFV3.Equals(230) || item.EFV3.Equals(234) || item.EFV3.Equals(238) || item.EFV3.Equals(242) || item.EFV3.Equals(246) || item.EFV3.Equals(250) || item.EFV3.Equals(254))
+                    return 0x10;
+                else if (item.EFV3.Equals(231) || item.EFV3.Equals(235) || item.EFV3.Equals(239) || item.EFV3.Equals(243) || item.EFV3.Equals(247) || item.EFV3.Equals(251) || item.EFV3.Equals(255))
+                    return 0x20;
+                else if (item.EFV3.Equals(232) || item.EFV3.Equals(236) || item.EFV3.Equals(240) || item.EFV3.Equals(244) || item.EFV3.Equals(248) || item.EFV3.Equals(252))
+                    return 0x30;
+                else if (item.EFV3.Equals(233) || item.EFV3.Equals(237) || item.EFV3.Equals(241) || item.EFV3.Equals(245) || item.EFV3.Equals(249) || item.EFV3.Equals(253))
+                    return 0x30;
+                else
+                    return 0x2b;
+            }
+            return 0;
+        }
     }
 }
