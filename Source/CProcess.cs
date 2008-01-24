@@ -17,15 +17,10 @@ namespace server
         {
             while (true)
             {
-                CClient lastclient = null;
                 foreach (object client in Server.m_ClientList)
                 {
                     CClient thisclient = (CClient)client;
-                    if (!client.Equals(lastclient))
-                    {
-                        //thisclient.Player.PlayerMovement();
-                    }
-                    lastclient = thisclient;
+                    //thisclient.Player.PlayerMovement();
                 }
                 Thread.Sleep(10);
             }
@@ -43,15 +38,10 @@ namespace server
         {
             while (true)
             {
-                CClient lastclient = null;
                 foreach(object client in Server.m_ClientList)
                 {
                     CClient thisclient = (CClient)client;
-                    if (!client.Equals(lastclient))
-                    {
-                        Server.VisionList(thisclient.Player);
-                    }
-                    lastclient = thisclient;
+                    Server.VisionList(thisclient.Player);
                 }
                 Thread.Sleep(200);
             }

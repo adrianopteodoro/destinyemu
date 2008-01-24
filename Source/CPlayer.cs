@@ -230,7 +230,8 @@ namespace server
                 return true;
             int distance = Client.Server.Distance(Position.pCurrent, Position.pDestiny);
             int ntime = (distance / 4 * 1000);
-            Position.pCurrent = Position.pDestiny;
+            Position.pCurrent.x = Position.pDestiny.x;
+            Position.pCurrent.y = Position.pDestiny.y;
             return true;
         }
     }
