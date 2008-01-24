@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Destiny Emulator")]
-[assembly: AssemblyDescription("Game Server")]
+[assembly: AssemblyDescription("GNU Game Server Emulator")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Destiny Emulator Development Team")]
 [assembly: AssemblyProduct("server")]
-[assembly: AssemblyCopyright("Copyright ©  2007")]
+[assembly: AssemblyCopyright("Copyright © 2006-2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

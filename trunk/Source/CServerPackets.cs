@@ -476,6 +476,8 @@ namespace server
             thisclient.Client.encdec.Encrypt(OutPak, OutPak.dataBuffer, 52, thisclient.Client.Hash);
             thisclient.Client.SendPacket(OutPak, 52);
             SendToVisionPlayers(thisclient, OutPak, 52);
+            thisclient.Position.pCurrent.x = dest.x;
+            thisclient.Position.pCurrent.y = dest.y;
         }
 
         public void pak_SendChat(byte[] pak, CPlayer thisclient)
