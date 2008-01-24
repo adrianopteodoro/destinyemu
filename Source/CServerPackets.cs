@@ -116,7 +116,8 @@ namespace server
                         if (mServer.DB.result.GetInt32(0) == 0)
                         {
                             mServer.DB.FreeQuery();
-                            mServer.DB.QStore(String.Format("CALL sp_InsertAccStatus('{0}','{1}')", thisclient.Session.AccountID, thisclient.Client.sock.RemoteEndPoint.ToString()));
+                            //mServer.DB.QStore(String.Format("CALL sp_InsertAccStatus('{0}','{1}')", thisclient.Session.AccountID, thisclient.Client.sock.RemoteEndPoint.ToString()));
+                            //mServer.DB.FreeQuery();
                             thisclient.Session.ClientID = mServer.GetClientID();
                             thisclient.Session.isLoggedIn = true;
                             pak_SendCharList(pak, thisclient);
@@ -184,8 +185,10 @@ namespace server
                             OutPak.SetByte(mServer.DB.extresult.GetInt32(7), (8 * itemslot) + (128 * charslot) + 219); // EFV3
                         }
                     }
+                    mServer.DB.FreeQueryExt();
                 }
             }
+            mServer.DB.FreeQuery();
 
             string clkeys = Encoding.UTF8.GetString(thisclient.Client.lkeys);
             OutPak.SetString(clkeys, 1800);
