@@ -3,7 +3,7 @@
 	<port>8281</port>
 	<MySqlHost>localhost</MySqlHost>
   <MySqlUser>root</MySqlUser>
-  <MySqlPwd>adr2007</MySqlPwd>
+  <MySqlPwd></MySqlPwd>
   <MySqlDatabase>destiny</MySqlDatabase>
   <MySqlPort>3306</MySqlPort>
 	<ClientVersion>750</ClientVersion>
@@ -11,5 +11,4 @@
 	<IntMPMulti>2</IntMPMulti>
 	<LvlHPMulti>3</LvlHPMulti>
 	<LvlMPMulti>1</LvlMPMulti>
-
 </config>
