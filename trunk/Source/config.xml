@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<port>8281</port>
-	<MySqlHost>localhost</MySqlHost>
-  <MySqlUser>root</MySqlUser>
-  <MySqlPwd></MySqlPwd>
-  <MySqlDatabase>destiny</MySqlDatabase>
-  <MySqlPort>3306</MySqlPort>
+	<MySqlHost>127.0.0.1</MySqlHost>
+	<MySqlUser>root</MySqlUser>
+	<MySqlPwd></MySqlPwd>
+	<MySqlDatabase>destinyemu</MySqlDatabase>
+	<MySqlPort>3306</MySqlPort>
 	<ClientVersion>750</ClientVersion>
 	<ConHPMulti>2</ConHPMulti>
 	<IntMPMulti>2</IntMPMulti>

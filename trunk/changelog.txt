@@ -1,0 +1,12 @@
+CHANGE-LOG
+	Last Change: 25/06/2008
+	Last Revision: 90
+
+25/06/2008 - Revision 90:
+	- Changed: Directorys for easy use.
+	+ Added: net-compile.bat to easy build of source files
+		 1 click build after build run server.exe
+		 * WILL BUILD SERVER.EXE WITH DEBUG OPTIONS
+	- Changed: "System.Data.Odbc" Lib to "MySql.Data" Lib
+
+	
