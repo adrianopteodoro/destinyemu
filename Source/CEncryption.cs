@@ -7,6 +7,8 @@ namespace server
 {
     public class CEncryption
     {
+	    private int m_Count = 0;
+
         public byte[] EncDecKeys = {
             0x84, 0x87, 0x37, 0xD7, 0xEA, 0x79, 0x91, 0x7D, 0x4B, 0x4B, 0x85, 0x7D, 0x87, 0x81, 0x91, 0x7C, 
             0x0F, 0x73, 0x91, 0x91, 0x87, 0x7D, 0x0D, 0x7D, 0x86, 0x8F, 0x73, 0x0F, 0xE1, 0xDD, 0x85, 0x7D, 
@@ -49,6 +51,16 @@ namespace server
         [DllImport("encryption.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         static extern int WYD2_GetHash1(byte[] loginkeys, int pakCounter);
 
+	    public void AddCount()
+	    {
+		    m_Count++;
+	    }
+
+	    public int GetCount()
+	    {
+		    return m_Count;
+	    }
+
         public int Decrypt(byte[] dest, byte[] src, int len)
         {
             return WYD2_Decrypt(dest, src, len, this.EncDecKeys);
@@ -61,7 +73,7 @@ namespace server
 
         public int GetHash(byte[] loginkeys)
         {
-            return WYD2_GetHash1(loginkeys, 0);
+            return WYD2_GetHash1(loginkeys, GetCount());
         }
     }
 }

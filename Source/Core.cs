@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
@@ -32,6 +32,9 @@ namespace server
             Environment.Exit(0);
         }
 
+	/// <summary>
+        /// Server Core Console Output Function
+        /// </summary>
         public static void CLog(string msg)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
