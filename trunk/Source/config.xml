@@ -4,7 +4,7 @@
 	<MySqlHost>127.0.0.1</MySqlHost>
 	<MySqlUser>root</MySqlUser>
 	<MySqlPwd></MySqlPwd>
-	<MySqlDatabase>destinyemu</MySqlDatabase>
+	<MySqlDatabase>destiny</MySqlDatabase>
 	<MySqlPort>3306</MySqlPort>
 	<ClientVersion>750</ClientVersion>
 	<ConHPMulti>2</ConHPMulti>

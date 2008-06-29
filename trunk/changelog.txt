@@ -9,4 +9,6 @@ CHANGE-LOG
 		 * WILL BUILD SERVER.EXE WITH DEBUG OPTIONS
 	- Changed: "System.Data.Odbc" Lib to "MySql.Data" Lib
 
-	
+29/06/2008 - Revision 91:
+	+ Added: mono-compile.sh and mono-start.sh
+		 to compile and run with mono in linux OS
