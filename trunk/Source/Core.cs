@@ -12,7 +12,7 @@ namespace server
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        [MTAThread]
+        //[MTAThread]
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -20,16 +20,21 @@ namespace server
             Console.WriteLine("Destiny Server Emulator - [http://destinyemu.sf.net]");
             Console.ResetColor();
             CServer thisserver = new CServer();
-            thisserver.Start();
+            if (thisserver.DB.GetStatus())
+            {
+                thisserver.Start();
 
-            // Wait Infinitely
-            Thread.CurrentThread.Join();
-
-            // Close Server
-            thisserver.MapThread.Join();
-            thisserver.WorldThread.Join();
-            thisserver.VisionThread.Join();
-            Environment.Exit(0);
+                // Wait Infinitely
+                Thread.CurrentThread.Join();
+            }
+            else
+                CLog("!ERROR OCCURRED! Close this window!");
+			
+			// Close Server
+			thisserver.MapThread.Join();
+			thisserver.WorldThread.Join();
+			thisserver.VisionThread.Join();
+			Environment.Exit(0);
         }
 
 	/// <summary>

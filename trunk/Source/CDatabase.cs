@@ -2,46 +2,51 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.Data.Odbc;
 using System.Windows.Forms;
-using MySql.Data;
-using MySql.Data.MySqlClient;
 
 namespace server
 {
     public class CDatabase
     {
-        private MySqlConnection db;
-        public MySqlDataReader result;
-        public MySqlDataReader extresult;
-        private MySqlCommand cmd;
-        private MySqlCommand cmdExt;
+        private OdbcConnection db;
+        public OdbcDataReader result;
+        public OdbcDataReader extresult;
+        private OdbcCommand cmd;
+        private OdbcCommand cmdExt;
+        bool m_Init;
 
-        public CDatabase(string host, string user, string pwd, string database, int port)
+        public CDatabase(string connStr)
         {
-            string connStr = "Database=" + database + ";Server=" + host + ";Port=" + port + ";User Id=" + user + ";Password=" + pwd;
-
-            db = new MySqlConnection(connStr);
+            db = new OdbcConnection(connStr);
             try
             {
                 if (db.State == ConnectionState.Closed)
                 {
                     db.Open();
-                    Core.CLog("Connected on MySQL Database Server");
-                    Core.CLog(String.Format("[MySQL Version: {0}]", db.ServerVersion));
+                    Core.CLog("Odbc connected on database server");
+                    //Core.CLog(String.Format("[Odbc Version: {0}]", db.ServerVersion));
+                    m_Init = true;
                 }
             }
-            catch(MySqlException Ex)
+            catch(OdbcException Ex)
             {
                 Core.CLog(Ex.Message);
                 MessageBox.Show("Could not access the database.\r\nPlease make sure you have configured settings correctly.\r\n\r\nMore details:\r\n" + Ex.Message, "Database connection error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                m_Init = false;
             }
+        }
+
+        public bool GetStatus()
+        {
+            return m_Init;
         }
 
         public void QStore(string query)
         {
             if (db.State == ConnectionState.Open)
             {
-                cmd = new MySqlCommand(query, db);
+                cmd = new OdbcCommand(query, db);
                 result = cmd.ExecuteReader();
             }
         }
@@ -50,7 +55,7 @@ namespace server
         {
             if (db.State == ConnectionState.Open)
             {
-                cmdExt = new MySqlCommand(query, db);
+                cmdExt = new OdbcCommand(query, db);
                 extresult = cmdExt.ExecuteReader();
             }
         }
@@ -59,7 +64,7 @@ namespace server
         {
             if (db.State == ConnectionState.Open)
             {
-                cmd = new MySqlCommand(query, db);
+                cmd = new OdbcCommand(query, db);
             }
         }
 

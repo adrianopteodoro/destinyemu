@@ -45,7 +45,7 @@ namespace server
             config = new CConfig();
             config.LoadConfigs();
             m_Port = config.Port;
-            DB = new CDatabase(config.myhost,config.myuser,config.mypwd,config.mydatabase,config.myport);
+            DB = new CDatabase(config.odbcstring);
             Packets = new CServerPackets(this);
             Process = new CProcess(this);
             MapThread = new Thread(Process.MapProcess);
