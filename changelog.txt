@@ -1,6 +1,10 @@
 CHANGE-LOG
-	Last Change: 25/06/2008
-	Last Revision: 90
+	Last Change: 22/08/2008
+	Last Revision: 92
+
+22/08/2008 - Revision 91/92:
+	- Changed: Back to ODBC bit now u can change entire connection string in config file
+		the reason of rollback is mysql lib is giving errors.
 
 25/06/2008 - Revision 90:
 	- Changed: Directorys for easy use.
