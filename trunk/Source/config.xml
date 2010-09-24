@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<port>8281</port>
-	<OdbcString>Driver={MySQL ODBC 3.51 Driver};Server=localhost;Port=3306;Database=destiny;User=root;Password=123456;Option=3;</OdbcString>
+	<OdbcString>DRIVER={MySQL ODBC 5.1 Driver};Server=localhost;Port=3306;Database=destiny;User=root;Password=;Option=3;</OdbcString>
 	<ClientVersion>750</ClientVersion>
 	<ConHPMulti>2</ConHPMulti>
 	<IntMPMulti>2</IntMPMulti>
