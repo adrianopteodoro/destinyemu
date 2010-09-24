@@ -16,8 +16,10 @@ namespace server
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Title = "Destiny Server Emulator";
-            Console.WriteLine("Destiny Server Emulator - [http://destinyemu.sf.net]");
+            Console.Title = AssemblyInfo.Title;
+            Console.WriteLine("Destiny Server Emulator - [http://destinyemu.sf.net] - v" + AssemblyInfo.AssemblyVersion);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(AssemblyInfo.Description);
             Console.ResetColor();
             CServer thisserver = new CServer();
             if (thisserver.DB.GetStatus())

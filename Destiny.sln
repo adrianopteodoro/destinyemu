@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C# Express 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer", "GameServer.csproj", "{B8B87D05-2685-4C11-B714-818E5EB75682}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer", "Source\GameServer.csproj", "{B8B87D05-2685-4C11-B714-818E5EB75682}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
