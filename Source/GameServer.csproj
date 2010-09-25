@@ -45,7 +45,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\</OutputPath>
+    <OutputPath>%24%28TargetDir%29\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -125,8 +125,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy "$(ProjectDir)encryption.dll" "$(OutDir)encryption.dll"
-copy "$(ProjectDir)config.xml" "$(OutDir)config.xml"</PostBuildEvent>
+    <PostBuildEvent>copy "$(ProjectDir)encryption.dll" "$(TargetDir)encryption.dll"
+copy "$(ProjectDir)config.xml" "$(TargetDir)config.xml"</PostBuildEvent>
     <PreBuildEvent>"$(ProjectDir)SubWCRev.exe" "$(ProjectDir)." "$(ProjectDir)AssemblyInfo.template" "$(ProjectDir)AssemblyInfo.cs"</PreBuildEvent>
   </PropertyGroup>
 </Project>
