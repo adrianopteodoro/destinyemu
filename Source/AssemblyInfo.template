@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Destiny Server Emulator (Revision: $WCREV$)")]
+[assembly: AssemblyTitle("Revision: $WCREV$")]
 [assembly: AssemblyDescription("Revision $WCREV$ ($WCDATE$)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Destiny Emulator Development Team")]
 [assembly: AssemblyProduct("server")]
-[assembly: AssemblyCopyright("Copyright © 2006-2008")]
+[assembly: AssemblyCopyright("Copyright © 2006-2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
