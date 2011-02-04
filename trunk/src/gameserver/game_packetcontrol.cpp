@@ -26,6 +26,15 @@ bool CConnServer::PacketControl( CConnClient* thisclient, int size, unsigned cha
 		case 0x0379: return ShopItemBuy( thisclient, P ); // Shop Item Buy
         default:
             Log( MSG_WARNING, "Received Unknow OPCODE: 0x%04x", opcode );
+			FILE *fh = NULL;
+			char* file = new char[60];
+			sprintf_s(file, 60, ".\\logs\\packet_%04x.bin", opcode);
+			fh = fopen( file, "wb" );
+			if ( fh != NULL )
+			{
+				fwrite(P, 1, size, fh);
+				fclose( fh );
+			}
         break;
     }
 	return true;

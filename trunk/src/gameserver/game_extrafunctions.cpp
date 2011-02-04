@@ -21,7 +21,7 @@ void CConnServer::SendToAll( CEncDec* encdec, bufwrite* pak, int size )
 		if (otherclient->PlayerSession->inGame)
 		{
 		    this->curtime = clock();
-            this->encsize = encdec->WYD2_Encrypt( this->encbuf, pak->buff(), size, this->CKeys, this->Hash1, this->curtime );
+            this->encsize = encdec->Encrypt( this->encbuf, pak->buff(), size, this->CKeys, this->Hash1, this->curtime );
             otherclient->SendPacket( this->encbuf, this->encsize );
 		}
 	}
@@ -59,13 +59,13 @@ void CConnServer::SendToVisible( CEncDec* encdec, CConnClient* thisclient, bufwr
     {
 		CConnClient* otherclient = thisclient->VisibleClients.at( j );
 		this->curtime = clock();
-		this->encsize = encdec->WYD2_Encrypt( this->encbuf, pak->buff(), size, this->CKeys, this->Hash1, this->curtime );
+		this->encsize = encdec->Encrypt( this->encbuf, pak->buff(), size, this->CKeys, this->Hash1, this->curtime );
 		otherclient->SendPacket( this->encbuf, this->encsize );
 	}
 	if(dothisclient)
 	{
 	    this->curtime = clock();
-        this->encsize = encdec->WYD2_Encrypt( this->encbuf, pak->buff(), size, this->CKeys, this->Hash1, this->curtime );
+        this->encsize = encdec->Encrypt( this->encbuf, pak->buff(), size, this->CKeys, this->Hash1, this->curtime );
         thisclient->SendPacket( this->encbuf, this->encsize );
 	}
 }

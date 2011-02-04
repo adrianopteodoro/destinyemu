@@ -17,7 +17,7 @@ bool CConnServer::ShopItemBuy( CConnClient* thisclient, unsigned char* P )
 	packet->AddWord(30000, 6);
 	packet->AddDWord(66000, 20);
 	this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 24, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 24, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	// End Send Item Price to Client
 	// Start Update Gold
@@ -28,7 +28,7 @@ bool CConnServer::ShopItemBuy( CConnClient* thisclient, unsigned char* P )
 	packet->AddWord(thisclient->PlayerSession->clientid, 6);
 	packet->AddDWord(thisclient->PlayerInfo->Gold, 12);
 	this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 16, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 16, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	// End Update Gold
 	// Start Add Item to Inventory
@@ -48,7 +48,7 @@ bool CConnServer::ShopItemBuy( CConnClient* thisclient, unsigned char* P )
 	packet->AddByte( P[18], 22 ); //add3
 	packet->AddByte( P[19], 23 ); //val3
 	this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 24, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 24, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	// End Add Item to Inventory
 	return true;
@@ -69,7 +69,7 @@ bool CConnServer::ChangeInventory( CConnClient* thisclient, unsigned char* P )
     for (int i=0;i<21;i++)
         packet->AddByte( P[i], i );
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 20, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 20, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -339,7 +339,7 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     }
 
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1244, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 1244, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 
     thisclient->PlayerSession->inGame = true;
@@ -407,7 +407,7 @@ bool CConnServer::SendToWorld( CConnClient* thisclient, unsigned char* P )
     packet->AddByte( 0x00, 172 );
 
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -507,7 +507,7 @@ bool CConnServer::ResendCharList( CConnClient* thisclient, unsigned char* P )
     }
 
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 756, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 756, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -653,7 +653,7 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( thisclient->PlayerSession->clientid, 126 );
 
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 1823, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 1823, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -666,7 +666,7 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
 //    time_t rtime;
     if ( P[0] + P[1] == 0x74 )
     {
-        encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)P, 116, (unsigned char*)this->CKeys );
+        encdec->Decrypt( (unsigned char*)buff, (unsigned char*)P, 116, (unsigned char*)this->CKeys );
         memcpy( this->KeysLogin, &buff[48], 16 );
         memcpy( thisclient->PlayerSession->username, &buff[12], 16 );
         memcpy( thisclient->PlayerSession->password, &buff[28], 12 );
@@ -674,14 +674,14 @@ bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
     }
     if ( P[4] + P[5] == 0x74 )
     {
-        encdec->WYD2_Decrypt( (unsigned char*)buff, (unsigned char*)&P[4], 116, (unsigned char*)this->CKeys );
+        encdec->Decrypt( (unsigned char*)buff, (unsigned char*)&P[4], 116, (unsigned char*)this->CKeys );
         memcpy( this->KeysLogin, &buff[48], 16 );
         memcpy( thisclient->PlayerSession->username, &buff[12], 16 );
         memcpy( thisclient->PlayerSession->password, &buff[28], 12 );
         memcpy( &cliver, &buff[40], 2 );
     }
     Log( MSG_INFO, "User login with account \"%s\", using cliver \"%i\"", thisclient->PlayerSession->username, cliver );
-    this->Hash1 = encdec->WYD2_GetHash1( this->KeysLogin, thisclient->recvpkts );
+    this->Hash1 = encdec->GetHash1( this->KeysLogin, thisclient->recvpkts );
     MYSQL_RES *result;
 	MYSQL_ROW row;
     bufwrite *packet = new bufwrite();
@@ -778,7 +778,7 @@ bool CConnServer::SendServerMsg( CConnClient* thisclient ,char* Format, ...)
     packet->AddByte( 0x01, 5 );
     packet->AddStr( Buffer, 12 );
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 108, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 108, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -828,7 +828,7 @@ bool CConnServer::SpawnChar( CConnClient* thisclient, CConnClient* otherclient )
     packet->AddByte( 0x00, 172 );
 
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -873,7 +873,7 @@ bool CConnServer::SendNPCSellItems( CConnClient* thisclient, unsigned char* P )
     }
     packet->AddByte( 10, 232 );
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 236, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 236, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
     return true;
 }
@@ -928,7 +928,7 @@ bool CConnServer::SpawnNPC( CConnClient* thisclient, CNPC* thisnpc )
     packet->AddByte( 0x00, 172 );
 
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 172, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 }
@@ -941,7 +941,7 @@ bool CConnServer::GameToCharList( CConnClient* thisclient, unsigned char* P )
     packet->AddWord( thisclient->PlayerSession->clientid, 6 ); // Player ID
 
     this->curtime = clock();
-    this->encsize = encdec->WYD2_Encrypt( this->encbuf, packet->buff(), 12, this->CKeys, this->Hash1, this->curtime );
+    this->encsize = encdec->Encrypt( this->encbuf, packet->buff(), 12, this->CKeys, this->Hash1, this->curtime );
     thisclient->SendPacket( this->encbuf, this->encsize );
 	return true;
 
