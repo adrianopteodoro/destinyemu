@@ -877,7 +877,7 @@ bool CConnServer::SpawnNPC( CConnClient* thisclient, CNPC* thisnpc )
     packet->AddWord( thisnpc->clientid, 16 );
     for (int i=0;i<12;i++)
         packet->AddByte( 0xcc, 18+i );
-    packet->AddStr( thisnpc->npcname, 18 ); // char name
+    packet->AddStr( (char*)thisnpc->npcname.c_str(), 18 ); // char name
     if(thisnpc->mobcode == NPC_NORMAL)
         packet->AddByte( 150, 30 ); // player karma
     packet->AddWord( thisnpc->mobid, 34 ); // mob id

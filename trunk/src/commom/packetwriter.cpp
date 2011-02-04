@@ -47,9 +47,9 @@ void bufwrite::AddByte(uchar h, unsigned int offset)
      S++;
 }
 
-void bufwrite::AddStr(std::string co, unsigned int offset)
+void bufwrite::AddStr(char* co, unsigned int offset)
 {
-	memcpy( &D[offset], &co.c_str()[0], co.size());
+	memcpy( &D[offset], &co, strlen(co));
 }
 
 void bufwrite::AddWord( unsigned short h, unsigned int offset )
