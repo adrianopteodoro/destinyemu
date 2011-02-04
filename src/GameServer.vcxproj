@@ -61,7 +61,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;libmysql.lib;pthreadVCE2.lib;iconv.lib;zdll.lib;libxml2.lib</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;libmysql.lib;pthreadVCE2.lib;iconv.lib;zdll.lib;libxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -74,7 +74,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;libmysql.lib;pthreadVCE2.lib;iconv.lib;zdll.lib;libxml2.lib</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;libmysql.lib;pthreadVCE2.lib;iconv.lib;zdll.lib;libxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <OptimizeReferences>false</OptimizeReferences>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
