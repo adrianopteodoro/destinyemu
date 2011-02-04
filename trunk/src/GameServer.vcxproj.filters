@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{9e1d11d0-d9fc-4ed9-8ac5-120f28c9feb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{2e76ce65-29ae-4520-8071-f35fa0a2b180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Common">
+      <UniqueIdentifier>{152c99cf-a686-430b-977b-70d3a5dc202a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameServer">
+      <UniqueIdentifier>{e6e0aa2e-9b3d-4ca4-9db5-a08706c49ddc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Common">
+      <UniqueIdentifier>{d8d35588-9cda-4812-9475-a6070e3ea09d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\GameServer">
+      <UniqueIdentifier>{f4284d5c-212a-49c2-8e35-a3f12d4619e1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="commom\config.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="commom\encdec.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="commom\log.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="commom\packetwriter.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="commom\socket_base.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="commom\socket_client.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="commom\socket_server.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\main.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_client.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_clientfunctions.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_commands.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_extrafunctions.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_functions.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_loadfiles.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_mainprocess.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_monster.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_packetcontrol.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_packets.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_player.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_server.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\game_signal.cpp">
+      <Filter>Source\GameServer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="commom\sockets.h">
+      <Filter>Headers\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="commom\config.h">
+      <Filter>Headers\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="commom\encdec.h">
+      <Filter>Headers\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="commom\log.h">
+      <Filter>Headers\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="commom\packetwriter.h">
+      <Filter>Headers\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\game_types.h">
+      <Filter>Headers\GameServer</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\game_itemeffect.h">
+      <Filter>Headers\GameServer</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\game_monster.h">
+      <Filter>Headers\GameServer</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\game_player.h">
+      <Filter>Headers\GameServer</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\game_sockets.h">
+      <Filter>Headers\GameServer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
