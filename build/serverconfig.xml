@@ -38,7 +38,7 @@
 	<!-- Name of your Server -->
 	<servername value="Alpha Test Server" />
 	<!-- Client Version -->
-	<client_version value="748" />
+	<client_version value="756" />
 
 	<!-- XP Gain Rate -->
 	<xp_rate value="100" />

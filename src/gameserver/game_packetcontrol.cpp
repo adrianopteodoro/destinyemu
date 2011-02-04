@@ -9,7 +9,7 @@ bool CConnServer::PacketControl( CConnClient* thisclient, int size, unsigned cha
 
     switch ( opcode )
     {
-        case 0x4388: return true; // to remove the msg from console.
+		case 0x020d: return CheckLogin( thisclient, P ); 
         case 0x020f: return CharCreate( thisclient, P );
         case 0x0211: return CharDelete( thisclient, P );
         case 0x0213: return SendToWorld( thisclient, P );
@@ -24,6 +24,7 @@ bool CConnServer::PacketControl( CConnClient* thisclient, int size, unsigned cha
         case 0x039d: return PlayerAttack( thisclient, P ); // Player Attack
         case 0x0215: return GameToCharList( thisclient, P ); // gametocharlist
 		case 0x0379: return ShopItemBuy( thisclient, P ); // Shop Item Buy
+		case 0x4388: return true; // to remove the msg from console.
         default:
             Log( MSG_WARNING, "Received Unknow OPCODE: 0x%04x", opcode );
 			FILE *fh = NULL;

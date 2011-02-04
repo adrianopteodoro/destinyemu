@@ -47,23 +47,19 @@ void bufwrite::AddByte(uchar h, unsigned int offset)
      S++;
 }
 
-void bufwrite::AddChar(uchar h, unsigned int ile, unsigned int offset)
+void bufwrite::AddStr(std::string co, unsigned int offset)
 {
-     if(S<ile+offset)S=ile+offset;
-     for (unsigned int i =0;i<=ile;i++)
-     D[i+offset]=h;
-}
-
-void bufwrite::AddStr(std::string co, unsigned int gdzie)
-{
-    if(gdzie+co.size()>S)S=gdzie+(unsigned int)co.size();
-    for (unsigned int i =0;i<=co.size();i++)
-    D[i+gdzie]=co[i];
+	memcpy( &D[offset], &co.c_str()[0], co.size());
 }
 
 void bufwrite::AddWord( unsigned short h, unsigned int offset )
 {
-     memcpy( (char*)&D[offset], (int*)&h, 2 );
+     memcpy( &D[offset], (int*)&h, 2 );
+}
+
+void bufwrite::AddData( unsigned char* h, unsigned int offset, int size )
+{
+     memcpy( &D[offset], &h, size );
 }
 
 int bufwrite::GetWord( unsigned char* src, unsigned int offset )
@@ -75,7 +71,7 @@ int bufwrite::GetWord( unsigned char* src, unsigned int offset )
 
 void bufwrite::AddDWord( unsigned long h, unsigned int offset )
 {
-     memcpy( (char*)&D[offset], (int*)&h, 4 );
+     memcpy( &D[offset], (int*)&h, 4 );
 }
 
 void bufwrite::Free( )
