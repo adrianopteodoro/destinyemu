@@ -522,7 +522,7 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
 
     // Packet Header
     packet->AddWord( 1824, 0 ); // packet size
-    packet->AddWord( 270, 4 ); // packet id
+    packet->AddWord( 0x010a, 4 ); // packet id
     packet->AddWord( thisclient->PlayerSession->userid, 6 ); //Player ID
 
     // Char List
@@ -643,10 +643,10 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
 
 
     // Client Username
-    packet->AddStr( thisclient->PlayerSession->username, 1784 );
+    packet->AddStr( thisclient->PlayerSession->username, 1800 );
 
     // Char List Encryption Keys
-    packet->AddStr( (char*)thisclient->KeysLogin, 1800 );
+	packet->AddData( thisclient->KeysLogin, 1816, 7);
     packet->AddWord( thisclient->PlayerSession->clientid, 120 );
     packet->AddWord( thisclient->PlayerSession->clientid, 122 );
     packet->AddWord( thisclient->PlayerSession->clientid, 124 );
@@ -660,26 +660,11 @@ bool CConnServer::SendCharList( CConnClient* thisclient, unsigned char* P )
 
 bool CConnServer::CheckLogin( CConnClient* thisclient, unsigned char* P )
 {
-    unsigned char* buff = (unsigned char*)malloc(thisclient->PSize);
     unsigned short cliver;
-//    unsigned short opcode;
-//    time_t rtime;
-    if ( P[0] + P[1] == 0x74 )
-    {
-        encdec->Decrypt( (unsigned char*)buff, (unsigned char*)P, 116, (unsigned char*)this->CKeys );
-        memcpy( this->KeysLogin, &buff[48], 16 );
-        memcpy( thisclient->PlayerSession->username, &buff[12], 16 );
-        memcpy( thisclient->PlayerSession->password, &buff[28], 12 );
-        memcpy( &cliver, &buff[40], 2 );
-    }
-    if ( P[4] + P[5] == 0x74 )
-    {
-        encdec->Decrypt( (unsigned char*)buff, (unsigned char*)&P[4], 116, (unsigned char*)this->CKeys );
-        memcpy( this->KeysLogin, &buff[48], 16 );
-        memcpy( thisclient->PlayerSession->username, &buff[12], 16 );
-        memcpy( thisclient->PlayerSession->password, &buff[28], 12 );
-        memcpy( &cliver, &buff[40], 2 );
-    }
+    memcpy( &this->KeysLogin, &P[64], 16 );
+	memcpy( thisclient->PlayerSession->password, &P[12], 12 );
+	memcpy( thisclient->PlayerSession->username, &P[24], 12 );
+    memcpy( &cliver, &P[92], 2 );
     Log( MSG_INFO, "User login with account \"%s\", using cliver \"%i\"", thisclient->PlayerSession->username, cliver );
     this->Hash1 = encdec->GetHash1( this->KeysLogin, thisclient->recvpkts );
     MYSQL_RES *result;

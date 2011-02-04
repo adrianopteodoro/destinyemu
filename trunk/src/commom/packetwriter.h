@@ -18,9 +18,9 @@ class bufwrite
         unsigned char* buff();
         void SetPSize(int i);
         void AddByte(uchar h, unsigned int offset);
-        void AddChar(uchar h, unsigned int ile, unsigned int offset);
-        void AddStr(std::string co, unsigned int gdzie);
+        void AddStr(std::string co, unsigned int offset);
         void AddWord( unsigned short h, unsigned int offset );
+		void AddData( unsigned char* h, unsigned int offset, int size );
         void AddDWord( unsigned long h, unsigned int offset );
         int GetWord( unsigned char* src, unsigned int offset );
         void Free( );
