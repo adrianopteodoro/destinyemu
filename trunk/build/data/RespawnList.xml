@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<respawnlist>
+	<spawnpoint startpos="1" endpos="2000">
+		<monster name="Half_Orc" npcfile="HalfOrc.xml">
+	</spawnpoint>
+</respawnlist>
